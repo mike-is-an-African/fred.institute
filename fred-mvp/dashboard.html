@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FredInstitute — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── Hero banner ── */
+.hero {
+  background:linear-gradient(135deg, #f97316 0%, #ea580c 60%, #c2410c 100%);
+  border-radius:var(--radius-xl);
+  padding:2rem 2.5rem;
+  margin-bottom:1.75rem;
+  display:flex; justify-content:space-between; align-items:center;
+  position:relative; overflow:hidden;
+  box-shadow:0 4px 20px rgba(234,88,12,0.25);
+}
+.hero::after {
+  content:''; position:absolute; right:-60px; top:-60px;
+  width:250px; height:250px; border-radius:50%;
+  background:rgba(255,255,255,0.07); pointer-events:none;
+}
+.hero::before {
+  content:''; position:absolute; right:120px; bottom:-80px;
+  width:180px; height:180px; border-radius:50%;
+  background:rgba(255,255,255,0.05); pointer-events:none;
+}
+.hero-text h2 { font-size:1.4rem; font-weight:800; color:white; margin-bottom:0.2rem; }
+.hero-text p  { font-size:0.875rem; color:rgba(255,255,255,0.75); }
+.hero-right { text-align:right; position:relative; z-index:1; }
+.hero-time { font-size:2rem; font-weight:800; color:white; line-height:1; }
+.hero-date { font-size:0.72rem; color:rgba(255,255,255,0.65); margin-top:0.2rem; }
+
+/* ── Stats ── */
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1.25rem; margin-bottom:1.75rem; }
+.stat-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; display:flex; align-items:center; gap:1rem; box-shadow:var(--shadow-sm); transition:box-shadow 0.15s; }
+.stat-card:hover { box-shadow:var(--shadow-md); }
+.stat-icon { width:44px; height:44px; border-radius:var(--radius-lg); background:var(--orange-50); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.stat-icon svg { width:22px; height:22px; color:var(--orange-500); }
+.stat-num { font-size:1.6rem; font-weight:800; color:var(--gray-900); line-height:1; }
+.stat-lbl { font-size:0.72rem; font-weight:500; color:var(--gray-500); margin-top:0.15rem; }
+
+/* ── Main grid ── */
+.dash-grid { display:grid; grid-template-columns:1fr 320px; gap:1.5rem; }
+@media(max-width:1100px) { .dash-grid { grid-template-columns:1fr; } }
+
+/* ── Section header ── */
+.sec-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.sec-title { font-size:1rem; font-weight:700; color:var(--gray-900); }
+
+/* ── Live lesson cards ── */
+.lesson-card {
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.1rem 1.25rem;
+  display:flex; align-items:center; gap:1rem;
+  margin-bottom:0.75rem;
+  cursor:pointer;
+  transition:all 0.15s;
+  box-shadow:var(--shadow-sm);
+}
+.lc-mascot {
+  width:44px;
+  height:auto;
+  object-fit:contain;
+  flex-shrink:0;
+}
+.lesson-card:hover { border-color:var(--orange-300); box-shadow:0 4px 12px rgba(249,115,22,0.1); transform:translateY(-1px); }
+.lesson-card.live { border-color:var(--orange-300); background:var(--orange-50); }
+.lc-time { text-align:center; min-width:52px; flex-shrink:0; }
+.lc-hr { font-size:1rem; font-weight:800; color:var(--gray-900); line-height:1; }
+.lc-day { font-size:0.65rem; font-weight:500; color:var(--gray-400); margin-top:0.1rem; }
+.lc-sep { width:1px; height:40px; background:var(--border); flex-shrink:0; }
+.lc-info { flex:1; }
+.lc-name { font-size:0.875rem; font-weight:600; color:var(--gray-900); display:flex; align-items:center; gap:0.5rem; margin-bottom:0.15rem; }
+.lc-meta { font-size:0.75rem; color:var(--gray-500); }
+.lc-action {
+  flex-shrink:0; padding:0.4rem 0.9rem;
+  border-radius:var(--radius);
+  font-size:0.75rem; font-weight:600;
+  border:none; cursor:pointer; transition:all 0.15s;
+  text-decoration:none; display:inline-block;
+}
+.lc-action.join { background:var(--grad-orange); color:white; }
+.lc-action.join:hover { background:linear-gradient(135deg,var(--orange-600),var(--orange-700)); }
+.lc-action.upcoming { background:var(--gray-100); color:var(--gray-500); cursor:default; }
+
+/* ── Note widget ── */
+.note-ta {
+  width:100%; min-height:90px; padding:0.75rem;
+  border:1px solid var(--border); border-radius:var(--radius);
+  font-family:inherit; font-size:0.875rem; color:var(--gray-900);
+  resize:vertical; outline:none; transition:all 0.15s;
+  background:var(--white);
+}
+.note-ta:focus { border-color:var(--orange-500); box-shadow:0 0 0 3px rgba(249,115,22,0.08); }
+.recent-note {
+  padding:0.75rem; margin-bottom:0.5rem;
+  background:var(--orange-50); border-radius:var(--radius);
+  border-left:3px solid var(--orange-400);
+}
+.rn-text { font-size:0.8rem; color:var(--gray-700); line-height:1.5; }
+.rn-ts { font-size:0.68rem; color:var(--gray-400); margin-top:0.25rem; }
+
+/* ── Announcement ── */
+.ann-item {
+  padding:1rem; border-radius:var(--radius-lg);
+  background:var(--orange-50); border-left:3px solid var(--orange-400);
+  margin-bottom:0.75rem;
+}
+.ann-title { font-size:0.875rem; font-weight:700; color:var(--gray-900); margin-bottom:0.2rem; }
+.ann-body  { font-size:0.8rem; color:var(--gray-600); line-height:1.55; }
+.ann-ts    { font-size:0.68rem; font-weight:500; color:var(--orange-600); margin-top:0.35rem; }
+
+/* ── Library preview ── */
+.lib-row { display:flex; align-items:center; gap:0.75rem; padding:0.7rem 0; border-bottom:1px solid var(--border); }
+.lib-row:last-child { border-bottom:none; }
+.lib-ext { width:36px; height:36px; background:var(--orange-50); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:800; color:var(--orange-600); flex-shrink:0; }
+.lib-name { flex:1; font-size:0.82rem; font-weight:600; color:var(--gray-800); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.lib-by   { font-size:0.68rem; color:var(--gray-400); }
+.lib-dl   { font-size:0.75rem; font-weight:600; color:var(--orange-600); text-decoration:none; flex-shrink:0; }
+.lib-dl:hover { text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="s-av">S</div>
+      <div>
+        <div class="user-name" id="s-name">Student</div>
+        <div class="user-role">Student</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-label">Main</div>
+      <a class="nav-item active" href="dashboard.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="classroom.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+        Live Classroom
+        <span class="nav-badge" id="live-badge" style="display:none">Live</span>
+      </a>
+      <a class="nav-item" href="library.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Library
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <button class="btn-signout" onclick="signOut()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard</div>
+      <div class="topbar-actions">
+        <a href="classroom.html" class="btn btn-primary">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+          Join Class
+        </a>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Good <span id="greeting">morning</span>, <span id="fname">Scholar</span> 👋</h2>
+          <p>Ready to continue your learning journey?</p>
+        </div>
+        <div class="hero-right">
+          <div class="hero-time" id="h-time">--:--</div>
+          <div class="hero-date" id="h-date"></div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg></div>
+          <div><div class="stat-num" id="stat-sessions">0</div><div class="stat-lbl">Sessions Attended</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+          <div><div class="stat-num" id="stat-notes">0</div><div class="stat-lbl">Notes Saved</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
+          <div><div class="stat-num" id="stat-resources">0</div><div class="stat-lbl">Resources</div></div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="dash-grid">
+        <div>
+          <!-- Lectures -->
+          <div class="card card-body" style="margin-bottom:1.5rem;">
+            <div class="sec-head">
+              <div class="sec-title">Today's Classes</div>
+              <a href="classroom.html" class="btn btn-ghost btn-sm">View All →</a>
+            </div>
+            <div id="lessons-list"></div>
+          </div>
+
+          <!-- Quick Notes -->
+          <div class="card card-body">
+            <div class="sec-head">
+              <div class="sec-title">Quick Notes</div>
+              <button class="btn btn-primary btn-sm" onclick="saveNote()">Save Note</button>
+            </div>
+            <textarea class="note-ta" id="note-ta" placeholder="Capture a thought, question, or key idea…"></textarea>
+            <div id="recent-notes" style="margin-top:0.875rem;"></div>
+          </div>
+        </div>
+
+        <div>
+          <!-- Announcements -->
+          <div class="card card-body" style="margin-bottom:1.5rem;">
+            <div class="sec-head"><div class="sec-title">Announcements</div></div>
+            <div id="anns-list"></div>
+          </div>
+
+          <!-- Library preview -->
+          <div class="card card-body">
+            <div class="sec-head">
+              <div class="sec-title">Recent Resources</div>
+              <a href="library.html" class="btn btn-ghost btn-sm">Library →</a>
+            </div>
+            <div id="lib-preview">
+              <div style="text-align:center;padding:1.5rem 1rem;font-size:0.8rem;color:var(--gray-400);">
+                No resources yet.<br>
+                <a href="library.html" style="color:var(--orange-600);font-weight:600;">Browse Library →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- My Notes modal -->
+<div class="overlay" id="notes-overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">All My Notes</div>
+      <button class="modal-x" onclick="closeModal('notes-overlay')">×</button>
+    </div>
+    <div id="all-notes-list"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script>
+/* ── Auth guard ─────────────────────────────────── */
+const S = sessionStorage.getItem('fi_session');
+if (!S) location.href = 'index.html';
+const ME = JSON.parse(S || '{}');
+if (ME.role === 'teacher') location.href = 'admin.html';
+
+document.getElementById('s-av').textContent = (ME.name || 'S')[0].toUpperCase();
+document.getElementById('s-name').textContent = ME.name || 'Student';
+document.getElementById('fname').textContent = ME.first || ME.name?.split(' ')[0] || 'Scholar';
+
+/* ── Personalization (subject/year) ──────────────── */
+const enrolledSubjects = Array.isArray(ME.subjects) && ME.subjects.length ? ME.subjects : null;
+const enrolledYear = ME.yearOfStudy ? parseInt(ME.yearOfStudy, 10) : null;
+
+function inferSubjectYearFromRoom(room) {
+  const r = String(room || '').toLowerCase();
+  let subject = null;
+  if (r.includes('mathematics') || r.includes('math')) subject = 'mathematics';
+  else if (r.includes('english')) subject = 'english';
+  else if (r.includes('sciences') || r.includes('science')) subject = 'sciences';
+
+  const m = String(room || '').match(/-(\d{3})$/);
+  const code3 = m ? parseInt(m[1], 10) : null;
+  const year = code3 ? Math.floor(code3 / 100) : null; // 101->1, 201->2, 301->3
+  return { subject, year };
+}
+
+function lessonScore(lesson) {
+  const subjectMatch = enrolledSubjects && lesson.subject
+    ? (enrolledSubjects.includes(lesson.subject) ? 30 : 0)
+    : 5;
+  const yearMatch = enrolledYear && lesson.year
+    ? (lesson.year === enrolledYear ? 12 : 0)
+    : 2;
+  const liveBoost = lesson.live ? 8 : 0;
+  return subjectMatch + yearMatch + liveBoost;
+}
+
+/* ── Clock ──────────────────────────────────────── */
+function tick() {
+  const n = new Date(), h = n.getHours();
+  document.getElementById('h-time').textContent = n.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('h-date').textContent = n.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('greeting').textContent = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+}
+tick(); setInterval(tick, 1000);
+
+/* ── Schedule ───────────────────────────────────── */
+const SCHEDULE = [
+  { room:'fred-mathematics-101',  title:'Mathematics 101',       teacher:'Dr. Chikwanda', time:'09:00', day:'Today',    live:true  },
+  { room:'fred-english-201',      title:'English Literature',    teacher:'Ms. Ndlovu',    time:'11:30', day:'Today',    live:false },
+  { room:'fred-sciences-301',     title:'Introduction to Sciences', teacher:'Mr. Mubita', time:'14:00', day:'Today',    live:false },
+];
+
+function mascotForRoom(roomId) {
+  const r = String(roomId || '').toLowerCase();
+  if (r.includes('sciences') || r.includes('science')) return 'assets/fredi-lab.png';
+  if (r.includes('mathematics') || r.includes('math')) return 'assets/fredi-cap.png';
+  return 'assets/fredi-default.png';
+}
+
+const el = document.getElementById('lessons-list');
+const lessonsEnriched = SCHEDULE.map(l => {
+  const { subject, year } = inferSubjectYearFromRoom(l.room);
+  return { ...l, subject, year };
+});
+
+const eligibleLessons = lessonsEnriched.filter(l => {
+  const subjectOk = enrolledSubjects && l.subject ? enrolledSubjects.includes(l.subject) : true;
+  const yearOk = enrolledYear && l.year ? l.year === enrolledYear : true;
+  return subjectOk && yearOk;
+}).sort((a, b) => lessonScore(b) - lessonScore(a));
+
+el.innerHTML = eligibleLessons.map(l => `
+  <div class="lesson-card ${l.live ? 'live' : ''}" onclick="window.location.href='classroom.html?room=${l.room}'">
+    <img class="lc-mascot" src="${mascotForRoom(l.room)}" alt="Fredi mascot" />
+    <div class="lc-time"><div class="lc-hr">${l.time}</div><div class="lc-day">${l.day}</div></div>
+    <div class="lc-sep"></div>
+    <div class="lc-info">
+      <div class="lc-name">
+        ${esc(l.title)}
+        ${l.live ? '<span class="badge badge-live" style="font-size:0.58rem;padding:0.12rem 0.5rem;"><span class="dot"></span>LIVE</span>' : ''}
+      </div>
+      <div class="lc-meta">${esc(l.teacher)}</div>
+    </div>
+    ${l.live
+      ? `<a href="classroom.html?room=${l.room}" class="lc-action join" onclick="event.stopPropagation()">Join Now</a>`
+      : `<span class="lc-action upcoming">Upcoming</span>`}
+  </div>`).join('');
+
+if (eligibleLessons.some(l => l.live)) document.getElementById('live-badge').style.display = '';
+
+/* ── Stats ──────────────────────────────────────── */
+function refreshStats() {
+  const notes = JSON.parse(localStorage.getItem('fi_notes') || '[]').filter(n => n.uid === ME.id);
+  const lib   = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  const att   = parseInt(localStorage.getItem('fi_att_' + ME.id) || '0');
+  document.getElementById('stat-notes').textContent = notes.length;
+  document.getElementById('stat-resources').textContent = lib.length;
+  document.getElementById('stat-sessions').textContent = att;
+}
+refreshStats();
+
+/* ── Notes ──────────────────────────────────────── */
+function saveNote() {
+  const text = document.getElementById('note-ta').value.trim();
+  if (!text) return;
+  const notes = JSON.parse(localStorage.getItem('fi_notes') || '[]');
+  notes.unshift({ id: Date.now(), uid: ME.id, uname: ME.name, text, ts: new Date().toISOString(), shared: false });
+  localStorage.setItem('fi_notes', JSON.stringify(notes));
+  document.getElementById('note-ta').value = '';
+  renderRecentNotes();
+  refreshStats();
+  toast('Note saved');
+}
+
+function renderRecentNotes() {
+  const notes = JSON.parse(localStorage.getItem('fi_notes') || '[]').filter(n => n.uid === ME.id).slice(0, 3);
+  const el = document.getElementById('recent-notes');
+  el.innerHTML = notes.map(n => `
+    <div class="recent-note">
+      <div class="rn-text">${esc(n.text).substring(0, 110)}${n.text.length > 110 ? '…' : ''}</div>
+      <div class="rn-ts">${new Date(n.ts).toLocaleString()}</div>
+    </div>`).join('');
+}
+renderRecentNotes();
+
+/* ── Announcements ──────────────────────────────── */
+function renderAnns() {
+  const anns = JSON.parse(localStorage.getItem('fi_ann') || '[]');
+  const el = document.getElementById('anns-list');
+  const list = anns.length ? anns : [{ title:'Welcome to FredInstitute', body:'Join your live classroom, access the library, and save notes during lessons.', ts: new Date().toISOString() }];
+  el.innerHTML = list.slice(0, 3).map(a => `
+    <div class="ann-item">
+      <div class="ann-title">${esc(a.title)}</div>
+      <div class="ann-body">${esc(a.body)}</div>
+      <div class="ann-ts">${new Date(a.ts).toLocaleDateString()}</div>
+    </div>`).join('');
+}
+renderAnns();
+
+/* ── Library preview ────────────────────────────── */
+function renderLibPreview() {
+  const lib = JSON.parse(localStorage.getItem('fi_library') || '[]').slice(0, 5);
+  const el = document.getElementById('lib-preview');
+  if (!lib.length) return;
+  el.innerHTML = lib.map(f => `
+    <div class="lib-row">
+      <div class="lib-ext">${(f.ext || '?').toUpperCase().substring(0, 3)}</div>
+      <div>
+        <div class="lib-name">${esc(f.name)}</div>
+        <div class="lib-by">${esc(f.by || '')}</div>
+      </div>
+      <a href="${f.url}" download="${f.name}" class="lib-dl">↓ Get</a>
+    </div>`).join('');
+}
+renderLibPreview();
+
+/* ── Utils ──────────────────────────────────────── */
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function signOut() { sessionStorage.removeItem('fi_session'); location.href = 'index.html'; }
+</script>
+</body>
+</html>

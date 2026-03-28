@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FredInstitute — Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.upload-zone {
+  border:2px dashed var(--gray-200);
+  border-radius:var(--radius-xl);
+  padding:2rem; text-align:center;
+  cursor:pointer; transition:all 0.15s;
+  background:var(--white);
+  margin-bottom:1.75rem;
+}
+.upload-zone:hover,.upload-zone.over {
+  border-color:var(--orange-400);
+  background:var(--orange-50);
+}
+.uz-icon {
+  width:52px; height:52px; border-radius:var(--radius-lg);
+  background:var(--orange-50);
+  margin:0 auto 0.75rem;
+  display:flex; align-items:center; justify-content:center;
+}
+.uz-icon svg { width:24px; height:24px; color:var(--orange-500); }
+.upload-zone h3 { font-size:1rem; font-weight:700; color:var(--gray-800); margin-bottom:0.25rem; }
+.upload-zone p { font-size:0.82rem; color:var(--gray-500); }
+
+.lib-controls {
+  display:flex; align-items:center; gap:0.75rem;
+  margin-bottom:1.5rem; flex-wrap:wrap;
+}
+.search-box {
+  display:flex; align-items:center;
+  border:1px solid var(--border); border-radius:var(--radius);
+  background:var(--white); flex:1; min-width:200px; max-width:380px;
+  transition:all 0.15s; box-shadow:var(--shadow-sm);
+}
+.search-box:focus-within { border-color:var(--orange-500); box-shadow:0 0 0 3px rgba(249,115,22,0.1); }
+.search-box svg { padding:0 0.75rem; flex-shrink:0; color:var(--gray-400); }
+.search-inp { flex:1; padding:0.65rem 0.5rem 0.65rem 0; border:none; outline:none; font-family:inherit; font-size:0.875rem; background:transparent; }
+.filter-sel {
+  padding:0.65rem 0.875rem; border:1px solid var(--border);
+  border-radius:var(--radius); font-family:inherit; font-size:0.82rem;
+  color:var(--gray-700); outline:none; cursor:pointer;
+  background:var(--white); transition:all 0.15s;
+  box-shadow:var(--shadow-sm);
+}
+.filter-sel:focus { border-color:var(--orange-500); }
+.view-btns { display:flex; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.vb { padding:0.5rem 0.65rem; background:transparent; border:none; cursor:pointer; color:var(--gray-400); transition:all 0.15s; }
+.vb.active { background:var(--gray-900); color:white; }
+.vb svg { width:16px; height:16px; display:block; }
+
+/* Grid view */
+.lib-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1.25rem; }
+.fcard {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden; cursor:pointer;
+  transition:all 0.15s; box-shadow:var(--shadow-sm);
+}
+.fcard:hover { border-color:var(--orange-300); box-shadow:0 6px 20px rgba(249,115,22,0.1); transform:translateY(-2px); }
+.fcard-thumb {
+  height:110px; background:var(--gray-900);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden; position:relative;
+}
+.fcard-thumb img { width:100%; height:100%; object-fit:cover; }
+.fcard-thumb-bg { position:absolute; inset:0; background:repeating-linear-gradient(45deg,rgba(255,255,255,0.02) 0,rgba(255,255,255,0.02) 1px,transparent 0,transparent 50%); background-size:18px 18px; }
+.fcard-ext { font-size:1.75rem; font-weight:800; color:var(--orange-400); position:relative; z-index:1; letter-spacing:0.05em; }
+.fcard-body { padding:0.875rem; }
+.fcard-name { font-size:0.82rem; font-weight:700; color:var(--gray-900); margin-bottom:0.2rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fcard-meta { font-size:0.68rem; color:var(--gray-400); }
+.fcard-foot { padding:0.65rem 0.875rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.fcard-sz { font-size:0.68rem; color:var(--gray-400); }
+.fcard-dl { padding:0.3rem 0.75rem; background:var(--grad-orange); color:white; border-radius:var(--radius); font-size:0.68rem; font-weight:700; text-decoration:none; transition:all 0.15s; }
+.fcard-dl:hover { background:linear-gradient(135deg,var(--orange-600),var(--orange-700)); }
+
+/* List view */
+.lib-list { display:flex; flex-direction:column; gap:0.5rem; }
+.frow {
+  display:flex; align-items:center; gap:1rem;
+  padding:0.875rem 1.25rem;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-lg); cursor:pointer;
+  transition:all 0.15s; box-shadow:var(--shadow-sm);
+}
+.frow:hover { border-color:var(--orange-300); background:var(--orange-50); }
+.frow-ext { width:40px; height:40px; background:var(--gray-900); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:0.62rem; font-weight:800; color:var(--orange-400); flex-shrink:0; }
+.frow-info { flex:1; min-width:0; }
+.frow-name { font-size:0.875rem; font-weight:700; color:var(--gray-900); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.frow-meta { font-size:0.72rem; color:var(--gray-400); margin-top:0.1rem; }
+.frow-sz { font-size:0.72rem; color:var(--gray-400); flex-shrink:0; min-width:56px; text-align:right; }
+.frow-dl { flex-shrink:0; padding:0.35rem 0.8rem; background:var(--grad-orange); color:white; border-radius:var(--radius); font-size:0.68rem; font-weight:700; text-decoration:none; transition:all 0.15s; }
+.frow-dl:hover { background:linear-gradient(135deg,var(--orange-600),var(--orange-700)); }
+
+/* Empty state */
+.empty-state { text-align:center; padding:4rem 2rem; }
+.empty-state svg { width:48px; height:48px; color:var(--gray-300); margin-bottom:1rem; }
+.empty-state h3 { font-size:1.15rem; font-weight:700; color:var(--gray-800); margin-bottom:0.4rem; }
+.empty-state p { font-size:0.875rem; color:var(--gray-500); }
+
+/* Viewer modal */
+.viewer { position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:300; display:none; flex-direction:column; }
+.viewer.open { display:flex; }
+.viewer-bar { height:52px; background:var(--gray-900); display:flex; align-items:center; justify-content:space-between; padding:0 1.5rem; flex-shrink:0; }
+.viewer-name { font-size:0.875rem; font-weight:700; color:white; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+.viewer-actions { display:flex; gap:0.5rem; flex-shrink:0; }
+.v-dl { padding:0.4rem 1rem; background:var(--grad-orange); color:white; font-family:inherit; font-size:0.72rem; font-weight:700; text-decoration:none; border-radius:var(--radius); transition:all 0.15s; }
+.v-close { padding:0.4rem 0.75rem; background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7); font-family:inherit; font-size:0.72rem; font-weight:700; border:none; cursor:pointer; border-radius:var(--radius); transition:all 0.15s; }
+.v-close:hover { background:rgba(255,255,255,0.15); color:white; }
+.viewer-body { flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.viewer-body iframe { width:100%; height:100%; border:none; }
+.viewer-body img { max-width:100%; max-height:100%; object-fit:contain; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="s-av">S</div>
+      <div>
+        <div class="user-name" id="s-name">Student</div>
+        <div class="user-role" id="s-role-lbl">Student</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" href="classroom.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+        Live Classroom
+      </a>
+      <a class="nav-item active" href="library.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Library
+      </a>
+    </div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()">Sign Out</button></div>
+  </nav>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-title">Library</div>
+      <div class="topbar-actions">
+        <button class="btn btn-primary" onclick="document.getElementById('lib-inp').click()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Upload Resource
+        </button>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div class="page-head">
+        <h1>Resource Library</h1>
+        <p>Lecture notes, past papers, and reading materials. Click any PDF to open it in-browser.</p>
+      </div>
+
+      <div class="upload-zone" id="upload-zone"
+           onclick="document.getElementById('lib-inp').click()"
+           ondragover="dov(event)" ondragleave="dol()" ondrop="dod(event)">
+        <input type="file" id="lib-inp" style="display:none" multiple onchange="handleUpload(event)" />
+        <div class="uz-icon">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h3>Upload a Resource</h3>
+        <p>Drag & drop here, or click to browse · PDF, DOC, PPT, images, and more</p>
+      </div>
+
+      <!-- Upload metadata (used for personalized sorting/filtering) -->
+      <div class="lib-controls" style="margin-top:-1.1rem; margin-bottom:1.25rem; justify-content:flex-start;">
+        <select class="filter-sel" id="u-subject" style="min-width:190px;">
+          <option value="">Any subject</option>
+          <option value="mathematics">Mathematics</option>
+          <option value="english">English</option>
+          <option value="sciences">Sciences</option>
+        </select>
+        <select class="filter-sel" id="u-year" style="min-width:160px;">
+          <option value="">Any year</option>
+          <option value="1">Year 1</option>
+          <option value="2">Year 2</option>
+          <option value="3">Year 3</option>
+          <option value="4">Year 4</option>
+          <option value="5">Year 5</option>
+        </select>
+      </div>
+
+      <div class="lib-controls">
+        <div class="search-box">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="search-inp" id="search" placeholder="Search resources…" oninput="render()" />
+        </div>
+        <select class="filter-sel" id="ftype" onchange="render()">
+          <option value="">All types</option>
+          <option value="pdf">PDF</option>
+          <option value="doc">Documents</option>
+          <option value="img">Images</option>
+          <option value="ppt">Presentations</option>
+        </select>
+        <select class="filter-sel" id="fsort" onchange="render()">
+          <option value="rel" selected>Relevance</option>
+          <option value="new">Newest first</option>
+          <option value="old">Oldest first</option>
+          <option value="name">Name A–Z</option>
+          <option value="big">Largest first</option>
+        </select>
+        <div class="view-btns">
+          <button class="vb active" id="vb-g" onclick="setView('g',this)" title="Grid">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </button>
+          <button class="vb" id="vb-l" onclick="setView('l',this)" title="List">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <span id="lib-count" style="margin-left:auto;font-size:0.8rem;color:var(--gray-500);font-weight:500;"></span>
+      </div>
+
+      <div id="lib-container"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF / Image Viewer -->
+<div class="viewer" id="viewer">
+  <div class="viewer-bar">
+    <div class="viewer-name" id="v-name">File</div>
+    <div class="viewer-actions">
+      <a id="v-dl" href="#" download class="v-dl">↓ Download</a>
+      <button class="v-close" onclick="closeViewer()">✕ Close</button>
+    </div>
+  </div>
+  <div class="viewer-body" id="v-body"></div>
+</div>
+
+<div id="toast"></div>
+<script>
+const S = sessionStorage.getItem('fi_session');
+if (!S) location.href = 'index.html';
+const ME = JSON.parse(S || '{}');
+document.getElementById('s-av').textContent = (ME.name || 'S')[0].toUpperCase();
+document.getElementById('s-name').textContent = ME.name || 'Student';
+document.getElementById('s-role-lbl').textContent = ME.role || 'student';
+
+let view = 'g';
+
+/* ── Personalization (subject/year) ──────────────── */
+const enrolledSubjects = Array.isArray(ME.subjects) && ME.subjects.length ? ME.subjects : null;
+const enrolledYear = ME.yearOfStudy ? parseInt(ME.yearOfStudy, 10) : null;
+
+function fileScore(f) {
+  const fSub = f.subject || null;
+  const fYear = f.yearOfStudy != null ? parseInt(f.yearOfStudy, 10) : (f.year != null ? parseInt(f.year, 10) : null);
+  const subjectMatch = fSub && enrolledSubjects
+    ? (enrolledSubjects.includes(fSub) ? 2 : 0)
+    : fSub
+      ? 0.5
+      : 1; // general/untyped resources
+  const yearMatch = fYear && enrolledYear
+    ? (fYear === enrolledYear ? 1 : 0)
+    : fYear
+      ? 0.2
+      : 0.5; // general/untyped resources
+  const ts = f.ts ? new Date(f.ts).getTime() : 0;
+  return subjectMatch * 100000 + yearMatch * 10000 + ts / 1000;
+}
+
+function isFileEligible(f) {
+  const fSub = f.subject || null;
+  const fYear = f.yearOfStudy != null ? parseInt(f.yearOfStudy, 10) : (f.year != null ? parseInt(f.year, 10) : null);
+  const subjectOk = !fSub ? true : !enrolledSubjects ? true : enrolledSubjects.includes(fSub);
+  const yearOk = !fYear ? true : !enrolledYear ? true : fYear === enrolledYear;
+  return subjectOk && yearOk;
+}
+
+function dov(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('over'); }
+function dol()  { document.getElementById('upload-zone').classList.remove('over'); }
+function dod(e) { e.preventDefault(); dol(); processFiles(Array.from(e.dataTransfer.files)); }
+function handleUpload(e) { processFiles(Array.from(e.target.files)); e.target.value = ''; }
+
+function processFiles(files) {
+  const lib = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  const selSubj = document.getElementById('u-subject') ? document.getElementById('u-subject').value : '';
+  const selYear = document.getElementById('u-year') ? document.getElementById('u-year').value : '';
+  const subject = selSubj || null;
+  const yearOfStudy = selYear ? parseInt(selYear, 10) : null;
+  let done = 0;
+  files.forEach(f => {
+    const rdr = new FileReader();
+    rdr.onload = ev => {
+      lib.unshift({
+        id: Date.now() + Math.random(),
+        name: f.name,
+        ext: f.name.split('.').pop().toLowerCase(),
+        type: f.type,
+        size: f.size,
+        room: null,
+        by: ME.name,
+        uid: ME.id,
+        url: ev.target.result,
+        ts: new Date().toISOString(),
+        subject,
+        yearOfStudy,
+      });
+      if (lib.length > 300) lib.splice(300);
+      localStorage.setItem('fi_library', JSON.stringify(lib));
+      if (++done === files.length) { render(); toast(done + ' file' + (done !== 1 ? 's' : '') + ' uploaded'); }
+    };
+    rdr.readAsDataURL(f);
+  });
+}
+
+function setView(v, btn) {
+  view = v;
+  document.querySelectorAll('.vb').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function catOf(ext) {
+  if (['pdf'].includes(ext)) return 'pdf';
+  if (['doc','docx','txt','odt','rtf'].includes(ext)) return 'doc';
+  if (['ppt','pptx'].includes(ext)) return 'ppt';
+  if (['jpg','jpeg','png','gif','webp','svg','bmp'].includes(ext)) return 'img';
+  return 'other';
+}
+function fmtSz(b) { if (!b) return '—'; if (b < 1024) return b+'B'; if (b < 1048576) return Math.round(b/1024)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
+
+function render() {
+  const q  = document.getElementById('search').value.toLowerCase();
+  const ft = document.getElementById('ftype').value;
+  const fs = document.getElementById('fsort').value;
+  let lib = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  if (q)  lib = lib.filter(f => f.name.toLowerCase().includes(q) || (f.by||'').toLowerCase().includes(q));
+  if (ft) lib = lib.filter(f => catOf(f.ext || '') === ft);
+  // Apply enrollment-based eligibility + relevance
+  lib = lib.filter(isFileEligible);
+  lib.sort((a,b) => {
+    if (fs === 'new')  return new Date(b.ts) - new Date(a.ts);
+    if (fs === 'old')  return new Date(a.ts) - new Date(b.ts);
+    if (fs === 'name') return a.name.localeCompare(b.name);
+    if (fs === 'big')  return (b.size||0) - (a.size||0);
+    if (fs === 'rel')  return fileScore(b) - fileScore(a);
+    return 0;
+  });
+  document.getElementById('lib-count').textContent = lib.length + ' item' + (lib.length !== 1 ? 's' : '');
+  const el = document.getElementById('lib-container');
+  if (!lib.length) {
+    el.innerHTML = `<div class="empty-state">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <h3>No resources yet</h3>
+      <p>Upload lecture notes, past papers, or reading materials to get started.</p>
+    </div>`;
+    return;
+  }
+  el.innerHTML = view === 'g'
+    ? `<div class="lib-grid">${lib.map(gridCard).join('')}</div>`
+    : `<div class="lib-list">${lib.map(listRow).join('')}</div>`;
+}
+
+function gridCard(f) {
+  const ext = (f.ext || '?').toUpperCase().substring(0,4);
+  const isImg = ['jpg','jpeg','png','gif','webp'].includes(f.ext || '');
+  const thumb = isImg ? `<img src="${f.url}" alt="${esc(f.name)}">` : `<div class="fcard-thumb-bg"></div><div class="fcard-ext">${ext}</div>`;
+  return `<div class="fcard" onclick="openFile('${f.id}')">
+    <div class="fcard-thumb">${thumb}</div>
+    <div class="fcard-body">
+      <div class="fcard-name" title="${esc(f.name)}">${esc(f.name)}</div>
+      <div class="fcard-meta">By ${esc(f.by||'—')} · ${new Date(f.ts).toLocaleDateString()}</div>
+    </div>
+    <div class="fcard-foot">
+      <span class="fcard-sz">${fmtSz(f.size)}</span>
+      <a href="${f.url}" download="${f.name}" class="fcard-dl" onclick="event.stopPropagation()">↓ Download</a>
+    </div>
+  </div>`;
+}
+
+function listRow(f) {
+  const ext = (f.ext || '?').toUpperCase().substring(0,4);
+  const cat = catOf(f.ext || '');
+  const catLabel = {pdf:'PDF',doc:'Document',ppt:'Presentation',img:'Image',other:'File'}[cat] || 'File';
+  return `<div class="frow" onclick="openFile('${f.id}')">
+    <div class="frow-ext">${ext}</div>
+    <div class="frow-info">
+      <div class="frow-name">${esc(f.name)}</div>
+      <div class="frow-meta">By ${esc(f.by||'—')} · ${new Date(f.ts).toLocaleDateString()}</div>
+    </div>
+    <span class="badge badge-orange">${catLabel}</span>
+    <div class="frow-sz">${fmtSz(f.size)}</div>
+    <a href="${f.url}" download="${f.name}" class="frow-dl" onclick="event.stopPropagation()">↓ Get</a>
+  </div>`;
+}
+
+function openFile(id) {
+  const lib = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  const f = lib.find(x => String(x.id) === String(id));
+  if (!f) return;
+  document.getElementById('v-name').textContent = f.name;
+  const dl = document.getElementById('v-dl');
+  dl.href = f.url; dl.download = f.name;
+  const isImg = ['jpg','jpeg','png','gif','webp','svg'].includes(f.ext || '');
+  const isPdf = f.ext === 'pdf';
+  const vb = document.getElementById('v-body');
+  if (isImg)      vb.innerHTML = `<img src="${f.url}" alt="${esc(f.name)}" />`;
+  else if (isPdf) vb.innerHTML = `<iframe src="${f.url}" title="${esc(f.name)}"></iframe>`;
+  else vb.innerHTML = `<div style="background:white;padding:2.5rem;border-radius:1rem;max-width:480px;text-align:center;">
+    <div style="font-size:3.5rem;margin-bottom:1rem;">📄</div>
+    <div style="font-size:1rem;font-weight:700;color:#111827;margin-bottom:0.5rem;">${esc(f.name)}</div>
+    <p style="font-size:0.875rem;color:#6b7280;margin-bottom:1.5rem;">In-browser preview not available for this file type.</p>
+    <a href="${f.url}" download="${f.name}" style="padding:0.75rem 2rem;background:linear-gradient(135deg,#f97316,#ea580c);color:white;font-family:inherit;font-weight:700;font-size:0.82rem;text-decoration:none;border-radius:0.625rem;">Download File</a>
+  </div>`;
+  document.getElementById('viewer').classList.add('open');
+}
+function closeViewer() { document.getElementById('viewer').classList.remove('open'); document.getElementById('v-body').innerHTML = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500); }
+function signOut() { sessionStorage.removeItem('fi_session'); location.href = 'index.html'; }
+
+render();
+</script>
+</body>
+</html>

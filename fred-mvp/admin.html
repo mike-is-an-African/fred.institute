@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FredInstitute — Teacher Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.admin-hero {
+  background:linear-gradient(135deg,#f97316 0%,#ea580c 60%,#c2410c 100%);
+  border-radius:var(--radius-xl);
+  padding:2rem 2.5rem;
+  margin-bottom:1.75rem;
+  display:flex; justify-content:space-between; align-items:center;
+  overflow:hidden; position:relative;
+  box-shadow:0 4px 20px rgba(234,88,12,0.25);
+}
+.admin-hero::after { content:''; position:absolute; right:-60px; top:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,0.07); pointer-events:none; }
+.ah-text h1 { font-size:1.35rem; font-weight:800; color:white; margin-bottom:0.2rem; }
+.ah-text p  { font-size:0.82rem; color:rgba(255,255,255,0.7); }
+.ah-actions { display:flex; gap:0.625rem; position:relative; z-index:1; flex-wrap:wrap; }
+.ah-btn { padding:0.55rem 1.25rem; font-family:inherit; font-size:0.78rem; font-weight:700; border-radius:var(--radius); cursor:pointer; transition:all 0.15s; border:none; text-decoration:none; }
+.ah-white { background:white; color:var(--orange-600); }
+.ah-white:hover { background:var(--orange-50); }
+.ah-outline { background:transparent; color:white; border:1.5px solid rgba(255,255,255,0.4); }
+.ah-outline:hover { background:rgba(255,255,255,0.1); }
+
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:1.25rem; margin-bottom:1.75rem; }
+.stat-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; box-shadow:var(--shadow-sm); }
+.stat-num { font-size:2rem; font-weight:800; color:var(--gray-900); line-height:1; }
+.stat-lbl { font-size:0.72rem; font-weight:500; color:var(--gray-500); margin-top:0.2rem; }
+
+.tabs { display:flex; border-bottom:2px solid var(--border); margin-bottom:1.75rem; gap:0; }
+.tab { padding:0.7rem 1.5rem; font-family:inherit; font-size:0.78rem; font-weight:600; cursor:pointer; color:var(--gray-500); background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all 0.15s; }
+.tab.active { color:var(--gray-900); border-bottom-color:var(--orange-500); }
+.tab:hover:not(.active) { color:var(--gray-700); }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+/* Add form */
+.add-form { background:var(--orange-50); border:1px solid var(--orange-200); border-radius:var(--radius-xl); padding:1.75rem; margin-bottom:1.5rem; display:none; }
+.add-form.open { display:block; }
+.add-form-title { font-size:1rem; font-weight:700; color:var(--gray-900); margin-bottom:1.25rem; display:flex; justify-content:space-between; align-items:center; }
+.form-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.875rem; margin-bottom:1.1rem; }
+@media(max-width:900px) { .form-grid { grid-template-columns:1fr 1fr; } .stats { grid-template-columns:1fr 1fr; } }
+
+/* Table action btns */
+.tact { background:none; border:1px solid var(--border); border-radius:var(--radius); padding:0.3rem 0.65rem; font-family:inherit; font-size:0.68rem; font-weight:600; cursor:pointer; transition:all 0.15s; color:var(--gray-700); }
+.tact:hover { border-color:var(--orange-400); color:var(--orange-600); }
+.tact.del:hover { border-color:#fca5a5; color:#dc2626; }
+
+/* Room cards */
+.room-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; display:flex; align-items:center; justify-content:space-between; margin-bottom:0.625rem; box-shadow:var(--shadow-sm); transition:all 0.15s; }
+.room-card:hover { border-color:var(--orange-300); }
+.rc-name { font-size:0.9rem; font-weight:700; color:var(--gray-900); }
+.rc-id   { font-size:0.72rem; color:var(--gray-500); margin-top:0.1rem; }
+
+/* Announcements */
+.ann-form { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-xl); padding:1.5rem; margin-bottom:1.5rem; box-shadow:var(--shadow-sm); }
+.ann-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-lg); padding:1.25rem; margin-bottom:0.625rem; border-left:4px solid var(--orange-400); box-shadow:var(--shadow-sm); }
+.ann-card-title { font-size:0.875rem; font-weight:700; color:var(--gray-900); }
+.ann-card-body  { font-size:0.8rem; color:var(--gray-600); margin-top:0.3rem; line-height:1.55; }
+.ann-card-meta  { font-size:0.68rem; color:var(--gray-400); margin-top:0.4rem; }
+
+/* Export cards */
+.export-card { background:var(--white); border:1px solid var(--border); border-radius:var(--radius-xl); padding:1.75rem; box-shadow:var(--shadow-sm); }
+.export-card h3 { font-size:1rem; font-weight:700; color:var(--gray-900); margin-bottom:0.35rem; }
+.export-card p  { font-size:0.82rem; color:var(--gray-500); margin-bottom:1.25rem; line-height:1.55; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Teacher Portal</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="s-av">T</div>
+      <div>
+        <div class="user-name" id="s-name">Teacher</div>
+        <div class="user-role">Teacher</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-label">Admin</div>
+      <a class="nav-item active" href="admin.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        Students
+      </a>
+      <a class="nav-item" href="classroom.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+        Live Classroom
+      </a>
+      <a class="nav-item" href="library.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Library
+      </a>
+      <a class="nav-item" href="dashboard.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+    </div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()">Sign Out</button></div>
+  </nav>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="topbar-title">Teacher Portal</div>
+      <div class="topbar-actions">
+        <a href="classroom.html" class="btn btn-primary">▶ Start a Live Class</a>
+        <button class="btn btn-secondary" onclick="toggleAddForm()">+ Add Student</button>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <!-- Hero -->
+      <div class="admin-hero">
+        <div class="ah-text">
+          <h1>Welcome back, <span id="t-name">Teacher</span></h1>
+          <p>Manage your students, run live classes, and share resources</p>
+        </div>
+        <div class="ah-actions">
+          <a href="classroom.html" class="ah-btn ah-white">▶ Go Live</a>
+          <a href="library.html"   class="ah-btn ah-outline">Upload Resource</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat-card"><div class="stat-num" id="st-students">0</div><div class="stat-lbl">Students Enrolled</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-rooms">3</div><div class="stat-lbl">Classrooms</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-lib">0</div><div class="stat-lbl">Library Resources</div></div>
+        <div class="stat-card"><div class="stat-num" id="st-notes">0</div><div class="stat-lbl">Student Notes</div></div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab('students',this)">Students</button>
+        <button class="tab" onclick="switchTab('rooms',this)">Classrooms</button>
+        <button class="tab" onclick="switchTab('ann',this)">Announcements</button>
+        <button class="tab" onclick="switchTab('export',this)">Export</button>
+      </div>
+
+      <!-- ── STUDENTS ── -->
+      <div class="tab-panel active" id="tp-students">
+        <!-- Add form -->
+        <div class="add-form" id="add-form">
+          <div class="add-form-title">
+            Add New Student
+            <button onclick="toggleAddForm()" style="background:none;border:none;font-size:1.25rem;cursor:pointer;color:var(--gray-400);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all 0.15s;" onmouseover="this.style.background='var(--gray-100)'" onmouseout="this.style.background='none'">×</button>
+          </div>
+          <div class="form-grid">
+            <div><label class="form-label">First Name *</label><input class="form-input" id="af-first" placeholder="Alice" /></div>
+            <div><label class="form-label">Last Name *</label><input class="form-input" id="af-last" placeholder="Moyo" /></div>
+            <div><label class="form-label">Email *</label><input class="form-input" type="email" id="af-email" placeholder="alice@example.com" /></div>
+            <div><label class="form-label">Phone</label><input class="form-input" type="tel" id="af-phone" placeholder="+263 ..." /></div>
+            <div><label class="form-label">Password *</label><input class="form-input" id="af-pass" placeholder="Temporary password" /></div>
+            <div><label class="form-label">Account Type</label>
+              <select class="form-input" id="af-role">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher / Admin</option>
+              </select>
+            </div>
+            <div><label class="form-label">Year of Study</label>
+              <select class="form-input" id="af-year">
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+                <option value="5">Year 5</option>
+              </select>
+            </div>
+            <div style="grid-column: span 2;">
+              <label class="form-label">Subjects</label>
+              <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-math" checked />
+                  Mathematics
+                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-english" checked />
+                  English
+                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-sciences" checked />
+                  Sciences
+                </label>
+              </div>
+            </div>
+          </div>
+          <div id="af-err" style="color:#dc2626;font-size:0.78rem;margin-bottom:0.75rem;display:none;"></div>
+          <div style="display:flex;gap:0.75rem;">
+            <button class="btn btn-primary" onclick="addStudent()">Add Student</button>
+            <button class="btn btn-secondary" onclick="toggleAddForm()">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center;">
+          <input class="form-input" id="s-search" style="max-width:280px;" placeholder="Search by name or email…" oninput="renderStudents()" />
+          <select class="form-input" id="s-role-filter" style="width:160px;" onchange="renderStudents()">
+            <option value="">All accounts</option>
+            <option value="student">Students only</option>
+            <option value="teacher">Teachers only</option>
+          </select>
+          <span id="s-count" style="margin-left:auto;font-size:0.8rem;color:var(--gray-500);font-weight:500;"></span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="table">
+            <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Account</th><th>Joined</th><th>Actions</th></tr></thead>
+            <tbody id="s-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── CLASSROOMS ── -->
+      <div class="tab-panel" id="tp-rooms">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+          <p style="font-size:0.875rem;color:var(--gray-500);">Share room codes with students so they can join your live sessions.</p>
+          <button class="btn btn-primary btn-sm" onclick="createRoom()">+ Create Room</button>
+        </div>
+        <div id="rooms-list"></div>
+      </div>
+
+      <!-- ── ANNOUNCEMENTS ── -->
+      <div class="tab-panel" id="tp-ann">
+        <div class="ann-form" style="margin-bottom:1.5rem;">
+          <div style="font-size:1rem;font-weight:700;color:var(--gray-900);margin-bottom:1.25rem;">Post an Announcement</div>
+          <div class="form-group"><label class="form-label">Title</label><input class="form-input" id="ann-title" placeholder="Announcement title" /></div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-input" id="ann-body" style="min-height:80px;resize:vertical;" placeholder="Write your message here…"></textarea></div>
+          <button class="btn btn-primary" onclick="postAnn()">Post Announcement</button>
+        </div>
+        <div id="ann-list"></div>
+      </div>
+
+      <!-- ── EXPORT ── -->
+      <div class="tab-panel" id="tp-export">
+        <div class="g2" style="margin-bottom:1.5rem;">
+          <div class="export-card">
+            <h3>Student Roster</h3>
+            <p>Export all student accounts as a CSV file for your records or external use.</p>
+            <button class="btn btn-primary" onclick="exportStudents()">↓ Export CSV</button>
+          </div>
+          <div class="export-card">
+            <h3>Library Resources</h3>
+            <p>Export a list of all files and resources currently in the library.</p>
+            <button class="btn btn-primary" onclick="exportLib()">↓ Export CSV</button>
+          </div>
+        </div>
+
+        <div style="background:var(--orange-50);border:1px solid var(--orange-200);border-radius:var(--radius-xl);padding:1.5rem;border-left:4px solid var(--orange-500);">
+          <div style="font-size:0.875rem;font-weight:700;color:var(--gray-900);margin-bottom:0.5rem;">Connecting a Real Database</div>
+          <div style="font-size:0.82rem;color:var(--gray-600);line-height:1.75;">
+            This platform currently stores data in your browser. When you're ready to scale to multiple devices:
+            <ul style="margin:0.5rem 0 0 1.5rem;">
+              <li><strong>Supabase</strong> — Free PostgreSQL + real-time sync + auth (recommended)</li>
+              <li><strong>Firebase</strong> — Google's NoSQL, great for quick integration</li>
+              <li><strong>PocketBase</strong> — Self-hosted, open-source, zero cost</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script>
+const S = sessionStorage.getItem('fi_session');
+if (!S) location.href = 'index.html';
+const ME = JSON.parse(S || '{}');
+if (ME.role === 'student') location.href = 'dashboard.html';
+document.getElementById('s-av').textContent = (ME.name || 'T')[0].toUpperCase();
+document.getElementById('s-name').textContent = ME.name || 'Teacher';
+document.getElementById('t-name').textContent = ME.first || ME.name?.split(' ')[0] || 'Teacher';
+
+/* ── Tabs ── */
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tp-'+name).classList.add('active');
+  if (name === 'rooms') renderRooms();
+  if (name === 'ann')   renderAnns();
+}
+
+/* ── Add form ── */
+function toggleAddForm() {
+  document.getElementById('add-form').classList.toggle('open');
+  document.getElementById('af-err').style.display = 'none';
+}
+function addStudent() {
+  const first = v('af-first'), last = v('af-last'), email = v('af-email'), pass = v('af-pass');
+  const role = document.getElementById('af-role').value;
+  const phone = v('af-phone');
+  const err = document.getElementById('af-err');
+  if (!first||!last||!email||!pass) { err.textContent='Fill in all required fields.'; err.style.display='block'; return; }
+  const users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  if (users.find(u => u.email === email)) { err.textContent='An account with that email already exists.'; err.style.display='block'; return; }
+  const yearOfStudy = parseInt(v('af-year') || '1', 10) || 1;
+  const subjects = [];
+  if (document.getElementById('af-sub-math').checked) subjects.push('mathematics');
+  if (document.getElementById('af-sub-english').checked) subjects.push('english');
+  if (document.getElementById('af-sub-sciences').checked) subjects.push('sciences');
+  if (!subjects.length) subjects.push('mathematics','english','sciences');
+
+  users.push({ id:Date.now(), name:first+' '+last, first, last, email, phone, password:pass, role, createdAt:new Date().toISOString(), yearOfStudy, subjects });
+  localStorage.setItem('fi_users', JSON.stringify(users));
+  ['af-first','af-last','af-email','af-phone','af-pass'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('add-form').classList.remove('open');
+  renderStudents(); updateStats();
+  toast(first+' '+last+' added successfully');
+}
+
+/* ── Students table ── */
+function renderStudents() {
+  const q  = v('s-search').toLowerCase();
+  const rf = document.getElementById('s-role-filter').value;
+  let users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  if (q)  users = users.filter(u => u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q));
+  if (rf) users = users.filter(u => u.role === rf);
+  document.getElementById('s-count').textContent = users.length + ' account' + (users.length !== 1 ? 's' : '');
+  const tb = document.getElementById('s-tbody');
+  if (!users.length) { tb.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--gray-400);">No accounts found</td></tr>`; return; }
+  tb.innerHTML = users.map((u,i) => `
+    <tr>
+      <td style="color:var(--gray-400);font-size:0.8rem;">${i+1}</td>
+      <td><span style="font-weight:700;">${esc(u.name)}</span></td>
+      <td style="font-size:0.83rem;">${esc(u.email)}</td>
+      <td style="font-size:0.83rem;color:var(--gray-500);">${esc(u.phone||'—')}</td>
+      <td><span class="badge ${u.role==='student'?'badge-gray':'badge-orange'}">${u.role}</span></td>
+      <td style="font-size:0.78rem;color:var(--gray-400);">${new Date(u.createdAt).toLocaleDateString()}</td>
+      <td>
+        <div style="display:flex;gap:0.375rem;">
+          <button class="tact" onclick="resetPass(${u.id})">Reset Password</button>
+          ${u.id !== ME.id ? `<button class="tact del" onclick="delUser(${u.id})">Remove</button>` : ''}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+function resetPass(id) {
+  const np = prompt('Enter new password:'); if (!np) return;
+  const users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  const idx = users.findIndex(u => u.id === id);
+  if (idx >= 0) { users[idx].password = np; localStorage.setItem('fi_users', JSON.stringify(users)); toast('Password updated'); }
+}
+function delUser(id) {
+  if (!confirm('Remove this account? This cannot be undone.')) return;
+  let users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  users = users.filter(u => u.id !== id);
+  localStorage.setItem('fi_users', JSON.stringify(users));
+  renderStudents(); updateStats(); toast('Account removed');
+}
+
+/* ── Classrooms ── */
+const FIXED_ROOMS = [
+  { id:'fred-mathematics-101',   name:'Mathematics 101',         desc:'Algebra, Calculus & Problem Solving' },
+  { id:'fred-english-201',       name:'English Literature 201',  desc:'Essays, Comprehension & Analysis' },
+  { id:'fred-sciences-301',      name:'Introduction to Sciences',desc:'Physics, Chemistry & Biology' },
+];
+function renderRooms() {
+  const custom = JSON.parse(localStorage.getItem('fi_rooms') || '[]');
+  const all = [...FIXED_ROOMS, ...custom];
+  document.getElementById('rooms-list').innerHTML = all.map(r => `
+    <div class="room-card">
+      <div>
+        <div class="rc-name">${esc(r.name)}</div>
+        <div class="rc-id">Code: <strong>${r.id}</strong>${r.desc ? ' · '+esc(r.desc) : ''}</div>
+      </div>
+      <div style="display:flex;gap:0.625rem;">
+        <a href="classroom.html?room=${r.id}" class="btn btn-primary btn-sm">▶ Open</a>
+        <button class="tact" onclick="copyCode('${r.id}')">Copy Code</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('st-rooms').textContent = all.length;
+}
+function copyCode(id) { navigator.clipboard.writeText(id).then(() => toast('Room code copied: '+id)).catch(() => prompt('Room code:', id)); }
+function createRoom() {
+  const name = prompt('Room name (e.g. "History 101"):'); if (!name) return;
+  const id = 'fred-' + name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+  const desc = prompt('Subject description (optional):') || '';
+  const rooms = JSON.parse(localStorage.getItem('fi_rooms') || '[]');
+  rooms.push({ id, name, desc, createdAt: new Date().toISOString() });
+  localStorage.setItem('fi_rooms', JSON.stringify(rooms));
+  renderRooms(); toast('Room created: '+id);
+}
+
+/* ── Announcements ── */
+function postAnn() {
+  const title = v('ann-title'), body = v('ann-body');
+  if (!title||!body) { toast('Fill in both title and message'); return; }
+  const anns = JSON.parse(localStorage.getItem('fi_ann') || '[]');
+  anns.unshift({ id:Date.now(), title, body, by:ME.name, ts:new Date().toISOString() });
+  localStorage.setItem('fi_ann', JSON.stringify(anns));
+  document.getElementById('ann-title').value = '';
+  document.getElementById('ann-body').value  = '';
+  renderAnns(); toast('Announcement posted');
+}
+function renderAnns() {
+  const anns = JSON.parse(localStorage.getItem('fi_ann') || '[]');
+  const el = document.getElementById('ann-list');
+  if (!anns.length) { el.innerHTML='<p style="font-size:0.875rem;color:var(--gray-500);">No announcements yet.</p>'; return; }
+  el.innerHTML = anns.map(a => `
+    <div class="ann-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div class="ann-card-title">${esc(a.title)}</div>
+        <button onclick="delAnn(${a.id})" style="background:none;border:none;font-size:0.75rem;font-weight:700;color:#dc2626;cursor:pointer;font-family:inherit;padding:0.2rem 0.5rem;border-radius:var(--radius);transition:all 0.15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='none'">Delete</button>
+      </div>
+      <div class="ann-card-body">${esc(a.body)}</div>
+      <div class="ann-card-meta">Posted by ${esc(a.by)} · ${new Date(a.ts).toLocaleString()}</div>
+    </div>`).join('');
+}
+function delAnn(id) {
+  let a = JSON.parse(localStorage.getItem('fi_ann') || '[]');
+  a = a.filter(x => x.id !== id);
+  localStorage.setItem('fi_ann', JSON.stringify(a));
+  renderAnns();
+}
+
+/* ── Export ── */
+function exportStudents() {
+  const u = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  dlCSV(['Name,Email,Phone,Account Type,Joined', ...u.map(x=>`"${x.name}","${x.email}","${x.phone||''}","${x.role}","${x.createdAt}"`)].join('\n'), 'fredinstitute-students.csv');
+}
+function exportLib() {
+  const l = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  dlCSV(['Filename,Type,Size,Uploaded By,Date', ...l.map(f=>`"${f.name}","${f.type||''}","${f.size||0}","${f.by||''}","${f.ts}"`)].join('\n'), 'fredinstitute-library.csv');
+}
+function dlCSV(csv, name) { const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download=name; a.click(); }
+
+/* ── Stats ── */
+function updateStats() {
+  const users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  const lib   = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  const notes = JSON.parse(localStorage.getItem('fi_notes') || '[]');
+  const rooms = JSON.parse(localStorage.getItem('fi_rooms') || '[]');
+  document.getElementById('st-students').textContent = users.filter(u => u.role === 'student').length;
+  document.getElementById('st-rooms').textContent    = FIXED_ROOMS.length + rooms.length;
+  document.getElementById('st-lib').textContent      = lib.length;
+  document.getElementById('st-notes').textContent    = notes.length;
+}
+
+/* ── Utils ── */
+function v(id)  { return document.getElementById(id).value.trim(); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3500); }
+function signOut() { sessionStorage.removeItem('fi_session'); location.href = 'index.html'; }
+
+renderStudents();
+updateStats();
+</script>
+</body>
+</html>
