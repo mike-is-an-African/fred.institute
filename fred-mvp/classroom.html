@@ -269,6 +269,94 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
 .cpf-status { font-size:0.65rem; font-weight:600; }
 .cpf-status.on  { color:#4ade80; }
 .cpf-status.off { color:var(--gray-400); }
+
+/* ══ WHITEBOARD OVERLAY ══ */
+#wb-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(17,24,39,0.55);
+  backdrop-filter:blur(4px);
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  padding:1rem;
+}
+#wb-overlay.open { display:flex; }
+.wb-modal {
+  width:100%; max-width:1100px; height:92vh;
+  background:var(--white);
+  border-radius:var(--radius-xl);
+  box-shadow:0 25px 60px rgba(0,0,0,0.3);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.wb-header {
+  height:50px; background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1rem; flex-shrink:0;
+}
+.wb-title { font-size:0.85rem; font-weight:700; color:var(--gray-800); display:flex; align-items:center; gap:0.5rem; }
+.wb-tools {
+  display:flex; align-items:center; gap:0.35rem; flex:1; justify-content:center;
+}
+.wb-tool-btn {
+  width:34px; height:34px;
+  border-radius:var(--radius); border:1px solid var(--border);
+  background:var(--gray-50); color:var(--gray-600);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s; font-size:0.85rem;
+}
+.wb-tool-btn:hover { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
+.wb-tool-btn.active { background:var(--orange-500); color:white; border-color:var(--orange-600); }
+.wb-sep { width:1px; height:22px; background:var(--border); margin:0 0.25rem; }
+.wb-color-swatch {
+  width:24px; height:24px; border-radius:50%; border:2px solid white;
+  box-shadow:0 0 0 1px var(--border); cursor:pointer; flex-shrink:0;
+}
+.wb-color-swatch.active { box-shadow:0 0 0 2px var(--orange-500); }
+.wb-size-btn {
+  padding:0.25rem 0.5rem;
+  border-radius:var(--radius); border:1px solid var(--border);
+  background:var(--gray-50); color:var(--gray-700);
+  font-family:inherit; font-size:0.7rem; font-weight:600;
+  cursor:pointer; transition:all 0.15s;
+}
+.wb-size-btn.active { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
+.wb-actions { display:flex; align-items:center; gap:0.4rem; }
+.wb-close-btn {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--gray-100); border:none;
+  font-size:1rem; cursor:pointer; color:var(--gray-500);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s;
+}
+.wb-close-btn:hover { background:var(--gray-200); color:var(--gray-700); }
+.wb-body { flex:1; position:relative; overflow:hidden; background:#fafafa; }
+#wb-canvas { cursor:crosshair; display:block; touch-action:none; }
+.wb-locked-banner {
+  position:absolute; inset:0;
+  background:rgba(249,115,22,0.07);
+  display:none; align-items:center; justify-content:center;
+  pointer-events:none; z-index:10;
+}
+.wb-locked-banner.show { display:flex; }
+.wb-locked-banner span {
+  background:var(--orange-500); color:white;
+  padding:0.5rem 1.25rem; border-radius:99px;
+  font-size:0.8rem; font-weight:700;
+  pointer-events:none;
+}
+.wb-footer-bar {
+  height:38px; background:var(--gray-50);
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1rem; flex-shrink:0;
+}
+.wb-footer-info { font-size:0.7rem; color:var(--gray-400); }
+/* Students see view-only overlay on locked board */
+#wb-view-only {
+  position:absolute; inset:0;
+  z-index:20; cursor:not-allowed;
+  display:none;
+}
+#wb-view-only.show { display:block; }
 </style>
 </head>
 <body>
@@ -332,12 +420,10 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
           Leave Session
         </button>
 
-        <!-- Whiteboard controls (teacher only) -->
-        <button class="cls-btn cls-btn-ghost" id="wb-show-btn" style="display:none" onclick="showWhiteboard()">
+        <!-- Whiteboard button (teacher: show/hide; student: view if allowed) -->
+        <button class="cls-btn cls-btn-ghost" id="wb-open-btn" style="display:none" onclick="openWhiteboard()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
           Whiteboard
-        </button>
-        <button class="cls-btn cls-btn-ghost" id="wb-lock-btn" style="display:none" onclick="lockWhiteboard()">
-          Lock Board
         </button>
       </div>
     </div>
@@ -446,6 +532,59 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
   </div>
 </div>
 
+<div id="wb-overlay">
+  <div class="wb-modal">
+    <div class="wb-header">
+      <div class="wb-title">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Class Whiteboard
+        <span id="wb-room-label" style="font-size:0.7rem;color:var(--gray-400);font-weight:500;"></span>
+      </div>
+      <div class="wb-tools" id="wb-tools">
+        <!-- Tool buttons -->
+        <button class="wb-tool-btn active" id="wbt-pen" title="Pen" onclick="setWbTool('pen',this)">✏️</button>
+        <button class="wb-tool-btn" id="wbt-marker" title="Marker" onclick="setWbTool('marker',this)">🖊️</button>
+        <button class="wb-tool-btn" id="wbt-line" title="Line" onclick="setWbTool('line',this)">╱</button>
+        <button class="wb-tool-btn" id="wbt-rect" title="Rectangle" onclick="setWbTool('rect',this)">▭</button>
+        <button class="wb-tool-btn" id="wbt-circle" title="Circle" onclick="setWbTool('circle',this)">○</button>
+        <button class="wb-tool-btn" id="wbt-eraser" title="Eraser" onclick="setWbTool('eraser',this)">🧹</button>
+        <div class="wb-sep"></div>
+        <!-- Colors -->
+        <div class="wb-color-swatch active" style="background:#1f2937" data-color="#1f2937" onclick="setWbColor('#1f2937',this)" title="Black"></div>
+        <div class="wb-color-swatch" style="background:#f97316" data-color="#f97316" onclick="setWbColor('#f97316',this)" title="Orange"></div>
+        <div class="wb-color-swatch" style="background:#dc2626" data-color="#dc2626" onclick="setWbColor('#dc2626',this)" title="Red"></div>
+        <div class="wb-color-swatch" style="background:#2563eb" data-color="#2563eb" onclick="setWbColor('#2563eb',this)" title="Blue"></div>
+        <div class="wb-color-swatch" style="background:#16a34a" data-color="#16a34a" onclick="setWbColor('#16a34a',this)" title="Green"></div>
+        <div class="wb-color-swatch" style="background:#7c3aed" data-color="#7c3aed" onclick="setWbColor('#7c3aed',this)" title="Purple"></div>
+        <div class="wb-sep"></div>
+        <!-- Sizes -->
+        <button class="wb-size-btn active" data-size="2" onclick="setWbSize(2,this)">S</button>
+        <button class="wb-size-btn" data-size="5" onclick="setWbSize(5,this)">M</button>
+        <button class="wb-size-btn" data-size="10" onclick="setWbSize(10,this)">L</button>
+        <button class="wb-size-btn" data-size="20" onclick="setWbSize(20,this)">XL</button>
+        <div class="wb-sep"></div>
+        <button class="wb-tool-btn" title="Undo" onclick="wbUndo()">↩</button>
+        <button class="wb-tool-btn" title="Redo" onclick="wbRedo()">↪</button>
+        <button class="wb-tool-btn" title="Clear All" onclick="wbClear()">🗑</button>
+      </div>
+      <div class="wb-actions">
+        <!-- Teacher-only lock toggle -->
+        <button class="cls-btn cls-btn-ghost" id="wb-lock-btn" style="display:none" onclick="toggleWbLock()">🔓 Open</button>
+        <button class="wb-close-btn" onclick="closeWhiteboard()" title="Close">✕</button>
+      </div>
+    </div>
+    <div class="wb-body" id="wb-body">
+      <canvas id="wb-canvas"></canvas>
+      <div class="wb-locked-banner" id="wb-locked-banner"><span>🔒 Board locked by teacher — view only</span></div>
+      <div id="wb-view-only"></div>
+    </div>
+    <div class="wb-footer-bar">
+      <span class="wb-footer-info" id="wb-footer-info">Ready · Drag images/files here to paste onto board</span>
+      <span class="wb-footer-info" id="wb-footer-status"></span>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <!-- Jitsi Meet API (loaded dynamically based on host) -->
@@ -525,41 +664,391 @@ function isWhiteboardShown(status) {
 }
 
 function updateWhiteboardButtons() {
-  if (!IS_TEACHER || !currentRoom) {
-    document.getElementById('wb-show-btn').style.display = 'none';
-    document.getElementById('wb-lock-btn').style.display = 'none';
+  const btn = document.getElementById('wb-open-btn');
+  if (!currentRoom) { btn.style.display = 'none'; return; }
+  btn.style.display = 'inline-flex';
+}
+
+/* ══════════════════════════════
+   WHITEBOARD ENGINE
+══════════════════════════════ */
+const WB = {
+  tool: 'pen', color: '#1f2937', size: 2,
+  drawing: false, locked: false,
+  history: [], future: [],
+  startX: 0, startY: 0,
+  snapBase: null, // ImageData snapshot before shape
+};
+
+function wbKey() { return 'fi_wb_' + currentRoom; }
+function wbLockKey() { return 'fi_wblocked_' + currentRoom; }
+
+function openWhiteboard() {
+  if (!currentRoom) { toast('Join a room first'); return; }
+  const overlay = document.getElementById('wb-overlay');
+  overlay.classList.add('open');
+  document.getElementById('wb-room-label').textContent = '— ' + currentRoom;
+  // Show teacher lock button
+  document.getElementById('wb-lock-btn').style.display = IS_TEACHER ? 'inline-flex' : 'none';
+  initCanvas();
+  loadWbFromStorage();
+  syncWbLockState();
+  // Poll for remote changes every 2s
+  if (!WB._pollId) WB._pollId = setInterval(syncWbFromStorage, 2000);
+}
+
+function closeWhiteboard() {
+  document.getElementById('wb-overlay').classList.remove('open');
+  if (WB._pollId) { clearInterval(WB._pollId); WB._pollId = null; }
+}
+
+function initCanvas() {
+  const body = document.getElementById('wb-body');
+  const canvas = document.getElementById('wb-canvas');
+  canvas.width  = body.clientWidth  || 900;
+  canvas.height = body.clientHeight - 0 || 600;
+  // Restore saved content
+  loadWbFromStorage();
+}
+
+function getCtx() { return document.getElementById('wb-canvas').getContext('2d'); }
+
+function saveSnapshot() {
+  const canvas = document.getElementById('wb-canvas');
+  WB.history.push(canvas.toDataURL());
+  if (WB.history.length > 40) WB.history.shift();
+  WB.future = [];
+  persistWb();
+}
+
+function persistWb() {
+  if (!currentRoom) return;
+  const canvas = document.getElementById('wb-canvas');
+  try { localStorage.setItem(wbKey(), canvas.toDataURL()); } catch(e) {}
+  document.getElementById('wb-footer-status').textContent = 'Saved · ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+let _lastWbData = '';
+function syncWbFromStorage() {
+  if (!currentRoom) return;
+  const data = localStorage.getItem(wbKey());
+  if (!data || data === _lastWbData) return;
+  _lastWbData = data;
+  if (!WB.drawing) loadImageDataOntoCanvas(data, false);
+}
+
+function loadWbFromStorage() {
+  if (!currentRoom) return;
+  const data = localStorage.getItem(wbKey());
+  if (data) { _lastWbData = data; loadImageDataOntoCanvas(data, true); }
+}
+
+function loadImageDataOntoCanvas(dataUrl, saveToHistory) {
+  const canvas = document.getElementById('wb-canvas');
+  const ctx = getCtx();
+  const img = new Image();
+  img.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    if (saveToHistory && WB.history.length === 0) WB.history.push(dataUrl);
+  };
+  img.src = dataUrl;
+}
+
+function wbUndo() {
+  if (WB.history.length < 2) {
+    const canvas = document.getElementById('wb-canvas');
+    const ctx = getCtx();
+    WB.future.push(canvas.toDataURL());
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    WB.history = [];
+    persistWb();
     return;
   }
-  // If Jitsi hasn't emitted an event yet, default to "show".
-  const shown = isWhiteboardShown(whiteboardStatus);
-  document.getElementById('wb-show-btn').style.display = shown ? 'none' : 'inline-flex';
-  document.getElementById('wb-lock-btn').style.display = shown ? 'inline-flex' : 'none';
+  const canvas = document.getElementById('wb-canvas');
+  WB.future.push(WB.history.pop());
+  const prev = WB.history[WB.history.length - 1];
+  loadImageDataOntoCanvas(prev, false);
+  setTimeout(persistWb, 100);
 }
 
-function showWhiteboard() {
-  if (!jitsi) return;
-  if (isWhiteboardShown(whiteboardStatus)) return;
-  try { jitsi.executeCommand('toggleWhiteboard'); }
-  catch (e) { toast('Whiteboard needs moderator rights. Set a valid VPAAS JWT in localStorage: fi_vpaas_jwt (then reload).'); }
+function wbRedo() {
+  if (!WB.future.length) return;
+  const data = WB.future.pop();
+  WB.history.push(data);
+  loadImageDataOntoCanvas(data, false);
+  setTimeout(persistWb, 100);
 }
 
-function lockWhiteboard() {
-  if (!jitsi) return;
-  if (!isWhiteboardShown(whiteboardStatus)) return;
-  try { jitsi.executeCommand('toggleWhiteboard'); }
-  catch (e) { toast('Whiteboard needs moderator rights. Set a valid VPAAS JWT in localStorage: fi_vpaas_jwt (then reload).'); }
+function wbClear() {
+  if (!confirm('Clear the entire whiteboard?')) return;
+  saveSnapshot();
+  const canvas = document.getElementById('wb-canvas');
+  getCtx().clearRect(0, 0, canvas.width, canvas.height);
+  persistWb();
 }
 
-function grantWhiteboard(pid) {
-  if (!jitsi) return;
-  if (!pid) return;
-  try {
-    jitsi.executeCommand('grantModerator', pid);
-    toast('Whiteboard access granted to that student');
-  } catch (e) {
-    toast('Could not grant whiteboard moderator. Teacher may need moderator rights/JWT (fi_vpaas_jwt).');
+function setWbTool(t, btn) {
+  WB.tool = t;
+  document.querySelectorAll('.wb-tool-btn[id^="wbt-"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const canvas = document.getElementById('wb-canvas');
+  canvas.style.cursor = t === 'eraser' ? 'cell' : 'crosshair';
+}
+
+function setWbColor(c, el) {
+  WB.color = c;
+  document.querySelectorAll('.wb-color-swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function setWbSize(s, btn) {
+  WB.size = s;
+  document.querySelectorAll('.wb-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleWbLock() {
+  if (!IS_TEACHER) return;
+  WB.locked = !WB.locked;
+  localStorage.setItem(wbLockKey(), WB.locked ? '1' : '0');
+  syncWbLockState();
+}
+
+function syncWbLockState() {
+  const stored = localStorage.getItem(wbLockKey());
+  WB.locked = stored === '1';
+  const lockBtn = document.getElementById('wb-lock-btn');
+  const banner = document.getElementById('wb-locked-banner');
+  const viewOnly = document.getElementById('wb-view-only');
+  const tools = document.getElementById('wb-tools');
+  if (WB.locked) {
+    if (lockBtn) lockBtn.textContent = '🔒 Locked';
+    banner.classList.add('show');
+    if (!IS_TEACHER) {
+      viewOnly.classList.add('show');
+      tools.style.opacity = '0.4';
+      tools.style.pointerEvents = 'none';
+    }
+  } else {
+    if (lockBtn) lockBtn.textContent = '🔓 Open';
+    banner.classList.remove('show');
+    viewOnly.classList.remove('show');
+    tools.style.opacity = '';
+    tools.style.pointerEvents = '';
   }
 }
+
+/* ── Canvas draw events ── */
+function wbPos(e) {
+  const canvas = document.getElementById('wb-canvas');
+  const r = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  return { x: src.clientX - r.left, y: src.clientY - r.top };
+}
+
+function canDraw() {
+  if (WB.locked && !IS_TEACHER) return false;
+  if (!IS_TEACHER) {
+    // Check if this student is allowed
+    const allowed = getWbAllowedSet();
+    // If no students are in the allowed list (empty set) AND board is not locked, all students can draw
+    // If teacher has added students to allow list, only those students can draw
+    // (Teacher uses People tab to grant/restrict individual students)
+    // For simplicity: if allowlist is empty, all can draw; if non-empty, only listed can draw
+    const raw = localStorage.getItem(wbAllowKey());
+    if (raw) {
+      const list = JSON.parse(raw);
+      if (list.length > 0 && !allowed.has(ME.id.toString())) return false;
+    }
+  }
+  return true;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('wb-canvas');
+  const ctx = () => canvas.getContext('2d');
+
+  function startDraw(e) {
+    if (!canDraw()) return;
+    e.preventDefault();
+    WB.drawing = true;
+    const p = wbPos(e);
+    WB.startX = p.x; WB.startY = p.y;
+    // Snapshot before stroke
+    WB.snapBase = canvas.toDataURL();
+    if (WB.tool === 'pen' || WB.tool === 'marker' || WB.tool === 'eraser') {
+      const c = ctx();
+      c.beginPath();
+      c.moveTo(p.x, p.y);
+    }
+  }
+
+  function moveDraw(e) {
+    if (!WB.drawing || !canDraw()) return;
+    e.preventDefault();
+    const p = wbPos(e);
+    const c = ctx();
+
+    if (WB.tool === 'pen' || WB.tool === 'marker') {
+      c.globalCompositeOperation = 'source-over';
+      c.strokeStyle = WB.color;
+      c.lineWidth = WB.tool === 'marker' ? WB.size * 3 : WB.size;
+      c.lineCap = 'round';
+      c.lineJoin = 'round';
+      c.globalAlpha = WB.tool === 'marker' ? 0.4 : 1;
+      c.lineTo(p.x, p.y);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(p.x, p.y);
+    } else if (WB.tool === 'eraser') {
+      c.globalCompositeOperation = 'destination-out';
+      c.strokeStyle = 'rgba(0,0,0,1)';
+      c.lineWidth = WB.size * 4;
+      c.lineCap = 'round';
+      c.globalAlpha = 1;
+      c.lineTo(p.x, p.y);
+      c.stroke();
+      c.beginPath();
+      c.moveTo(p.x, p.y);
+    } else {
+      // Shape preview: restore base then draw preview
+      if (WB.snapBase) {
+        const img = new Image();
+        img.onload = () => {
+          c.clearRect(0, 0, canvas.width, canvas.height);
+          c.globalAlpha = 1;
+          c.globalCompositeOperation = 'source-over';
+          c.drawImage(img, 0, 0);
+          c.strokeStyle = WB.color;
+          c.lineWidth = WB.size;
+          c.globalAlpha = 1;
+          c.globalCompositeOperation = 'source-over';
+          c.beginPath();
+          if (WB.tool === 'line') {
+            c.moveTo(WB.startX, WB.startY);
+            c.lineTo(p.x, p.y);
+          } else if (WB.tool === 'rect') {
+            c.rect(WB.startX, WB.startY, p.x - WB.startX, p.y - WB.startY);
+          } else if (WB.tool === 'circle') {
+            const rx = Math.abs(p.x - WB.startX) / 2;
+            const ry = Math.abs(p.y - WB.startY) / 2;
+            const cx = WB.startX + (p.x - WB.startX) / 2;
+            const cy = WB.startY + (p.y - WB.startY) / 2;
+            c.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+          }
+          c.stroke();
+        };
+        img.src = WB.snapBase;
+      }
+    }
+  }
+
+  function endDraw(e) {
+    if (!WB.drawing) return;
+    WB.drawing = false;
+    const c = ctx();
+    c.globalAlpha = 1;
+    c.globalCompositeOperation = 'source-over';
+    saveSnapshot();
+  }
+
+  canvas.addEventListener('mousedown',  startDraw);
+  canvas.addEventListener('mousemove',  moveDraw);
+  canvas.addEventListener('mouseup',    endDraw);
+  canvas.addEventListener('mouseleave', endDraw);
+  canvas.addEventListener('touchstart', startDraw, { passive:false });
+  canvas.addEventListener('touchmove',  moveDraw,  { passive:false });
+  canvas.addEventListener('touchend',   endDraw);
+
+  // Resize canvas when overlay opens
+  const observer = new ResizeObserver(() => {
+    if (document.getElementById('wb-overlay').classList.contains('open')) {
+      const body = document.getElementById('wb-body');
+      const saved = localStorage.getItem(wbKey());
+      canvas.width  = body.clientWidth;
+      canvas.height = body.clientHeight;
+      if (saved) loadImageDataOntoCanvas(saved, false);
+    }
+  });
+  observer.observe(document.getElementById('wb-body'));
+
+  // Paste images (Ctrl+V)
+  document.addEventListener('paste', (e) => {
+    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
+    if (!canDraw()) return;
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const blob = item.getAsFile();
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => {
+          const c = canvas.getContext('2d');
+          const scale = Math.min(canvas.width / img.width, canvas.height / img.height, 1);
+          const w = img.width * scale;
+          const h = img.height * scale;
+          c.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+          URL.revokeObjectURL(url);
+          saveSnapshot();
+        };
+        img.src = url;
+        break;
+      }
+    }
+  });
+
+  // Drag & drop images onto whiteboard
+  const wbBody = document.getElementById('wb-body');
+  wbBody.addEventListener('dragover', (e) => { e.preventDefault(); });
+  wbBody.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
+    if (!canDraw()) { toast('Board is locked'); return; }
+    const files = e.dataTransfer.files;
+    if (files && files.length) {
+      const file = files[0];
+      if (file.type.startsWith('image/')) {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          const c = canvas.getContext('2d');
+          const r = canvas.getBoundingClientRect();
+          const dropX = e.clientX - r.left;
+          const dropY = e.clientY - r.top;
+          const scale = Math.min(400 / img.width, 400 / img.height, 1);
+          const w = img.width * scale;
+          const h = img.height * scale;
+          c.drawImage(img, dropX - w/2, dropY - h/2, w, h);
+          URL.revokeObjectURL(url);
+          saveSnapshot();
+        };
+        img.src = url;
+      }
+    }
+    // Also support dropping image URLs
+    const urlData = e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('text/plain');
+    if (!files.length && urlData && urlData.match(/^https?:\/\//)) {
+      const img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        const c = canvas.getContext('2d');
+        const scale = Math.min(400 / img.width, 400 / img.height, 1);
+        c.drawImage(img, 50, 50, img.width * scale, img.height * scale);
+        saveSnapshot();
+      };
+      img.src = urlData;
+    }
+  });
+
+  // Poll whiteboard lock state every 3s so students see teacher changes
+  setInterval(() => {
+    if (currentRoom && document.getElementById('wb-overlay').classList.contains('open')) {
+      syncWbLockState();
+    }
+  }, 3000);
+});
 
 function escJS(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
 
@@ -627,7 +1116,7 @@ async function joinRoom() {
   document.getElementById('jitsi-wrap').style.display = 'block';
   document.getElementById('leave-btn').style.display  = 'flex';
   document.getElementById('live-badge').style.display = 'inline-flex';
-  if (IS_TEACHER) updateWhiteboardButtons();
+  updateWhiteboardButtons();
   document.getElementById('bar-title').textContent = 'Live: ' + currentRoom;
   document.getElementById('bar-sub').textContent   = 'FredInstitute · ' + jRoom;
   document.getElementById('cpf-room').textContent  = currentRoom;
@@ -774,6 +1263,11 @@ function resetToPreJoin() {
 
   whiteboardStatus = 'hidden';
   updateWhiteboardButtons();
+
+  // Close BroadcastChannel
+  if (chatChannel) { try { chatChannel.close(); } catch(e){} chatChannel = null; }
+  // Close whiteboard if open
+  closeWhiteboard();
 }
 
 /* ── SHARE ROOM ────────────────────────────────────── */
@@ -797,6 +1291,17 @@ function setPTab(name, btn) {
 /* ── CHAT ───────────────────────────────────────────── */
 function chatKey() { return 'fi_chat_' + currentRoom; }
 
+// BroadcastChannel for real-time same-device/tab chat sync
+let chatChannel = null;
+
+function initChatChannel() {
+  if (chatChannel) { try { chatChannel.close(); } catch(e){} }
+  if (currentRoom && typeof BroadcastChannel !== 'undefined') {
+    chatChannel = new BroadcastChannel('fi_chat_' + currentRoom);
+    chatChannel.onmessage = () => renderChat();
+  }
+}
+
 function sendMsg() {
   if (!currentRoom) return;
   const tf = document.getElementById('chat-tf');
@@ -808,9 +1313,16 @@ function sendMsg() {
   localStorage.setItem(chatKey(), JSON.stringify(msgs));
   tf.value = '';
   renderChat();
+  // Notify other tabs/windows in same room
+  if (chatChannel) try { chatChannel.postMessage({ type: 'new_msg' }); } catch(e) {}
 }
 
-function loadChat() { if (currentRoom) renderChat(); }
+function loadChat() {
+  if (currentRoom) {
+    initChatChannel();
+    renderChat();
+  }
+}
 
 function renderChat() {
   if (!currentRoom) return;
@@ -930,8 +1442,24 @@ function loadFiles() {
     </div>`).join('');
 }
 
-/* ── PEOPLE ──────────────────────────────────────────── */
+function wbAllowKey() { return 'fi_wballow_' + currentRoom; }
+
+function getWbAllowedSet() {
+  const raw = localStorage.getItem(wbAllowKey());
+  return new Set(raw ? JSON.parse(raw) : []);
+}
+
+function toggleWbStudent(pid, name) {
+  if (!IS_TEACHER) return;
+  const allowed = getWbAllowedSet();
+  if (allowed.has(pid)) { allowed.delete(pid); } else { allowed.add(pid); }
+  localStorage.setItem(wbAllowKey(), JSON.stringify([...allowed]));
+  toast(allowed.has(pid) ? `${name} can now draw on board` : `${name} restricted from board`);
+  refreshPeople();
+}
+
 function refreshPeople() {
+  const allowed = getWbAllowedSet();
   const people = [{ name: ME.name, role: ME.role, me: true, pid: null }];
   if (jitsi) {
     try {
@@ -950,15 +1478,17 @@ function refreshPeople() {
         <div class="p-name">${esc(p.name)}${p.me ? ' (you)' : ''}</div>
         <div class="p-role">${p.role}</div>
       </div>
-      ${IS_TEACHER && !p.me && p.pid ? `<button class="wb-allow-btn" onclick="grantWhiteboard('${escJS(p.pid)}')">Allow WB</button>` : ''}
+      ${IS_TEACHER && !p.me && p.pid ? `<button class="wb-allow-btn" onclick="toggleWbStudent('${escJS(p.pid)}','${escJS(p.name)}')">${allowed.has(p.pid) ? '🔒 Restrict WB' : '✏️ Allow WB'}</button>` : ''}
     </div>`).join('');
 }
 
 /* ── POLLING ─────────────────────────────────────────── */
 function startPolling() {
-  polls.push(setInterval(() => { if (currentRoom) renderChat(); },     2500));
+  polls.push(setInterval(() => { if (currentRoom) renderChat(); },     1500));
   polls.push(setInterval(() => { if (currentRoom) { loadSharedNotes(); loadFiles(); } }, 5000));
   polls.push(setInterval(() => { if (currentRoom && jitsi) refreshPeople(); }, 8000));
+  // Sync whiteboard changes from other users
+  polls.push(setInterval(() => { if (currentRoom) syncWbFromStorage(); }, 2000));
 }
 
 /* ── UTILS ───────────────────────────────────────────── */

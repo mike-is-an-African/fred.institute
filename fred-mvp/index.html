@@ -241,6 +241,16 @@ body{
           <option value="3">Year 3</option>
           <option value="4">Year 4</option>
           <option value="5">Year 5</option>
+          <option value="6">Year 6</option>
+          <option value="7">Year 7</option>
+          <option value="8">Year 8</option>
+          <option value="9">Year 9</option>
+          <option value="10">Year 10</option>
+          <option value="11">Year 11</option>
+          <option value="12">Year 12</option>
+          <option value="13">Year 13</option>
+          <option value="14">Year 14</option>
+          <option value="15">Year 15</option>
         </select>
       </div>
     </div>
@@ -250,6 +260,8 @@ body{
         <label class="sub-check"><input type="checkbox" id="sub-math" checked /> Mathematics</label>
         <label class="sub-check"><input type="checkbox" id="sub-english" checked /> English</label>
         <label class="sub-check"><input type="checkbox" id="sub-sciences" checked /> Sciences</label>
+        <label class="sub-check"><input type="checkbox" id="sub-socialstudies" checked /> Social Studies</label>
+        <label class="sub-check"><input type="checkbox" id="sub-commerce" checked /> Commerce</label>
       </div>
     </div>
     <div class="fg"><label class="fl">Email address</label><input class="fi" type="email" id="r-email" placeholder="you@example.com" autocomplete="email" /></div>
@@ -323,7 +335,9 @@ function doRegister() {
   if (document.getElementById('sub-math').checked) subjects.push('mathematics');
   if (document.getElementById('sub-english').checked) subjects.push('english');
   if (document.getElementById('sub-sciences').checked) subjects.push('sciences');
-  if (!subjects.length) subjects.push('mathematics','english','sciences');
+  if (document.getElementById('sub-socialstudies').checked) subjects.push('social studies');
+  if (document.getElementById('sub-commerce').checked) subjects.push('commerce');
+  if (!subjects.length) subjects.push('mathematics','english','sciences','social studies','commerce');
   const users = JSON.parse(localStorage.getItem('fi_users') || '[]');
   if (users.find(u => u.email === email)) return err('An account with that email already exists.');
   const u = { id: Date.now(), name: first+' '+last, first, last, email, phone: val('r-phone'), password: pass, role: 'student', createdAt: new Date().toISOString(), yearOfStudy, subjects };
