@@ -165,30 +165,28 @@
                 <option value="teacher">Teacher / Admin</option>
               </select>
             </div>
-            <div><label class="form-label">Year of Study</label>
+            <div><label class="form-label">Year Group</label>
               <select class="form-input" id="af-year">
-                <option value="1">Year 1</option>
-                <option value="2">Year 2</option>
-                <option value="3">Year 3</option>
-                <option value="4">Year 4</option>
-                <option value="5">Year 5</option>
+                <option value="6">Age 6 / Year 1</option>
+                <option value="7">Age 7 / Year 2</option>
+                <option value="8">Age 8 / Year 3</option>
+                <option value="9">Age 9 / Year 4</option>
+                <option value="10">Age 10 / Year 5</option>
+                <option value="11">Age 11 / Year 6</option>
+                <option value="12">Age 12 / Year 7</option>
+                <option value="13">Age 13 / Year 8</option>
+                <option value="14">Age 14 / Year 9</option>
+                <option value="15">Age 15 / Year 10</option>
               </select>
             </div>
             <div style="grid-column: span 2;">
               <label class="form-label">Subjects</label>
               <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
-                  <input type="checkbox" id="af-sub-math" checked />
-                  Mathematics
-                </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
-                  <input type="checkbox" id="af-sub-english" checked />
-                  English
-                </label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
-                  <input type="checkbox" id="af-sub-sciences" checked />
-                  Sciences
-                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-math" checked /> Mathematics</label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-english" checked /> English</label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-sciences" checked /> Sciences</label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-social" checked /> Social Studies</label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-commerce" checked /> Commerce</label>
               </div>
             </div>
           </div>
@@ -280,6 +278,22 @@ document.getElementById('s-av').textContent = (ME.name || 'T')[0].toUpperCase();
 document.getElementById('s-name').textContent = ME.name || 'Teacher';
 document.getElementById('t-name').textContent = ME.first || ME.name?.split(' ')[0] || 'Teacher';
 
+/* ── Boot: ensure teacher accounts, clean demo data ── */
+(function adminBoot() {
+  const TEACHERS = [
+    { id:1, name:'Teacher', first:'Teacher', last:'', email:'teacher@fredinstitute.ac', password:'teacher123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
+    { id:2, name:'Admin', first:'Admin', last:'', email:'admin@fred.institute', password:'admin123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
+  ];
+  let users = JSON.parse(localStorage.getItem('fi_users') || '[]');
+  users = users.filter(u => u.email !== 'student@fredinstitute.ac');
+  TEACHERS.forEach(t => {
+    const idx = users.findIndex(u => u.email === t.email);
+    if (idx >= 0) { users[idx] = { ...users[idx], ...t }; }
+    else { users.unshift(t); }
+  });
+  localStorage.setItem('fi_users', JSON.stringify(users));
+})()
+
 /* ── Tabs ── */
 function switchTab(name, btn) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -308,7 +322,9 @@ function addStudent() {
   if (document.getElementById('af-sub-math').checked) subjects.push('mathematics');
   if (document.getElementById('af-sub-english').checked) subjects.push('english');
   if (document.getElementById('af-sub-sciences').checked) subjects.push('sciences');
-  if (!subjects.length) subjects.push('mathematics','english','sciences');
+  if (document.getElementById('af-sub-social').checked) subjects.push('social studies');
+  if (document.getElementById('af-sub-commerce').checked) subjects.push('commerce');
+  if (!subjects.length) subjects.push('mathematics','english','sciences','social studies','commerce');
 
   users.push({ id:Date.now(), name:first+' '+last, first, last, email, phone, password:pass, role, createdAt:new Date().toISOString(), yearOfStudy, subjects });
   localStorage.setItem('fi_users', JSON.stringify(users));
@@ -360,9 +376,11 @@ function delUser(id) {
 
 /* ── Classrooms ── */
 const FIXED_ROOMS = [
-  { id:'fred-mathematics-101',   name:'Mathematics 101',         desc:'Algebra, Calculus & Problem Solving' },
-  { id:'fred-english-201',       name:'English Literature 201',  desc:'Essays, Comprehension & Analysis' },
-  { id:'fred-sciences-301',      name:'Introduction to Sciences',desc:'Physics, Chemistry & Biology' },
+  { id:'fred-mathematics-101',    name:'Mathematics 101',       desc:'Algebra, Calculus & Problem Solving' },
+  { id:'fred-english-101',        name:'English 101',           desc:'Reading, Writing & Comprehension' },
+  { id:'fred-sciences-101',       name:'Sciences 101',          desc:'Physics, Chemistry & Biology' },
+  { id:'fred-socialstudies-101',  name:'Social Studies 101',    desc:'History, Geography & Civics' },
+  { id:'fred-commerce-101',       name:'Commerce 101',          desc:'Business, Economics & Accounting' },
 ];
 function renderRooms() {
   const custom = JSON.parse(localStorage.getItem('fi_rooms') || '[]');

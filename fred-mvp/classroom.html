@@ -357,6 +357,40 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
   display:none;
 }
 #wb-view-only.show { display:block; }
+
+/* ══ MOBILE OPTIMIZATIONS ══ */
+@media(max-width:768px) {
+  /* Classroom layout stacks vertically */
+  .cls-body { flex-direction:column; }
+  .video-area { min-height:38vh; flex:none; }
+  .cls-panel { width:100%; border-left:none; border-top:1px solid var(--border); height:45vh; flex-shrink:0; }
+  /* Top bar compresses */
+  .cls-bar { padding:0 0.75rem; }
+  .cls-logo-name { display:none; }
+  .cls-room-info { display:none; }
+  .cls-btn { padding:0.35rem 0.6rem; font-size:0.68rem; }
+  /* Whiteboard tools wrap on mobile */
+  .wb-modal { height:100vh; border-radius:0; }
+  .wb-header { height:auto; flex-wrap:wrap; padding:0.5rem 0.75rem; gap:0.4rem; }
+  .wb-tools { flex-wrap:wrap; gap:0.25rem; order:3; width:100%; padding:0.25rem 0; justify-content:flex-start; }
+  .wb-title { order:1; font-size:0.78rem; }
+  .wb-actions { order:2; }
+  .wb-tool-btn { width:30px; height:30px; font-size:0.75rem; }
+  .wb-size-btn { padding:0.2rem 0.4rem; font-size:0.65rem; }
+  .wb-color-swatch { width:20px; height:20px; }
+  .wb-sep { height:18px; }
+  /* Pre-join card smaller on mobile */
+  .pj-card { padding:1.5rem; max-width:100%; }
+  .pj-mascot-img { width:110px; max-height:150px; }
+  /* Chat input larger tap targets */
+  .chat-tf { font-size:0.875rem; padding:0.65rem 0.75rem; }
+  .chat-send { padding:0.65rem 1rem; }
+}
+@media(max-width:480px) {
+  .cls-bar-right { gap:0.35rem; }
+  .cls-btn { padding:0.3rem 0.5rem; font-size:0.65rem; }
+  #live-badge { font-size:0.6rem; padding:0.15rem 0.4rem; }
+}
 </style>
 </head>
 <body>
@@ -637,12 +671,20 @@ if (IS_TEACHER) {
   document.getElementById('pj-desc').textContent = 'Enter a room code to join an existing session, or start a new one.';
 }
 
-// Quick room chips
-const ROOMS = [
-  { id:'fred-mathematics-101',   label:'Maths 101' },
-  { id:'fred-english-201',       label:'English 201' },
-  { id:'fred-sciences-301',      label:'Sciences 301' },
-];
+// Quick room chips — based on student's enrolled subjects
+const SUBJECT_ROOMS = {
+  'mathematics':   { id:'fred-mathematics-101',   label:'Maths 101' },
+  'english':       { id:'fred-english-101',        label:'English 101' },
+  'sciences':      { id:'fred-sciences-101',       label:'Sciences 101' },
+  'social studies':{ id:'fred-socialstudies-101',  label:'Social Studies 101' },
+  'commerce':      { id:'fred-commerce-101',       label:'Commerce 101' },
+};
+const studentSubjects = Array.isArray(ME.subjects) ? ME.subjects : [];
+const ROOMS = IS_TEACHER
+  ? Object.values(SUBJECT_ROOMS)
+  : studentSubjects.length > 0
+    ? studentSubjects.map(s => SUBJECT_ROOMS[s]).filter(Boolean)
+    : Object.values(SUBJECT_ROOMS);
 document.getElementById('room-chips').innerHTML = ROOMS.map(r =>
   `<span class="room-chip" onclick="setRoom('${r.id}')">${r.label}</span>`).join('');
 
@@ -693,13 +735,15 @@ function openWhiteboard() {
   initCanvas();
   loadWbFromStorage();
   syncWbLockState();
-  // Poll for remote changes every 2s
-  if (!WB._pollId) WB._pollId = setInterval(syncWbFromStorage, 2000);
+  initWbChannel();
+  // Poll for remote changes every 1.5s as fallback for cross-device
+  if (!WB._pollId) WB._pollId = setInterval(syncWbFromStorage, 1500);
 }
 
 function closeWhiteboard() {
   document.getElementById('wb-overlay').classList.remove('open');
   if (WB._pollId) { clearInterval(WB._pollId); WB._pollId = null; }
+  if (wbChannel) { try { wbChannel.close(); } catch(e){} wbChannel = null; }
 }
 
 function initCanvas() {
@@ -724,8 +768,23 @@ function saveSnapshot() {
 function persistWb() {
   if (!currentRoom) return;
   const canvas = document.getElementById('wb-canvas');
-  try { localStorage.setItem(wbKey(), canvas.toDataURL()); } catch(e) {}
-  document.getElementById('wb-footer-status').textContent = 'Saved · ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  try {
+    const data = canvas.toDataURL();
+    localStorage.setItem(wbKey(), data);
+    _lastWbData = data;
+    // Notify other tabs instantly via BroadcastChannel
+    if (wbChannel) try { wbChannel.postMessage({ type: 'wb_update' }); } catch(e) {}
+  } catch(e) {}
+  document.getElementById('wb-footer-status').textContent = 'Synced · ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+let wbChannel = null;
+function initWbChannel() {
+  if (wbChannel) { try { wbChannel.close(); } catch(e){} wbChannel = null; }
+  if (currentRoom && typeof BroadcastChannel !== 'undefined') {
+    wbChannel = new BroadcastChannel('fi_wb_' + currentRoom);
+    wbChannel.onmessage = () => syncWbFromStorage();
+  }
 }
 
 let _lastWbData = '';
@@ -1231,6 +1290,13 @@ async function joinRoom() {
 
 /* ── LEAVE ROOM ────────────────────────────────────── */
 function leaveRoom() {
+  // Teacher ending lesson = clear chat for that room
+  const roomToLeave = currentRoom;
+  if (IS_TEACHER && roomToLeave) {
+    if (confirm('End the lesson? This will clear the lesson chat for all participants.')) {
+      clearChatForRoom(roomToLeave);
+    }
+  }
   // Properly dispose Jitsi
   if (jitsi) {
     try { jitsi.dispose(); } catch(e) {}
@@ -1264,8 +1330,9 @@ function resetToPreJoin() {
   whiteboardStatus = 'hidden';
   updateWhiteboardButtons();
 
-  // Close BroadcastChannel
+  // Close BroadcastChannels
   if (chatChannel) { try { chatChannel.close(); } catch(e){} chatChannel = null; }
+  if (typeof wbChannel !== 'undefined' && wbChannel) { try { wbChannel.close(); } catch(e){} wbChannel = null; }
   // Close whiteboard if open
   closeWhiteboard();
 }
@@ -1290,8 +1357,9 @@ function setPTab(name, btn) {
 
 /* ── CHAT ───────────────────────────────────────────── */
 function chatKey() { return 'fi_chat_' + currentRoom; }
+function chatSessionKey() { return 'fi_chatses_' + currentRoom; }
 
-// BroadcastChannel for real-time same-device/tab chat sync
+// Real-time cross-tab sync via StorageEvent + BroadcastChannel fallback
 let chatChannel = null;
 
 function initChatChannel() {
@@ -1300,6 +1368,8 @@ function initChatChannel() {
     chatChannel = new BroadcastChannel('fi_chat_' + currentRoom);
     chatChannel.onmessage = () => renderChat();
   }
+  // StorageEvent fires in OTHER tabs when localStorage changes
+  // (already handled globally at bottom)
 }
 
 function sendMsg() {
@@ -1307,21 +1377,33 @@ function sendMsg() {
   const tf = document.getElementById('chat-tf');
   const text = tf.value.trim();
   if (!text) return;
+  // Stamp with session ID so we can clear on lesson end
+  const sessionId = localStorage.getItem(chatSessionKey()) || Date.now().toString();
   const msgs = JSON.parse(localStorage.getItem(chatKey()) || '[]');
-  msgs.push({ id: Date.now(), uid: ME.id, name: ME.name, text, ts: new Date().toISOString() });
+  msgs.push({ id: Date.now(), uid: ME.id, name: ME.name, text, ts: new Date().toISOString(), session: sessionId });
   if (msgs.length > 300) msgs.splice(0, msgs.length - 300);
   localStorage.setItem(chatKey(), JSON.stringify(msgs));
   tf.value = '';
   renderChat();
-  // Notify other tabs/windows in same room
+  // Notify other tabs/windows in same room instantly
   if (chatChannel) try { chatChannel.postMessage({ type: 'new_msg' }); } catch(e) {}
 }
 
 function loadChat() {
   if (currentRoom) {
+    // Mark a session ID for this lesson so chat can be cleared when it ends
+    if (!localStorage.getItem(chatSessionKey())) {
+      localStorage.setItem(chatSessionKey(), Date.now().toString());
+    }
     initChatChannel();
     renderChat();
   }
+}
+
+function clearChatForRoom(room) {
+  // Called when teacher ends the lesson — clears chat for that room
+  localStorage.removeItem('fi_chat_' + room);
+  localStorage.removeItem('fi_chatses_' + room);
 }
 
 function renderChat() {
@@ -1329,7 +1411,7 @@ function renderChat() {
   const msgs = JSON.parse(localStorage.getItem(chatKey()) || '[]');
   const el = document.getElementById('chat-msgs');
   if (!msgs.length) {
-    el.innerHTML = '<div style="text-align:center;padding:2rem 1rem;font-size:0.75rem;color:var(--gray-400);">No messages yet — say hello!</div>';
+    el.innerHTML = '<div style="text-align:center;padding:2rem 1rem;font-size:0.75rem;color:var(--gray-400);">No messages yet — say hello! 👋</div>';
     return;
   }
   el.innerHTML = msgs.map(m => `
@@ -1487,9 +1569,31 @@ function startPolling() {
   polls.push(setInterval(() => { if (currentRoom) renderChat(); },     1500));
   polls.push(setInterval(() => { if (currentRoom) { loadSharedNotes(); loadFiles(); } }, 5000));
   polls.push(setInterval(() => { if (currentRoom && jitsi) refreshPeople(); }, 8000));
-  // Sync whiteboard changes from other users
-  polls.push(setInterval(() => { if (currentRoom) syncWbFromStorage(); }, 2000));
+  // Whiteboard fallback poll for cross-device (same network share)
+  polls.push(setInterval(() => { if (currentRoom) syncWbFromStorage(); }, 1500));
+  // Whiteboard lock state poll
+  polls.push(setInterval(() => {
+    if (currentRoom && document.getElementById('wb-overlay').classList.contains('open')) {
+      syncWbLockState();
+    }
+  }, 3000));
 }
+
+/* ── GLOBAL STORAGE EVENT (cross-tab real-time) ───── */
+// This fires instantly in all other same-origin tabs when localStorage changes
+window.addEventListener('storage', (e) => {
+  if (!currentRoom) return;
+  if (e.key === chatKey()) {
+    renderChat();
+    if (chatChannel) try { chatChannel.postMessage({ type: 'new_msg' }); } catch(err) {}
+  }
+  if (e.key === wbKey()) {
+    syncWbFromStorage();
+  }
+  if (e.key === wbLockKey()) {
+    if (document.getElementById('wb-overlay').classList.contains('open')) syncWbLockState();
+  }
+});
 
 /* ── UTILS ───────────────────────────────────────────── */
 function fmtSz(b) { if (!b) return '?'; if (b < 1024) return b+'B'; if (b < 1048576) return Math.round(b/1024)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
