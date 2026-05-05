@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FredInstitute — Live Classroom</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
+.app-shell { height:100vh; overflow:hidden; }
+.main-content { height:100vh; overflow:hidden; display:flex; flex-direction:column; }
+
+/* ── Classroom topbar ── */
+.cls-bar {
+  height:54px; background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1.25rem; flex-shrink:0;
+}
+.cls-bar-left { display:flex; align-items:center; gap:1rem; }
+.cls-logo { display:flex; align-items:center; gap:0.5rem; }
+.cls-logo-icon { width:28px; height:28px; border-radius:6px; background:transparent; display:flex; align-items:center; justify-content:center; padding:2px; }
+.cls-logo-icon svg { width:16px; height:16px; fill:white; }
+.cls-logo-icon img {
+  width:100%; height:100%; object-fit:contain;
+  filter:none;
+  mix-blend-mode:normal;
+}
+.cls-logo-name { font-size:0.9rem; font-weight:800; background:linear-gradient(135deg,#fb923c,#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.cls-room-info { border-left:1px solid var(--border); padding-left:1rem; }
+.cls-room-name { font-size:0.82rem; font-weight:600; color:var(--gray-800); }
+.cls-room-sub  { font-size:0.65rem; color:var(--gray-400); }
+.cls-bar-right { display:flex; align-items:center; gap:0.625rem; }
+
+/* Topbar buttons */
+.cls-btn {
+  display:flex; align-items:center; gap:0.35rem;
+  padding:0.4rem 0.875rem;
+  font-family:inherit; font-size:0.72rem; font-weight:600;
+  border-radius:var(--radius); cursor:pointer; border:none;
+  transition:all 0.15s; white-space:nowrap;
+}
+.cls-btn-primary { background:linear-gradient(135deg,#f97316,#ea580c); color:white; }
+.cls-btn-primary:hover { background:linear-gradient(135deg,#ea580c,#c2410c); }
+.cls-btn-ghost { background:var(--gray-100); color:var(--gray-700); border:1px solid var(--border); }
+.cls-btn-ghost:hover { background:var(--orange-50); color:var(--orange-700); border-color:var(--orange-200); }
+.cls-btn-leave { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
+.cls-btn-leave:hover { background:#fee2e2; color:#b91c1c; }
+
+/* ── Classroom body ── */
+.cls-body { flex:1; display:flex; overflow:hidden; min-height:0; }
+
+/* ── Video area ── */
+.video-area { flex:1; position:relative; background:var(--gray-100); overflow:hidden; }
+
+/* ── Pre-join ── */
+.prejoin {
+  position:absolute; inset:0;
+  background:var(--gray-50);
+  display:flex; align-items:center; justify-content:center;
+  z-index:10;
+}
+.pj-card {
+  width:100%; max-width:420px;
+  padding:2.5rem; text-align:center;
+  background:var(--white);
+  border-radius:1.25rem;
+  border:1px solid var(--border);
+}
+
+.pj-mascot-wrap { margin:0 auto 1.25rem; display:flex; justify-content:center; }
+.pj-mascot-img {
+  width:165px;
+  max-height:220px;
+  object-fit:contain;
+  /* If the PNG has transparency, we want it to render cleanly on light backgrounds */
+  background:transparent;
+}
+.pj-icon {
+  width:64px; height:64px; border-radius:50%;
+  background:var(--orange-50);
+  border:2px solid var(--orange-200);
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 1.25rem;
+}
+.pj-icon svg { width:28px; height:28px; color:#f97316; }
+.pj-card h2 { font-size:1.35rem; font-weight:800; color:var(--gray-900); margin-bottom:0.35rem; }
+.pj-card p  { font-size:0.8rem; color:var(--gray-500); margin-bottom:1.75rem; line-height:1.6; }
+
+.pj-field {
+  background:var(--gray-50);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:0.875rem 1rem;
+  margin-bottom:0.75rem;
+  text-align:left;
+  transition:border-color 0.15s;
+}
+.pj-field:focus-within { border-color:#f97316; }
+.pj-field-label { font-size:0.62rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); display:block; margin-bottom:0.3rem; }
+.pj-field-input {
+  width:100%; background:transparent; border:none; outline:none;
+  font-family:inherit; font-size:0.9rem; font-weight:600; color:var(--gray-900);
+}
+.pj-field-input::placeholder { color:var(--gray-400); font-weight:400; }
+
+.pj-join {
+  width:100%; padding:0.75rem;
+  background:linear-gradient(135deg,#f97316,#ea580c);
+  color:white; border:none; border-radius:var(--radius);
+  font-family:inherit; font-size:0.875rem; font-weight:700;
+  cursor:pointer; transition:all 0.15s;
+  box-shadow:0 2px 8px rgba(234,88,12,0.3);
+  margin-bottom:0.625rem;
+}
+.pj-join:hover { background:linear-gradient(135deg,#ea580c,#c2410c); box-shadow:0 4px 16px rgba(234,88,12,0.4); }
+
+/* Teacher-only button */
+.pj-new {
+  width:100%; padding:0.65rem;
+  background:var(--gray-100); color:var(--gray-700);
+  border:1px solid var(--border); border-radius:var(--radius);
+  font-family:inherit; font-size:0.82rem; font-weight:500;
+  cursor:pointer; transition:all 0.15s;
+}
+.pj-new:hover { border-color:var(--orange-200); color:var(--orange-700); background:var(--orange-50); }
+
+.room-chips { display:flex; flex-wrap:wrap; gap:0.4rem; justify-content:center; margin-top:1.25rem; }
+.room-chip {
+  padding:0.28rem 0.75rem;
+  background:var(--orange-50);
+  border:1px solid var(--orange-200);
+  border-radius:99px;
+  color:var(--orange-700); font-size:0.7rem; font-weight:600;
+  cursor:pointer; transition:all 0.15s;
+}
+.room-chip:hover { background:var(--orange-100); color:var(--orange-600); }
+
+/* Jitsi iframe container */
+#jitsi-wrap { position:absolute; inset:0; display:none; }
+#jitsi-wrap iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
+
+/* ── Right panel ── */
+.cls-panel {
+  width:300px; background:var(--white);
+  border-left:1px solid var(--border);
+  display:flex; flex-direction:column; overflow:hidden; flex-shrink:0;
+}
+.panel-tabs { display:flex; flex-shrink:0; border-bottom:1px solid var(--border); }
+.ptab {
+  flex:1; padding:0.7rem 0; text-align:center;
+  font-family:inherit; font-size:0.65rem; font-weight:700;
+  letter-spacing:0.08em; text-transform:uppercase;
+  color:var(--gray-400); cursor:pointer;
+  border:none; border-bottom:2px solid transparent;
+  background:none; transition:all 0.15s;
+}
+.ptab.active { color:var(--orange-600); border-bottom-color:var(--orange-600); }
+.ptab:hover:not(.active) { color:var(--gray-700); }
+
+.pane { display:none; flex:1; flex-direction:column; overflow:hidden; }
+.pane.active { display:flex; }
+
+/* Chat */
+.chat-msgs { flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:0.5rem; }
+.msg { max-width:88%; }
+.msg.me { align-self:flex-end; }
+.msg-who { font-size:0.62rem; color:var(--gray-400); margin-bottom:0.12rem; }
+.msg.me .msg-who { text-align:right; }
+.msg-bubble { padding:0.5rem 0.75rem; border-radius:0.875rem; font-size:0.82rem; line-height:1.5; word-break:break-word; }
+.msg.theirs .msg-bubble { background:var(--gray-100); color:var(--gray-900); border-radius:0.25rem 0.875rem 0.875rem 0.875rem; }
+.msg.me .msg-bubble { background:var(--orange-50); color:var(--orange-700); border-radius:0.875rem 0.25rem 0.875rem 0.875rem; }
+.chat-in { padding:0.75rem; border-top:1px solid var(--border); flex-shrink:0; }
+.chat-row { display:flex; gap:0.4rem; }
+.chat-tf {
+  flex:1; background:var(--gray-50); border:1px solid var(--border);
+  border-radius:var(--radius); padding:0.55rem 0.75rem;
+  color:var(--gray-900); font-family:inherit; font-size:0.8rem;
+  outline:none; transition:all 0.15s;
+}
+.chat-tf:focus { border-color:#f97316; }
+.chat-tf::placeholder { color:var(--gray-400); }
+.chat-send {
+  padding:0.55rem 0.875rem;
+  background:linear-gradient(135deg,#f97316,#ea580c);
+  color:white; border:none; border-radius:var(--radius);
+  font-family:inherit; font-size:0.72rem; font-weight:700;
+  cursor:pointer; transition:all 0.15s;
+}
+.chat-send:hover { background:linear-gradient(135deg,#ea580c,#c2410c); }
+
+/* Notes */
+.notes-inner { flex:1; display:flex; flex-direction:column; padding:0.875rem; gap:0.625rem; overflow:hidden; }
+.notes-ta {
+  flex:1; background:var(--gray-50); border:1px solid var(--border);
+  border-radius:var(--radius); color:var(--gray-900);
+  font-family:inherit; font-size:0.82rem; padding:0.75rem;
+  resize:none; outline:none; line-height:1.6; min-height:0;
+  transition:border-color 0.15s;
+}
+.notes-ta:focus { border-color:#f97316; }
+.notes-ta::placeholder { color:var(--gray-400); }
+.notes-btns { display:flex; gap:0.5rem; flex-shrink:0; }
+.nb { flex:1; padding:0.5rem; border-radius:var(--radius); font-family:inherit; font-size:0.7rem; font-weight:700; cursor:pointer; border:none; transition:all 0.15s; }
+.nb-save { background:linear-gradient(135deg,#f97316,#ea580c); color:white; }
+.nb-save:hover { background:linear-gradient(135deg,#ea580c,#c2410c); }
+.nb-share { background:var(--gray-50); color:var(--gray-600); border:1px solid var(--border); }
+.nb-share:hover { background:var(--orange-50); color:var(--orange-700); border-color:var(--orange-200); }
+.shared-head { font-size:0.6rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); flex-shrink:0; }
+.shared-scroll { flex-shrink:0; max-height:170px; overflow-y:auto; }
+.sn { padding:0.5rem; border-left:2px solid var(--orange-400); background:var(--orange-50); border-radius:0 var(--radius) var(--radius) 0; margin-bottom:0.375rem; }
+.sn-who { font-size:0.62rem; color:var(--orange-600); font-weight:600; margin-bottom:0.12rem; }
+.sn-txt { font-size:0.75rem; color:var(--gray-600); line-height:1.45; }
+
+/* Files */
+.files-inner { flex:1; display:flex; flex-direction:column; padding:0.875rem; gap:0.625rem; overflow:hidden; }
+.drop-zone {
+  border:2px dashed rgba(249,115,22,0.25); border-radius:var(--radius);
+  padding:1.5rem; text-align:center; cursor:pointer;
+  transition:all 0.15s; flex-shrink:0;
+}
+.drop-zone:hover,.drop-zone.over { border-color:var(--orange-400); background:var(--orange-50); }
+.drop-zone svg { width:22px; height:22px; color:var(--orange-400); margin-bottom:0.4rem; }
+.drop-zone p { font-size:0.72rem; color:var(--gray-600); }
+.drop-zone small { font-size:0.62rem; color:var(--gray-400); }
+.flist { flex:1; overflow-y:auto; }
+.fi { display:flex; align-items:center; gap:0.625rem; padding:0.55rem 0; border-bottom:1px solid var(--border); }
+.fi-ext { width:30px; height:30px; border-radius:var(--radius); background:var(--orange-50); display:flex; align-items:center; justify-content:center; font-size:0.6rem; font-weight:800; color:var(--orange-600); flex-shrink:0; }
+.fi-info { flex:1; min-width:0; }
+.fi-name { font-size:0.75rem; color:var(--gray-900); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fi-by { font-size:0.62rem; color:var(--gray-500); }
+.fi-dl { font-size:0.72rem; font-weight:700; color:var(--orange-600); text-decoration:none; flex-shrink:0; }
+
+/* People */
+.people-inner { flex:1; overflow-y:auto; padding:0.875rem; }
+.ppl-count { font-size:0.62rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--gray-400); margin-bottom:0.75rem; }
+.person { display:flex; align-items:center; gap:0.625rem; padding:0.5rem 0; border-bottom:1px solid var(--border); }
+.p-av { width:28px; height:28px; border-radius:50%; background:var(--orange-50); border:1.5px solid var(--orange-200); display:flex; align-items:center; justify-content:center; font-size:0.72rem; font-weight:700; color:var(--orange-600); flex-shrink:0; }
+.p-name { font-size:0.78rem; font-weight:500; color:var(--gray-900); }
+.p-role { font-size:0.62rem; color:var(--gray-500); }
+
+.wb-allow-btn {
+  padding:0.35rem 0.55rem;
+  border-radius:var(--radius);
+  background:var(--orange-50);
+  border:1px solid var(--orange-200);
+  color:var(--orange-700);
+  font-family:inherit;
+  font-size:0.7rem;
+  font-weight:800;
+  cursor:pointer;
+  transition:all 0.15s;
+  flex-shrink:0;
+}
+.wb-allow-btn:hover {
+  background:var(--orange-100);
+  border-color:var(--orange-300);
+  color:var(--orange-600);
+}
+
+/* Panel footer */
+.cls-panel-foot {
+  padding:0.6rem 0.875rem; border-top:1px solid var(--border);
+  display:flex; justify-content:space-between; align-items:center; flex-shrink:0;
+}
+.cpf-room { font-size:0.65rem; color:var(--gray-500); }
+.cpf-room strong { color:var(--gray-700); display:block; font-size:0.72rem; }
+.cpf-status { font-size:0.65rem; font-weight:600; }
+.cpf-status.on  { color:#4ade80; }
+.cpf-status.off { color:var(--gray-400); }
+
+/* ══ WHITEBOARD OVERLAY ══ */
+#wb-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(17,24,39,0.55);
+  backdrop-filter:blur(4px);
+  display:none; flex-direction:column; align-items:center; justify-content:center;
+  padding:1rem;
+}
+#wb-overlay.open { display:flex; }
+.wb-modal {
+  width:100%; max-width:1100px; height:92vh;
+  background:var(--white);
+  border-radius:var(--radius-xl);
+  box-shadow:0 25px 60px rgba(0,0,0,0.3);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.wb-header {
+  height:50px; background:var(--white);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1rem; flex-shrink:0;
+}
+.wb-title { font-size:0.85rem; font-weight:700; color:var(--gray-800); display:flex; align-items:center; gap:0.5rem; }
+.wb-tools {
+  display:flex; align-items:center; gap:0.35rem; flex:1; justify-content:center;
+}
+.wb-tool-btn {
+  width:34px; height:34px;
+  border-radius:var(--radius); border:1px solid var(--border);
+  background:var(--gray-50); color:var(--gray-600);
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s; font-size:0.85rem;
+}
+.wb-tool-btn:hover { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
+.wb-tool-btn.active { background:var(--orange-500); color:white; border-color:var(--orange-600); }
+.wb-sep { width:1px; height:22px; background:var(--border); margin:0 0.25rem; }
+.wb-color-swatch {
+  width:24px; height:24px; border-radius:50%; border:2px solid white;
+  box-shadow:0 0 0 1px var(--border); cursor:pointer; flex-shrink:0;
+}
+.wb-color-swatch.active { box-shadow:0 0 0 2px var(--orange-500); }
+.wb-size-btn {
+  padding:0.25rem 0.5rem;
+  border-radius:var(--radius); border:1px solid var(--border);
+  background:var(--gray-50); color:var(--gray-700);
+  font-family:inherit; font-size:0.7rem; font-weight:600;
+  cursor:pointer; transition:all 0.15s;
+}
+.wb-size-btn.active { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
+.wb-actions { display:flex; align-items:center; gap:0.4rem; }
+.wb-close-btn {
+  width:32px; height:32px; border-radius:50%;
+  background:var(--gray-100); border:none;
+  font-size:1rem; cursor:pointer; color:var(--gray-500);
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s;
+}
+.wb-close-btn:hover { background:var(--gray-200); color:var(--gray-700); }
+.wb-body { flex:1; position:relative; overflow:hidden; background:#fafafa; }
+#wb-canvas { cursor:crosshair; display:block; touch-action:none; }
+.wb-locked-banner {
+  position:absolute; inset:0;
+  background:rgba(249,115,22,0.07);
+  display:none; align-items:center; justify-content:center;
+  pointer-events:none; z-index:10;
+}
+.wb-locked-banner.show { display:flex; }
+.wb-locked-banner span {
+  background:var(--orange-500); color:white;
+  padding:0.5rem 1.25rem; border-radius:99px;
+  font-size:0.8rem; font-weight:700;
+  pointer-events:none;
+}
+.wb-footer-bar {
+  height:38px; background:var(--gray-50);
+  border-top:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1rem; flex-shrink:0;
+}
+.wb-footer-info { font-size:0.7rem; color:var(--gray-400); }
+/* Students see view-only overlay on locked board */
+#wb-view-only {
+  position:absolute; inset:0;
+  z-index:20; cursor:not-allowed;
+  display:none;
+}
+#wb-view-only.show { display:block; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="s-av">S</div>
+      <div>
+        <div class="user-name" id="s-name">Student</div>
+        <div class="user-role" id="s-role-lbl">Student</div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-label">Main</div>
+      <a class="nav-item" href="dashboard.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item active" href="classroom.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
+        Live Classroom
+      </a>
+      <a class="nav-item" href="library.html">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Library
+      </a>
+    </div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()">Sign Out</button></div>
+  </nav>
+
+  <div class="main-content">
+    <!-- TOP BAR -->
+    <div class="cls-bar">
+      <div class="cls-bar-left">
+        <div class="cls-logo">
+          <div class="cls-logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+          <div class="cls-logo-name">FredInstitute</div>
+        </div>
+        <div class="cls-room-info">
+          <div class="cls-room-name" id="bar-title">Live Classroom</div>
+          <div class="cls-room-sub" id="bar-sub">Select a room to join a session</div>
+        </div>
+      </div>
+      <div class="cls-bar-right">
+        <!-- Live badge -->
+        <span class="badge badge-live" id="live-badge" style="display:none"><span class="dot"></span>LIVE</span>
+        <!-- Share button (always visible) -->
+        <button class="cls-btn cls-btn-ghost" onclick="shareRoom()" id="share-btn">
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Share Room
+        </button>
+        <!-- Leave button (only visible in session) -->
+        <button class="cls-btn cls-btn-leave" id="leave-btn" style="display:none" onclick="leaveRoom()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Leave Session
+        </button>
+
+        <!-- Whiteboard button (teacher: show/hide; student: view if allowed) -->
+        <button class="cls-btn cls-btn-ghost" id="wb-open-btn" style="display:none" onclick="openWhiteboard()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          Whiteboard
+        </button>
+      </div>
+    </div>
+
+    <div class="cls-body">
+      <!-- VIDEO -->
+      <div class="video-area">
+        <!-- PRE-JOIN -->
+        <div class="prejoin" id="prejoin">
+          <div class="pj-card">
+            <div class="pj-mascot-wrap">
+              <img id="pj-mascot-img" class="pj-mascot-img" src="assets/fredi-default.png" alt="Fredi mascot" />
+            </div>
+            <h2 id="pj-title">Join a Class</h2>
+            <p id="pj-desc">Enter the room code given by your teacher to join the live session.</p>
+
+            <div class="pj-field" id="name-field-wrap">
+              <label class="pj-field-label">Your name</label>
+              <input class="pj-field-input" id="pj-name" placeholder="Your full name" />
+            </div>
+            <div class="pj-field">
+              <label class="pj-field-label">Room code</label>
+              <input class="pj-field-input" id="pj-room" placeholder="e.g. fred-mathematics-101" onkeydown="if(event.key==='Enter')joinRoom()" />
+            </div>
+
+            <button class="pj-join" onclick="joinRoom()">Join Session</button>
+
+            <!-- Teacher only: start new session -->
+            <button class="pj-new" id="pj-new-btn" style="display:none" onclick="newSession()">+ Start New Session</button>
+
+            <div class="room-chips" id="room-chips">
+              <!-- populated based on role -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Jitsi container -->
+        <div id="jitsi-wrap"></div>
+      </div>
+
+      <!-- SIDE PANEL -->
+      <div class="cls-panel">
+        <div class="panel-tabs">
+          <button class="ptab active" onclick="setPTab('chat',this)">Chat</button>
+          <button class="ptab" onclick="setPTab('notes',this)">Notes</button>
+          <button class="ptab" onclick="setPTab('files',this)">Files</button>
+          <button class="ptab" onclick="setPTab('people',this)">People</button>
+        </div>
+
+        <!-- CHAT -->
+        <div class="pane active" id="pane-chat">
+          <div class="chat-msgs" id="chat-msgs">
+            <div style="text-align:center;padding:2rem 1rem;font-size:0.75rem;color:var(--gray-400);">Join a room to chat with your class</div>
+          </div>
+          <div class="chat-in">
+            <div class="chat-row">
+              <input class="chat-tf" id="chat-tf" placeholder="Send a message…" onkeydown="if(event.key==='Enter')sendMsg()" />
+              <button class="chat-send" onclick="sendMsg()">Send</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NOTES -->
+        <div class="pane" id="pane-notes">
+          <div class="notes-inner">
+            <textarea class="notes-ta" id="notes-ta" placeholder="Take notes during the lesson…&#10;&#10;Press 'Share' to share with the class."></textarea>
+            <div class="notes-btns">
+              <button class="nb nb-save" onclick="saveNotes()">Save</button>
+              <button class="nb nb-share" onclick="shareNotes()">Share with Class</button>
+            </div>
+            <div class="shared-head">Shared by Class</div>
+            <div class="shared-scroll" id="shared-notes"></div>
+          </div>
+        </div>
+
+        <!-- FILES -->
+        <div class="pane" id="pane-files">
+          <div class="files-inner">
+            <div class="drop-zone" id="drop-zone"
+                 onclick="document.getElementById('file-inp').click()"
+                 ondragover="dov(event)" ondragleave="dol()" ondrop="dod(event)">
+              <input type="file" id="file-inp" style="display:none" multiple onchange="handleFiles(event)" />
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p>Upload & share files</p>
+              <small>PDF, DOC, images, any format</small>
+            </div>
+            <div class="flist" id="flist"></div>
+          </div>
+        </div>
+
+        <!-- PEOPLE -->
+        <div class="pane" id="pane-people">
+          <div class="people-inner">
+            <div class="ppl-count" id="ppl-count">Join a room to see participants</div>
+            <div id="ppl-list"></div>
+          </div>
+        </div>
+
+        <div class="cls-panel-foot">
+          <div class="cpf-room">Room<strong id="cpf-room">—</strong></div>
+          <div class="cpf-status off" id="cpf-status">● Not connected</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="wb-overlay">
+  <div class="wb-modal">
+    <div class="wb-header">
+      <div class="wb-title">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        Class Whiteboard
+        <span id="wb-room-label" style="font-size:0.7rem;color:var(--gray-400);font-weight:500;"></span>
+      </div>
+      <div class="wb-tools" id="wb-tools">
+        <!-- Tool buttons -->
+        <button class="wb-tool-btn active" id="wbt-pen" title="Pen" onclick="setWbTool('pen',this)">✏️</button>
+        <button class="wb-tool-btn" id="wbt-marker" title="Marker" onclick="setWbTool('marker',this)">🖊️</button>
+        <button class="wb-tool-btn" id="wbt-line" title="Line" onclick="setWbTool('line',this)">╱</button>
+        <button class="wb-tool-btn" id="wbt-rect" title="Rectangle" onclick="setWbTool('rect',this)">▭</button>
+        <button class="wb-tool-btn" id="wbt-circle" title="Circle" onclick="setWbTool('circle',this)">○</button>
+        <button class="wb-tool-btn" id="wbt-eraser" title="Eraser" onclick="setWbTool('eraser',this)">🧹</button>
+        <div class="wb-sep"></div>
+        <!-- Colors -->
+        <div class="wb-color-swatch active" style="background:#1f2937" data-color="#1f2937" onclick="setWbColor('#1f2937',this)" title="Black"></div>
+        <div class="wb-color-swatch" style="background:#f97316" data-color="#f97316" onclick="setWbColor('#f97316',this)" title="Orange"></div>
+        <div class="wb-color-swatch" style="background:#dc2626" data-color="#dc2626" onclick="setWbColor('#dc2626',this)" title="Red"></div>
+        <div class="wb-color-swatch" style="background:#2563eb" data-color="#2563eb" onclick="setWbColor('#2563eb',this)" title="Blue"></div>
+        <div class="wb-color-swatch" style="background:#16a34a" data-color="#16a34a" onclick="setWbColor('#16a34a',this)" title="Green"></div>
+        <div class="wb-color-swatch" style="background:#7c3aed" data-color="#7c3aed" onclick="setWbColor('#7c3aed',this)" title="Purple"></div>
+        <div class="wb-sep"></div>
+        <!-- Sizes -->
+        <button class="wb-size-btn active" data-size="2" onclick="setWbSize(2,this)">S</button>
+        <button class="wb-size-btn" data-size="5" onclick="setWbSize(5,this)">M</button>
+        <button class="wb-size-btn" data-size="10" onclick="setWbSize(10,this)">L</button>
+        <button class="wb-size-btn" data-size="20" onclick="setWbSize(20,this)">XL</button>
+        <div class="wb-sep"></div>
+        <button class="wb-tool-btn" title="Undo" onclick="wbUndo()">↩</button>
+        <button class="wb-tool-btn" title="Redo" onclick="wbRedo()">↪</button>
+        <button class="wb-tool-btn" title="Clear All" onclick="wbClear()">🗑</button>
+      </div>
+      <div class="wb-actions">
+        <!-- Teacher-only lock toggle -->
+        <button class="cls-btn cls-btn-ghost" id="wb-lock-btn" style="display:none" onclick="toggleWbLock()">🔓 Open</button>
+        <button class="wb-close-btn" onclick="closeWhiteboard()" title="Close">✕</button>
+      </div>
+    </div>
+    <div class="wb-body" id="wb-body">
+      <canvas id="wb-canvas"></canvas>
+      <div class="wb-locked-banner" id="wb-locked-banner"><span>🔒 Board locked by teacher — view only</span></div>
+      <div id="wb-view-only"></div>
+    </div>
+    <div class="wb-footer-bar">
+      <span class="wb-footer-info" id="wb-footer-info">Ready · Drag images/files here to paste onto board</span>
+      <span class="wb-footer-info" id="wb-footer-status"></span>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Jitsi Meet API (loaded dynamically based on host) -->
+<script>
+/* ── Auth ─────────────────────────────────────────── */
+const S = sessionStorage.getItem('fi_session');
+if (!S) location.href = 'index.html';
+const ME = JSON.parse(S || '{}');
+const IS_TEACHER = ME.role === 'teacher';
+
+/* ── 8x8 VPAAS magic-cookie integration (no public demo limit) ────────── */
+const JITSI_DOMAIN = '8x8.vc';
+const VPAAS_MAGIC_COOKIE_ID = 'vpaas-magic-cookie-7f5539b4027f4609b9218180116727da';
+const VPAAS_APP_ROOM_PREFIX = 'SampleAppStickyCouncilsSuggestAdorably';
+const VPAAS_EXTERNAL_API_SCRIPT_URL = `https://${JITSI_DOMAIN}/${VPAAS_MAGIC_COOKIE_ID}/external_api.js`;
+
+// Optional token support:
+// - by default, no JWT is sent (avoids "token expired" failures)
+// - if you have a valid JWT, set it in localStorage: fi_vpaas_jwt
+const VPAAS_JWT = localStorage.getItem('fi_vpaas_jwt') || '';
+
+let jitsiApiLoadingPromise = null;
+async function ensureJitsiExternalApi() {
+  if (window.JitsiMeetExternalAPI) return;
+  if (!jitsiApiLoadingPromise) {
+    jitsiApiLoadingPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = VPAAS_EXTERNAL_API_SCRIPT_URL;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Failed to load VPAAS external_api.js'));
+      document.head.appendChild(s);
+    });
+  }
+  return jitsiApiLoadingPromise;
+}
+
+document.getElementById('s-av').textContent = (ME.name || 'S')[0].toUpperCase();
+document.getElementById('s-name').textContent = ME.name || 'User';
+document.getElementById('s-role-lbl').textContent = IS_TEACHER ? 'Teacher' : 'Student';
+
+/* ── Pre-join setup based on role ─────────────────── */
+// Pre-fill name
+document.getElementById('pj-name').value = ME.name || '';
+
+// Teachers can start new sessions; students cannot
+if (IS_TEACHER) {
+  document.getElementById('pj-new-btn').style.display = 'block';
+  document.getElementById('pj-title').textContent = 'Start or Join a Class';
+  document.getElementById('pj-desc').textContent = 'Enter a room code to join an existing session, or start a new one.';
+}
+
+// Quick room chips
+const ROOMS = [
+  { id:'fred-mathematics-101',   label:'Maths 101' },
+  { id:'fred-english-201',       label:'English 201' },
+  { id:'fred-sciences-301',      label:'Sciences 301' },
+];
+document.getElementById('room-chips').innerHTML = ROOMS.map(r =>
+  `<span class="room-chip" onclick="setRoom('${r.id}')">${r.label}</span>`).join('');
+
+// Pre-fill room from URL
+const urlRoom = new URLSearchParams(location.search).get('room');
+if (urlRoom) {
+  document.getElementById('pj-room').value = urlRoom;
+  updateFrediForRoom(urlRoom);
+}
+
+/* ── State ─────────────────────────────────────────── */
+let jitsi = null;
+let currentRoom = null;
+let polls = [];
+let whiteboardStatus = 'hidden';
+
+function isWhiteboardShown(status) {
+  return String(status || '').toLowerCase().includes('shown');
+}
+
+function updateWhiteboardButtons() {
+  const btn = document.getElementById('wb-open-btn');
+  if (!currentRoom) { btn.style.display = 'none'; return; }
+  btn.style.display = 'inline-flex';
+}
+
+/* ══════════════════════════════════════════════════════════
+   REAL-TIME COLLABORATIVE WHITEBOARD
+   Architecture: stroke-event log in localStorage +
+   BroadcastChannel for <50ms same-browser delivery +
+   StorageEvent for cross-tab + polling fallback
+   Teacher "open" command force-opens board on all clients.
+══════════════════════════════════════════════════════════ */
+const WB = {
+  tool:'pen', color:'#1f2937', size:2,
+  drawing:false, locked:false,
+  currentStroke:null,   // stroke being drawn right now (local only)
+  redoStack:[],         // array of stroke-id arrays for redo
+  undoStack:[],         // array of stroke-id arrays for undo
+  canvasW:0, canvasH:0,
+  _bc: null,            // BroadcastChannel
+  _pollId: null,
+  _lastSeq: -1,         // last processed event sequence number
+};
+
+/* ── Storage keys ── */
+function wbEventsKey()  { return 'fi_wbevt_'  + currentRoom; }
+function wbLockKey()    { return 'fi_wblocked_'+ currentRoom; }
+function wbCmdKey()     { return 'fi_wbcmd_'  + currentRoom; }  // for force-open signal
+
+/* ── BroadcastChannel setup ── */
+function initWbChannel() {
+  if (WB._bc) { try { WB._bc.close(); } catch(e){} WB._bc = null; }
+  if (!currentRoom || typeof BroadcastChannel === 'undefined') return;
+  WB._bc = new BroadcastChannel('fi_wb_' + currentRoom);
+  WB._bc.onmessage = (e) => {
+    const d = e.data;
+    if (!d) return;
+    if (d.type === 'stroke')    { applyRemoteStroke(d.stroke); }
+    if (d.type === 'clear')     { wbClearCanvas(); flushEvents(); }
+    if (d.type === 'lock')      { applyLockState(d.locked); }
+    if (d.type === 'open')      { forceOpenWhiteboard(); }
+    if (d.type === 'undo_redo') { replayAllStrokes(); }
+  };
+}
+
+function wbBroadcast(msg) {
+  if (WB._bc) try { WB._bc.postMessage(msg); } catch(e){}
+}
+
+/* ── Event log (persisted strokes for late-joiners) ── */
+function getEvents()    { try { return JSON.parse(localStorage.getItem(wbEventsKey()) || '[]'); } catch(e){ return []; } }
+function saveEvents(ev) { try { localStorage.setItem(wbEventsKey(), JSON.stringify(ev)); } catch(e){} }
+function appendEvent(stroke) {
+  const ev = getEvents();
+  stroke.seq = (ev.length > 0 ? ev[ev.length-1].seq + 1 : 0);
+  ev.push(stroke);
+  if (ev.length > 2000) ev.splice(0, ev.length - 2000); // keep last 2000 strokes
+  saveEvents(ev);
+  WB._lastSeq = stroke.seq;
+}
+function flushEvents() {
+  localStorage.removeItem(wbEventsKey());
+  WB._lastSeq = -1;
+}
+
+/* ── Canvas helpers ── */
+function getCanvas() { return document.getElementById('wb-canvas'); }
+function getCtx()    { return getCanvas().getContext('2d'); }
+
+function wbPos(e) {
+  const canvas = getCanvas();
+  const r = canvas.getBoundingClientRect();
+  const src = e.touches ? e.touches[0] : e;
+  // Normalize coordinates to 0-1 range so they work across different screen sizes
+  return {
+    x: (src.clientX - r.left) / canvas.width,
+    y: (src.clientY - r.top)  / canvas.height,
+  };
+}
+
+function px(norm, canvas) {
+  // Convert normalized 0-1 coord back to canvas pixels
+  return { x: norm.x * canvas.width, y: norm.y * canvas.height };
+}
+
+/* ── Draw a single stroke onto a canvas context ── */
+function drawStroke(ctx, stroke, canvas) {
+  if (!stroke || !stroke.points) return;
+
+  // Image stroke type
+  if (stroke.tool === 'image') {
+    const img = new Image();
+    img.onload = () => {
+      const x = stroke.nx * canvas.width;
+      const y = stroke.ny * canvas.height;
+      const w = stroke.nw * canvas.width;
+      const h = w * (img.height / img.width);
+      ctx.drawImage(img, x, y, w, h);
+    };
+    img.src = stroke.dataUrl;
+    return;
+  }
+
+  if (stroke.points.length < 1) return;
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  if (stroke.tool === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
+    ctx.lineWidth = stroke.size * 4;
+    ctx.globalAlpha = 1;
+  } else if (stroke.tool === 'marker') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size * 3;
+    ctx.globalAlpha = 0.35;
+  } else if (stroke.tool === 'pen') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+    ctx.globalAlpha = 1;
+  } else if (stroke.tool === 'line') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+    ctx.globalAlpha = 1;
+    const p0 = px(stroke.points[0], canvas);
+    const p1 = px(stroke.points[stroke.points.length-1], canvas);
+    ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+    ctx.restore(); return;
+  } else if (stroke.tool === 'rect') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+    ctx.globalAlpha = 1;
+    const p0 = px(stroke.points[0], canvas);
+    const p1 = px(stroke.points[stroke.points.length-1], canvas);
+    ctx.beginPath(); ctx.rect(p0.x, p0.y, p1.x-p0.x, p1.y-p0.y); ctx.stroke();
+    ctx.restore(); return;
+  } else if (stroke.tool === 'circle') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = stroke.color;
+    ctx.lineWidth = stroke.size;
+    ctx.globalAlpha = 1;
+    const p0 = px(stroke.points[0], canvas);
+    const p1 = px(stroke.points[stroke.points.length-1], canvas);
+    const rx = Math.abs(p1.x-p0.x)/2, ry = Math.abs(p1.y-p0.y)/2;
+    const cx = p0.x+(p1.x-p0.x)/2, cy = p0.y+(p1.y-p0.y)/2;
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx||1, ry||1, 0, 0, Math.PI*2); ctx.stroke();
+    ctx.restore(); return;
+  }
+  // Pen / marker / eraser: path through all points
+  const pts = stroke.points.map(p => px(p, canvas));
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* ── Replay all persisted strokes onto canvas ── */
+function replayAllStrokes() {
+  const canvas = getCanvas();
+  const ctx = getCtx();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Draw white background
+  ctx.save(); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.restore();
+  const events = getEvents();
+  events.forEach(s => { if (!s.deleted) drawStroke(ctx, s, canvas); });
+  WB._lastSeq = events.length > 0 ? events[events.length-1].seq : -1;
+}
+
+/* ── Apply a single remote stroke (fast path) ── */
+function applyRemoteStroke(stroke) {
+  if (!stroke || stroke.seq <= WB._lastSeq) return; // already have it
+  const canvas = getCanvas();
+  const ctx = getCtx();
+  drawStroke(ctx, stroke, canvas);
+  WB._lastSeq = stroke.seq;
+}
+
+/* ── Poll for missed strokes (cross-device fallback) ── */
+function pollMissedStrokes() {
+  if (!currentRoom) return;
+  const events = getEvents();
+  if (!events.length) return;
+  const lastSeq = events[events.length-1].seq;
+  if (lastSeq <= WB._lastSeq) return;
+  // We missed some — replay everything to be safe
+  replayAllStrokes();
+}
+
+/* ── Force-open: teacher broadcasts, all clients open board ── */
+function forceOpenWhiteboard() {
+  if (document.getElementById('wb-overlay').classList.contains('open')) return;
+  openWhiteboardLocal();
+  toast('📋 Teacher opened the whiteboard');
+}
+
+/* ── Teacher opens board — broadcasts to all ── */
+function openWhiteboard() {
+  if (!currentRoom) { toast('Join a room first'); return; }
+  openWhiteboardLocal();
+  // Signal all other clients to open too
+  localStorage.setItem(wbCmdKey(), JSON.stringify({ cmd:'open', ts: Date.now() }));
+  wbBroadcast({ type:'open' });
+}
+
+function openWhiteboardLocal() {
+  const overlay = document.getElementById('wb-overlay');
+  if (overlay.classList.contains('open')) return;
+  overlay.classList.add('open');
+  document.getElementById('wb-room-label').textContent = '— ' + currentRoom;
+  document.getElementById('wb-lock-btn').style.display = IS_TEACHER ? 'inline-flex' : 'none';
+  // Size canvas
+  const body = document.getElementById('wb-body');
+  const canvas = getCanvas();
+  canvas.width  = body.clientWidth  || 900;
+  canvas.height = body.clientHeight || 600;
+  WB.canvasW = canvas.width; WB.canvasH = canvas.height;
+  // Replay all stored strokes
+  replayAllStrokes();
+  syncWbLockState();
+  initWbChannel();
+  // Fallback poll every 800ms for cross-device
+  if (!WB._pollId) WB._pollId = setInterval(pollMissedStrokes, 800);
+}
+
+function closeWhiteboard() {
+  document.getElementById('wb-overlay').classList.remove('open');
+  if (WB._pollId) { clearInterval(WB._pollId); WB._pollId = null; }
+  if (WB._bc) { try { WB._bc.close(); } catch(e){} WB._bc = null; }
+}
+
+/* ── Lock / unlock ── */
+function toggleWbLock() {
+  if (!IS_TEACHER) return;
+  const newLocked = !WB.locked;
+  localStorage.setItem(wbLockKey(), newLocked ? '1' : '0');
+  applyLockState(newLocked);
+  wbBroadcast({ type:'lock', locked: newLocked });
+}
+
+function applyLockState(locked) {
+  WB.locked = locked;
+  const lockBtn = document.getElementById('wb-lock-btn');
+  const banner  = document.getElementById('wb-locked-banner');
+  const viewOnly= document.getElementById('wb-view-only');
+  const tools   = document.getElementById('wb-tools');
+  if (locked) {
+    if (lockBtn) lockBtn.innerHTML = '🔒 Locked';
+    banner.classList.add('show');
+    if (!IS_TEACHER) {
+      viewOnly.classList.add('show');
+      tools.style.opacity = '0.35';
+      tools.style.pointerEvents = 'none';
+    }
+  } else {
+    if (lockBtn) lockBtn.innerHTML = '🔓 Open';
+    banner.classList.remove('show');
+    viewOnly.classList.remove('show');
+    tools.style.opacity = '';
+    tools.style.pointerEvents = '';
+  }
+}
+
+function syncWbLockState() {
+  applyLockState(localStorage.getItem(wbLockKey()) === '1');
+}
+
+/* ── Tool / colour / size setters ── */
+function setWbTool(t, btn) {
+  WB.tool = t;
+  document.querySelectorAll('.wb-tool-btn[id^="wbt-"]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  getCanvas().style.cursor = t === 'eraser' ? 'cell' : 'crosshair';
+}
+function setWbColor(c, el) {
+  WB.color = c;
+  document.querySelectorAll('.wb-color-swatch').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+function setWbSize(s, btn) {
+  WB.size = s;
+  document.querySelectorAll('.wb-size-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* ── Undo ── */
+function wbUndo() {
+  const events = getEvents();
+  if (!events.length) return;
+  // Mark last non-deleted stroke as deleted
+  for (let i = events.length-1; i >= 0; i--) {
+    if (!events[i].deleted) {
+      events[i].deleted = true;
+      saveEvents(events);
+      replayAllStrokes();
+      wbBroadcast({ type:'undo_redo' });
+      return;
+    }
+  }
+}
+
+/* ── Redo ── */
+function wbRedo() {
+  const events = getEvents();
+  // Restore last deleted stroke
+  for (let i = events.length-1; i >= 0; i--) {
+    if (events[i].deleted) {
+      events[i].deleted = false;
+      saveEvents(events);
+      replayAllStrokes();
+      wbBroadcast({ type:'undo_redo' });
+      return;
+    }
+  }
+}
+
+/* ── Clear all ── */
+function wbClearCanvas() {
+  const canvas = getCanvas();
+  const ctx = getCtx();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.save(); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.restore();
+}
+
+function wbClear() {
+  if (!confirm('Clear the entire whiteboard for everyone?')) return;
+  flushEvents();
+  wbClearCanvas();
+  wbBroadcast({ type:'clear' });
+  localStorage.setItem(wbCmdKey(), JSON.stringify({ cmd:'clear', ts: Date.now() }));
+}
+
+/* ── Can the current user draw? ── */
+function canDraw() {
+  if (WB.locked && !IS_TEACHER) return false;
+  return true;
+}
+
+/* ── Drawing event handlers ── */
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = getCanvas();
+
+  function startDraw(e) {
+    if (!canDraw()) return;
+    e.preventDefault();
+    WB.drawing = true;
+    const p = wbPos(e);
+    WB.currentStroke = {
+      id: ME.id + '_' + Date.now(),
+      tool: WB.tool, color: WB.color, size: WB.size,
+      points: [p],
+    };
+    // For freehand: begin path locally for immediate feedback
+    if (WB.tool === 'pen' || WB.tool === 'marker' || WB.tool === 'eraser') {
+      const ctx = getCtx();
+      ctx.save();
+      applyCtxStyle(ctx, WB.tool, WB.color, WB.size);
+      ctx.beginPath();
+      const pp = px(p, canvas);
+      ctx.moveTo(pp.x, pp.y);
+      ctx._wbOpen = true;
+    }
+  }
+
+  function applyCtxStyle(ctx, tool, color, size) {
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    if (tool === 'eraser') {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.strokeStyle = 'rgba(0,0,0,1)';
+      ctx.lineWidth = size * 4;
+      ctx.globalAlpha = 1;
+    } else if (tool === 'marker') {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size * 3;
+      ctx.globalAlpha = 0.35;
+    } else {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = size;
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function moveDraw(e) {
+    if (!WB.drawing || !WB.currentStroke) return;
+    e.preventDefault();
+    const p = wbPos(e);
+    WB.currentStroke.points.push(p);
+
+    const ctx = getCtx();
+    const pp  = px(p, canvas);
+
+    if (WB.tool === 'pen' || WB.tool === 'marker' || WB.tool === 'eraser') {
+      // Incremental draw — just extend the current path, no full repaint
+      applyCtxStyle(ctx, WB.tool, WB.color, WB.size);
+      ctx.lineTo(pp.x, pp.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pp.x, pp.y);
+    } else {
+      // Shape tools: repaint full canvas + shape preview every frame
+      replayAllStrokes();
+      const p0  = px(WB.currentStroke.points[0], canvas);
+      ctx.save();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.strokeStyle = WB.color;
+      ctx.lineWidth   = WB.size;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      if (WB.tool === 'line') {
+        ctx.moveTo(p0.x, p0.y); ctx.lineTo(pp.x, pp.y);
+      } else if (WB.tool === 'rect') {
+        ctx.rect(p0.x, p0.y, pp.x-p0.x, pp.y-p0.y);
+      } else if (WB.tool === 'circle') {
+        const rx = Math.abs(pp.x-p0.x)/2, ry = Math.abs(pp.y-p0.y)/2;
+        const cx = p0.x+(pp.x-p0.x)/2, cy = p0.y+(pp.y-p0.y)/2;
+        ctx.ellipse(cx, cy, rx||1, ry||1, 0, 0, Math.PI*2);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function endDraw(e) {
+    if (!WB.drawing || !WB.currentStroke) return;
+    WB.drawing = false;
+    const stroke = WB.currentStroke;
+    WB.currentStroke = null;
+    if (stroke.points.length < 1) return;
+    // Reset ctx state
+    const ctx = getCtx();
+    ctx.globalAlpha = 1;
+    ctx.globalCompositeOperation = 'source-over';
+    // Persist stroke to event log
+    appendEvent(stroke);
+    // Broadcast to all peers instantly
+    wbBroadcast({ type:'stroke', stroke });
+    // Update status
+    const s = document.getElementById('wb-footer-status');
+    if (s) s.textContent = 'Synced · ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  canvas.addEventListener('mousedown',  startDraw);
+  canvas.addEventListener('mousemove',  moveDraw);
+  canvas.addEventListener('mouseup',    endDraw);
+  canvas.addEventListener('mouseleave', endDraw);
+  canvas.addEventListener('touchstart', startDraw, { passive:false });
+  canvas.addEventListener('touchmove',  moveDraw,  { passive:false });
+  canvas.addEventListener('touchend',   endDraw);
+
+  // Resize: re-render all strokes at new size
+  const resizeObserver = new ResizeObserver(() => {
+    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
+    const body = document.getElementById('wb-body');
+    canvas.width  = body.clientWidth;
+    canvas.height = body.clientHeight;
+    WB.canvasW = canvas.width; WB.canvasH = canvas.height;
+    replayAllStrokes();
+  });
+  resizeObserver.observe(document.getElementById('wb-body'));
+
+  // Paste image (Ctrl+V) → stored as image stroke
+  document.addEventListener('paste', (e) => {
+    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
+    if (!canDraw()) return;
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const blob = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = ev => pasteImageData(ev.target.result, 0.1, 0.1);
+        reader.readAsDataURL(blob);
+        break;
+      }
+    }
+  });
+
+  // Drag & drop image onto whiteboard
+  document.getElementById('wb-body').addEventListener('dragover', e => e.preventDefault());
+  document.getElementById('wb-body').addEventListener('drop', e => {
+    e.preventDefault();
+    if (!canDraw()) { toast('Board is locked'); return; }
+    const files = e.dataTransfer.files;
+    if (files && files.length && files[0].type.startsWith('image/')) {
+      const r = canvas.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / canvas.width;
+      const ny = (e.clientY - r.top)  / canvas.height;
+      const reader = new FileReader();
+      reader.onload = ev => pasteImageData(ev.target.result, nx, ny);
+      reader.readAsDataURL(files[0]);
+    }
+  });
+});
+
+function pasteImageData(dataUrl, nx, ny) {
+  // Store image as a special stroke type with embedded data URL
+  const stroke = {
+    id: ME.id + '_' + Date.now(),
+    tool: 'image',
+    dataUrl,
+    nx, ny,       // normalised top-left position
+    nw: 0.4,      // normalised width (40% of canvas)
+    points: [{ x: nx, y: ny }], // needed so drawStroke guards pass
+  };
+  appendEvent(stroke);
+  replayAllStrokes();
+  wbBroadcast({ type:'stroke', stroke });
+}
+
+function escJS(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+
+/* ── Room helpers ──────────────────────────────────── */
+function normalizeRoomCode(roomInput) {
+  const raw = String(roomInput || '').trim();
+  const base = /^FredInstitute-/i.test(raw) ? raw.replace(/^FredInstitute-/i, '') : raw;
+  const safeBase = base.replace(/[^a-zA-Z0-9\-_]/g, '');
+  return { rawRoom: safeBase, jRoom: 'FredInstitute-' + safeBase };
+}
+
+function clothesForRoom(roomId) {
+  const r = String(roomId || '').toLowerCase();
+  if (r.includes('sciences') || r.includes('science')) return 'lab';
+  if (r.includes('mathematics') || r.includes('math')) return 'cap';
+  return 'default';
+}
+
+function updateFrediForRoom(roomId) {
+  const img = document.getElementById('pj-mascot-img');
+  if (!img) return;
+  const outfit = clothesForRoom(roomId);
+  const srcByOutfit = {
+    default: 'assets/fredi-default.png',
+    cap: 'assets/fredi-cap.png',
+    lab: 'assets/fredi-lab.png',
+  };
+  img.src = srcByOutfit[outfit] || srcByOutfit.default;
+}
+
+function setRoom(id) {
+  document.getElementById('pj-room').value = id;
+  updateFrediForRoom(id);
+}
+
+function newSession() {
+  // Teacher-only: generate a random room
+  const id = 'fred-' + Math.random().toString(36).slice(2, 9);
+  document.getElementById('pj-room').value = id;
+  updateFrediForRoom(id);
+  joinRoom();
+}
+
+/* ── JOIN ROOM ─────────────────────────────────────── */
+async function joinRoom() {
+  const nameInput = document.getElementById('pj-name').value.trim();
+  const rawRoom   = document.getElementById('pj-room').value.trim();
+
+  if (!nameInput) { toast('Please enter your name'); document.getElementById('pj-name').focus(); return; }
+  if (!rawRoom)   { toast('Please enter a room code'); document.getElementById('pj-room').focus(); return; }
+
+  // Use the name from the input (which was pre-filled from account)
+  const displayName = nameInput;
+  const norm = normalizeRoomCode(rawRoom);
+  if (!norm.rawRoom) { toast('Invalid room code'); document.getElementById('pj-room').focus(); return; }
+  currentRoom = norm.rawRoom;
+  const jRoom = norm.jRoom;
+
+  // Keep the input/display consistent even if someone pastes the full Jitsi room name
+  document.getElementById('pj-room').value = currentRoom;
+  updateFrediForRoom(currentRoom);
+
+  // ── Update UI ─────────────────────────────────────
+  document.getElementById('prejoin').style.display = 'none';
+  document.getElementById('jitsi-wrap').style.display = 'block';
+  document.getElementById('leave-btn').style.display  = 'flex';
+  document.getElementById('live-badge').style.display = 'inline-flex';
+  updateWhiteboardButtons();
+  document.getElementById('bar-title').textContent = 'Live: ' + currentRoom;
+  document.getElementById('bar-sub').textContent   = 'FredInstitute · ' + jRoom;
+  document.getElementById('cpf-room').textContent  = currentRoom;
+  document.getElementById('cpf-status').textContent = '● Connecting…';
+  document.getElementById('cpf-status').className   = 'cpf-status off';
+
+  // Track attendance
+  const k = 'fi_att_' + ME.id;
+  localStorage.setItem(k, String(parseInt(localStorage.getItem(k) || '0') + 1));
+
+  // ── Jitsi toolbar: role-based ─────────────────────
+  // Students: only controls that affect themselves
+  const studentButtons = [
+    'microphone', 'camera', 'fullscreen', 'raisehand',
+        'tileview', 'select-background', 'settings'
+  ];
+  // Teachers: full classroom controls
+  const teacherButtons = [
+    'microphone', 'camera', 'desktop', 'fullscreen', 'raisehand',
+    'tileview', 'mute-everyone', 'recording', 'security',
+    'select-background', 'settings', 'participants-pane',
+    'closedcaptions', 'videoquality', 'whiteboard'
+  ];
+
+  try {
+    await ensureJitsiExternalApi();
+    jitsi = new JitsiMeetExternalAPI(JITSI_DOMAIN, {
+      // 8x8 VPAAS uses roomName in the form: <magic-cookie-id>/<room>
+      roomName: `${VPAAS_MAGIC_COOKIE_ID}/${VPAAS_APP_ROOM_PREFIX}-${jRoom}`,
+      ...(IS_TEACHER && VPAAS_JWT ? { jwt: VPAAS_JWT } : {}),
+      width: '100%',
+      height: '100%',
+      parentNode: document.getElementById('jitsi-wrap'),
+      userInfo: {
+        displayName: displayName,
+        email: ME.email || ''
+      },
+      configOverwrite: {
+        startWithAudioMuted: true,
+        startWithVideoMuted: false,
+        disableDeepLinking: true,
+        prejoinPageEnabled: false,
+        // Moderator powers for teachers only
+        localRecording: { disable: !IS_TEACHER },
+        // Disable "end meeting for all" for students
+        disableRemoteMute: !IS_TEACHER,
+        toolbarButtons: IS_TEACHER ? teacherButtons : studentButtons,
+      },
+      interfaceConfigOverwrite: {
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_WATERMARK_FOR_GUESTS: false,
+        MOBILE_APP_PROMO: false,
+        APP_NAME: 'FredInstitute',
+        NATIVE_APP_NAME: 'FredInstitute',
+        BRAND_WATERMARK_LINK: '',
+        // Hide the "Leave" button inside Jitsi - we have our own in the topbar
+        TOOLBAR_BUTTONS: IS_TEACHER ? teacherButtons : studentButtons,
+      }
+    });
+
+    jitsi.addEventListener('videoConferenceJoined', () => {
+      document.getElementById('cpf-status').textContent = '● Connected';
+      document.getElementById('cpf-status').className   = 'cpf-status on';
+      startPolling();
+      refreshPeople();
+
+      // Ensure Whiteboard is visible for the class.
+      // (If the toolbar includes 'whiteboard', the meeting should support this.)
+      // Whiteboard will be controlled by the teacher using the buttons.
+    });
+
+    // Track whiteboard state so teacher buttons stay in sync.
+    jitsi.addEventListener('whiteboardStatusChanged', (e) => {
+      whiteboardStatus = e && e.status ? e.status : whiteboardStatus;
+      updateWhiteboardButtons();
+    });
+
+    // When Jitsi's own leave/hangup is pressed, mirror our state
+    jitsi.addEventListener('videoConferenceLeft', () => {
+      resetToPreJoin();
+    });
+
+    jitsi.addEventListener('participantJoined', refreshPeople);
+    jitsi.addEventListener('participantLeft',   refreshPeople);
+
+  } catch (e) {
+    // Fallback if Jitsi script fails to load
+    document.getElementById('jitsi-wrap').innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;text-align:center;color:var(--gray-500);">
+        <div style="font-size:3rem;margin-bottom:1rem;">📡</div>
+        <div style="font-size:1.3rem;font-weight:800;color:var(--gray-900);margin-bottom:0.5rem;">${esc(currentRoom)}</div>
+        <p style="font-size:0.8rem;max-width:340px;line-height:1.7;margin-bottom:1.5rem;">
+          Video is loading. If it doesn't appear, you may need to allow popups or open it externally.<br>
+          <strong style="color:var(--orange-600);">Room: ${esc(currentRoom)}</strong>
+        </p>
+        <a href="https://${JITSI_DOMAIN}/${VPAAS_MAGIC_COOKIE_ID}/${VPAAS_APP_ROOM_PREFIX}-${jRoom}" target="_blank"
+           style="padding:0.75rem 2rem;background:linear-gradient(135deg,#f97316,#ea580c);color:white;font-family:inherit;font-weight:700;font-size:0.82rem;text-decoration:none;border-radius:0.625rem;">
+          Open Video in New Tab →
+        </a>
+      </div>`;
+    document.getElementById('cpf-status').textContent = '● External';
+    document.getElementById('cpf-status').className   = 'cpf-status on';
+    startPolling();
+  }
+
+  // Init panel data
+  loadChat();
+  loadFiles();
+  loadSharedNotes();
+  refreshPeople();
+}
+
+/* ── LEAVE ROOM ────────────────────────────────────── */
+function leaveRoom() {
+  // Properly dispose Jitsi
+  if (jitsi) {
+    try { jitsi.dispose(); } catch(e) {}
+    jitsi = null;
+  }
+  resetToPreJoin();
+}
+
+function resetToPreJoin() {
+  polls.forEach(clearInterval);
+  polls = [];
+
+  // Clear Jitsi container
+  const wrap = document.getElementById('jitsi-wrap');
+  wrap.style.display = 'none';
+  wrap.innerHTML = '';
+
+  // Reset UI
+  document.getElementById('prejoin').style.display    = 'flex';
+  document.getElementById('leave-btn').style.display  = 'none';
+  document.getElementById('live-badge').style.display = 'none';
+  document.getElementById('bar-title').textContent    = 'Live Classroom';
+  document.getElementById('bar-sub').textContent      = 'Select a room to join a session';
+  document.getElementById('cpf-room').textContent     = '—';
+  document.getElementById('cpf-status').textContent   = '● Not connected';
+  document.getElementById('cpf-status').className     = 'cpf-status off';
+
+  currentRoom = null;
+  updateFrediForRoom(''); // back to default pencil outfit
+
+  whiteboardStatus = 'hidden';
+  updateWhiteboardButtons();
+
+  // Close BroadcastChannel
+  if (chatChannel) { try { chatChannel.close(); } catch(e){} chatChannel = null; }
+  // Close whiteboard if open
+  closeWhiteboard();
+}
+
+/* ── SHARE ROOM ────────────────────────────────────── */
+function shareRoom() {
+  if (!currentRoom) { toast('Join a room first, then share the link'); return; }
+  const base = (location.origin ? location.origin : '') + location.pathname;
+  const url = base + '?room=' + encodeURIComponent(currentRoom);
+  navigator.clipboard.writeText(url)
+    .then(() => toast('Room link copied to clipboard'))
+    .catch(() => { prompt('Copy this room link:', url); });
+}
+
+/* ── PANEL TABS ─────────────────────────────────────── */
+function setPTab(name, btn) {
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pane-' + name).classList.add('active');
+}
+
+/* ── CHAT ───────────────────────────────────────────── */
+function chatKey() { return 'fi_chat_' + currentRoom; }
+
+// BroadcastChannel for real-time same-device/tab chat sync
+let chatChannel = null;
+
+function initChatChannel() {
+  if (chatChannel) { try { chatChannel.close(); } catch(e){} }
+  if (currentRoom && typeof BroadcastChannel !== 'undefined') {
+    chatChannel = new BroadcastChannel('fi_chat_' + currentRoom);
+    chatChannel.onmessage = () => renderChat();
+  }
+}
+
+function sendMsg() {
+  if (!currentRoom) return;
+  const tf = document.getElementById('chat-tf');
+  const text = tf.value.trim();
+  if (!text) return;
+  const msgs = JSON.parse(localStorage.getItem(chatKey()) || '[]');
+  msgs.push({ id: Date.now(), uid: ME.id, name: ME.name, text, ts: new Date().toISOString() });
+  if (msgs.length > 300) msgs.splice(0, msgs.length - 300);
+  localStorage.setItem(chatKey(), JSON.stringify(msgs));
+  tf.value = '';
+  renderChat();
+  // Notify other tabs/windows in same room
+  if (chatChannel) try { chatChannel.postMessage({ type: 'new_msg' }); } catch(e) {}
+}
+
+function loadChat() {
+  if (currentRoom) {
+    initChatChannel();
+    renderChat();
+  }
+}
+
+function renderChat() {
+  if (!currentRoom) return;
+  const msgs = JSON.parse(localStorage.getItem(chatKey()) || '[]');
+  const el = document.getElementById('chat-msgs');
+  if (!msgs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:2rem 1rem;font-size:0.75rem;color:var(--gray-400);">No messages yet — say hello!</div>';
+    return;
+  }
+  el.innerHTML = msgs.map(m => `
+    <div class="msg ${m.uid === ME.id ? 'me' : 'theirs'}">
+      <div class="msg-who">${m.uid === ME.id ? 'You' : esc(m.name)} · ${new Date(m.ts).toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="msg-bubble">${esc(m.text)}</div>
+    </div>`).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+/* ── NOTES ───────────────────────────────────────────── */
+function saveNotes() {
+  if (!currentRoom) { toast('Join a room first'); return; }
+  const text = document.getElementById('notes-ta').value;
+  const notes = JSON.parse(localStorage.getItem('fi_notes') || '[]');
+  const idx = notes.findIndex(n => n.uid === ME.id && n.room === currentRoom);
+  const obj = { id: idx >= 0 ? notes[idx].id : Date.now(), uid: ME.id, uname: ME.name, room: currentRoom, text, ts: new Date().toISOString(), shared: false };
+  if (idx >= 0) notes[idx] = obj; else notes.unshift(obj);
+  localStorage.setItem('fi_notes', JSON.stringify(notes));
+  toast('Notes saved');
+}
+
+function shareNotes() {
+  if (!currentRoom) { toast('Join a room first'); return; }
+  const text = document.getElementById('notes-ta').value.trim();
+  if (!text) { toast('Write some notes first'); return; }
+  const k = 'fi_snotes_' + currentRoom;
+  const shared = JSON.parse(localStorage.getItem(k) || '[]');
+  shared.unshift({ id: Date.now(), uid: ME.id, name: ME.name, text, ts: new Date().toISOString() });
+  if (shared.length > 100) shared.splice(100);
+  localStorage.setItem(k, JSON.stringify(shared));
+  loadSharedNotes();
+  toast('Notes shared with class');
+}
+
+function loadSharedNotes() {
+  if (!currentRoom) return;
+  const shared = JSON.parse(localStorage.getItem('fi_snotes_' + currentRoom) || '[]');
+  const el = document.getElementById('shared-notes');
+  if (!shared.length) { el.innerHTML = '<div style="font-size:0.72rem;color:var(--gray-400);padding:0.25rem 0;">No shared notes yet</div>'; return; }
+  el.innerHTML = shared.slice(0, 12).map(n => `
+    <div class="sn">
+      <div class="sn-who">${esc(n.name)} · ${new Date(n.ts).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+      <div class="sn-txt">${esc(n.text.substring(0, 180))}${n.text.length > 180 ? '…' : ''}</div>
+    </div>`).join('');
+}
+
+/* ── FILES ───────────────────────────────────────────── */
+function dov(e) { e.preventDefault(); document.getElementById('drop-zone').classList.add('over'); }
+function dol()  { document.getElementById('drop-zone').classList.remove('over'); }
+function dod(e) { e.preventDefault(); dol(); processFiles(Array.from(e.dataTransfer.files)); }
+function handleFiles(e) { processFiles(Array.from(e.target.files)); e.target.value = ''; }
+
+function inferSubjectYearFromRoom(roomId) {
+  const r = String(roomId || '').toLowerCase();
+  let subject = null;
+  if (r.includes('mathematics') || r.includes('math')) subject = 'mathematics';
+  else if (r.includes('english')) subject = 'english';
+  else if (r.includes('sciences') || r.includes('science')) subject = 'sciences';
+
+  const m = String(roomId || '').match(/-(\d{3})$/);
+  const code3 = m ? parseInt(m[1], 10) : null;
+  const yearOfStudy = code3 ? Math.floor(code3 / 100) : null; // 101->1, 201->2, 301->3
+  return { subject, yearOfStudy };
+}
+
+function processFiles(files) {
+  if (!currentRoom) { toast('Join a room to share files'); return; }
+  const lib = JSON.parse(localStorage.getItem('fi_library') || '[]');
+  const { subject, yearOfStudy } = inferSubjectYearFromRoom(currentRoom);
+  let done = 0;
+  files.forEach(f => {
+    const rdr = new FileReader();
+    rdr.onload = ev => {
+      lib.unshift({
+        id: Date.now() + Math.random(),
+        name: f.name,
+        ext: f.name.split('.').pop().toLowerCase(),
+        type: f.type,
+        size: f.size,
+        room: currentRoom,
+        by: ME.name,
+        uid: ME.id,
+        url: ev.target.result,
+        ts: new Date().toISOString(),
+        subject,
+        yearOfStudy,
+      });
+      if (lib.length > 200) lib.splice(200);
+      localStorage.setItem('fi_library', JSON.stringify(lib));
+      if (++done === files.length) { loadFiles(); toast(done + ' file' + (done !== 1 ? 's' : '') + ' uploaded'); }
+    };
+    rdr.readAsDataURL(f);
+  });
+}
+
+function loadFiles() {
+  if (!currentRoom) return;
+  const lib = JSON.parse(localStorage.getItem('fi_library') || '[]').filter(f => f.room === currentRoom);
+  const el = document.getElementById('flist');
+  if (!lib.length) { el.innerHTML = '<div style="text-align:center;padding:1.5rem;font-size:0.72rem;color:var(--gray-400);">No files shared yet</div>'; return; }
+  el.innerHTML = lib.map(f => `
+    <div class="fi">
+      <div class="fi-ext">${(f.ext || '?').toUpperCase().substring(0,4)}</div>
+      <div class="fi-info">
+        <div class="fi-name">${esc(f.name)}</div>
+        <div class="fi-by">${esc(f.by)} · ${fmtSz(f.size)}</div>
+      </div>
+      <a href="${f.url}" download="${f.name}" class="fi-dl">↓</a>
+    </div>`).join('');
+}
+
+function wbAllowKey() { return 'fi_wballow_' + currentRoom; }
+
+function getWbAllowedSet() {
+  const raw = localStorage.getItem(wbAllowKey());
+  return new Set(raw ? JSON.parse(raw) : []);
+}
+
+function toggleWbStudent(pid, name) {
+  if (!IS_TEACHER) return;
+  const allowed = getWbAllowedSet();
+  if (allowed.has(pid)) { allowed.delete(pid); } else { allowed.add(pid); }
+  localStorage.setItem(wbAllowKey(), JSON.stringify([...allowed]));
+  toast(allowed.has(pid) ? `${name} can now draw on board` : `${name} restricted from board`);
+  refreshPeople();
+}
+
+function refreshPeople() {
+  const allowed = getWbAllowedSet();
+  const people = [{ name: ME.name, role: ME.role, me: true, pid: null }];
+  if (jitsi) {
+    try {
+      jitsi.getParticipantsInfo().forEach(p => {
+        if (p.displayName && p.displayName !== ME.name) {
+          people.push({ name: p.displayName, role: 'student', me: false, pid: p.id || null });
+        }
+      });
+    } catch(e) {}
+  }
+  document.getElementById('ppl-count').textContent = people.length + ' participant' + (people.length !== 1 ? 's' : '');
+  document.getElementById('ppl-list').innerHTML = people.map(p => `
+    <div class="person">
+      <div class="p-av">${(p.name || '?')[0].toUpperCase()}</div>
+      <div>
+        <div class="p-name">${esc(p.name)}${p.me ? ' (you)' : ''}</div>
+        <div class="p-role">${p.role}</div>
+      </div>
+      ${IS_TEACHER && !p.me && p.pid ? `<button class="wb-allow-btn" onclick="toggleWbStudent('${escJS(p.pid)}','${escJS(p.name)}')">${allowed.has(p.pid) ? '🔒 Restrict WB' : '✏️ Allow WB'}</button>` : ''}
+    </div>`).join('');
+}
+
+/* ── POLLING ─────────────────────────────────────────── */
+function startPolling() {
+  polls.push(setInterval(() => { if (currentRoom) renderChat(); }, 1500));
+  polls.push(setInterval(() => { if (currentRoom) { loadSharedNotes(); loadFiles(); } }, 5000));
+  polls.push(setInterval(() => { if (currentRoom && jitsi) refreshPeople(); }, 8000));
+  // WB lock state poll (cross-device fallback)
+  polls.push(setInterval(() => {
+    if (currentRoom && document.getElementById('wb-overlay').classList.contains('open')) syncWbLockState();
+  }, 2000));
+  // Check for force-open command from teacher
+  polls.push(setInterval(() => {
+    if (!currentRoom) return;
+    try {
+      const cmd = JSON.parse(localStorage.getItem(wbCmdKey()) || '{}');
+      if (cmd.cmd === 'open' && cmd.ts && (Date.now() - cmd.ts) < 10000) {
+        forceOpenWhiteboard();
+      }
+    } catch(e) {}
+  }, 1000));
+}
+
+/* ── GLOBAL STORAGE EVENT (cross-tab real-time) ───── */
+window.addEventListener('storage', (e) => {
+  if (!currentRoom) return;
+  if (e.key === chatKey()) {
+    renderChat();
+    if (chatChannel) try { chatChannel.postMessage({ type:'new_msg' }); } catch(err) {}
+  }
+  if (e.key === wbEventsKey()) {
+    if (document.getElementById('wb-overlay').classList.contains('open')) pollMissedStrokes();
+  }
+  if (e.key === wbCmdKey()) {
+    try {
+      const cmd = JSON.parse(e.newValue || '{}');
+      if (cmd.cmd === 'open')  forceOpenWhiteboard();
+      if (cmd.cmd === 'clear') { flushEvents(); wbClearCanvas(); }
+    } catch(err) {}
+  }
+  if (e.key === wbLockKey()) {
+    if (document.getElementById('wb-overlay').classList.contains('open')) syncWbLockState();
+  }
+});
+
+/* ── UTILS ───────────────────────────────────────────── */
+function fmtSz(b) { if (!b) return '?'; if (b < 1024) return b+'B'; if (b < 1048576) return Math.round(b/1024)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+function signOut() { sessionStorage.removeItem('fi_session'); location.href = 'index.html'; }
+</script>
+</body>
+</html>
