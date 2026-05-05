@@ -1,0 +1,309 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Number Bases — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>Concept 1 · Number Bases</strong></div>
+</div><div class="ls-topbar-right">
+<span class="ls-points" id="pts-display">0 Points</span>
+<span class="ls-slide-counter" id="slideCounter">1 / 8</span>
+</div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:12.5%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+  <div class="ls-nav-header" style="position:relative;">
+    <div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div>
+    <button onclick="toggleNavCollapse()" title="Collapse" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+  </div>
+  <div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<!-- SLIDE 1: Intro -->
+<div class="ls-slide" data-screen-label="01 Intro">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">What is a Number Base?</div><div class="slide-sub">Different ways of writing the same number.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>A <em>number base</em> tells you how many digits you use to count before adding a new column. We normally use <strong>base 10</strong> (decimal) — ten digits: 0–9. Computers use <strong>base 2</strong> (binary) — just 0 and 1.</p></div>
+<div class="def-box"><span class="def-term">Base (Radix)</span>
+The number of unique digits a number system uses. After you reach that count, you "carry" to the next column.<br><br>
+<strong>Base 10:</strong> 0,1,2,3,4,5,6,7,8,9 then 10<br>
+<strong>Base 2:</strong> 0,1 then 10 (=2 in decimal)<br>
+<strong>Base 16:</strong> 0–9, A,B,C,D,E,F then 10 (=16)</div>
+<div class="key-point">The same value can be written in any base — only the symbols change, not the quantity.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Common Bases at a Glance</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;font-size:.72rem">
+  <div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:.5rem;padding:.5rem;text-align:center"><div style="font-weight:800;color:#C2410C">Base 2</div><div style="color:var(--g600);font-size:.65rem">Binary</div><div style="margin-top:.3rem;font-family:monospace">0,1</div></div>
+  <div style="background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:.5rem;padding:.5rem;text-align:center"><div style="font-weight:800;color:#A16207">Base 8</div><div style="color:var(--g600);font-size:.65rem">Octal</div><div style="margin-top:.3rem;font-family:monospace">0–7</div></div>
+  <div style="background:#DCFCE7;border:1.5px solid #BBF7D0;border-radius:.5rem;padding:.5rem;text-align:center"><div style="font-weight:800;color:#15803D">Base 10</div><div style="color:var(--g600);font-size:.65rem">Decimal</div><div style="margin-top:.3rem;font-family:monospace">0–9</div></div>
+  <div style="background:#DBEAFE;border:1.5px solid #BFDBFE;border-radius:.5rem;padding:.5rem;text-align:center"><div style="font-weight:800;color:#1D4ED8">Base 16</div><div style="color:var(--g600);font-size:.65rem">Hex</div><div style="margin-top:.3rem;font-family:monospace">0–9,A–F</div></div>
+</div>
+<div class="info-box" style="margin-top:.6rem"><strong>Same number, three bases:</strong><br>
+<code>13</code> (decimal) = <code>1101</code> (binary) = <code>D</code> (hex)</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 2: How decimal works -->
+<div class="ls-slide" data-screen-label="02 How Decimal Works">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">How Decimal (Base 10) Works</div><div class="slide-sub">Each column is a power of 10.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="ep-text"><p>In base 10, each column is worth 10× the column to its right. Reading right‑to‑left: units, tens, hundreds, thousands…</p></div>
+<div class="info-box"><strong>Example: 4,572</strong><br>
+4 × 1000 = 4000<br>
+5 × 100 = 500<br>
+7 × 10 = 70<br>
+2 × 1 = 2<br>
+Total: <strong>4,572</strong></div>
+<div class="key-point">Each column = base<sup>position</sup>. In base 10: 10⁰=1, 10¹=10, 10²=100, 10³=1000.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Place‑value columns</div>
+<table style="width:100%;border-collapse:collapse;font-family:monospace;font-size:.78rem">
+<tr style="background:#FFF7ED"><th style="padding:.4rem;border:1px solid #FED7AA">10³</th><th style="padding:.4rem;border:1px solid #FED7AA">10²</th><th style="padding:.4rem;border:1px solid #FED7AA">10¹</th><th style="padding:.4rem;border:1px solid #FED7AA">10⁰</th></tr>
+<tr><td style="padding:.4rem;border:1px solid #FED7AA;text-align:center">1000</td><td style="padding:.4rem;border:1px solid #FED7AA;text-align:center">100</td><td style="padding:.4rem;border:1px solid #FED7AA;text-align:center">10</td><td style="padding:.4rem;border:1px solid #FED7AA;text-align:center">1</td></tr>
+<tr style="background:#FEF3C7"><td style="padding:.5rem;border:1.5px solid #FDE68A;text-align:center;font-weight:800;color:#C2410C">4</td><td style="padding:.5rem;border:1.5px solid #FDE68A;text-align:center;font-weight:800;color:#C2410C">5</td><td style="padding:.5rem;border:1.5px solid #FDE68A;text-align:center;font-weight:800;color:#C2410C">7</td><td style="padding:.5rem;border:1.5px solid #FDE68A;text-align:center;font-weight:800;color:#C2410C">2</td></tr>
+</table>
+<div class="result-display" style="margin-top:.6rem"><span class="big">4 × 1000 + 5 × 100 + 7 × 10 + 2 = 4,572</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 3: Binary -->
+<div class="ls-slide" data-screen-label="03 Binary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Binary (Base 2)</div><div class="slide-sub">Only two digits: 0 and 1.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="ep-text"><p>Binary works exactly like decimal, but each column is a power of <strong>2</strong> instead of 10. Computers use binary because circuits have two stable states: off (0) and on (1).</p></div>
+<div class="def-box"><span class="def-term">Binary columns</span>
+…, 32, 16, 8, 4, 2, 1<br>
+Each column doubles as you move left.</div>
+<div class="info-box"><strong>Example: 1101 (binary)</strong><br>
+1 × 8 = 8<br>
+1 × 4 = 4<br>
+0 × 2 = 0<br>
+1 × 1 = 1<br>
+Total: 8 + 4 + 1 = <strong>13</strong></div>
+<div class="key-point">A single binary digit is called a <em>bit</em>. 8 bits = 1 byte.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Try a binary number (4 bits):</div>
+<div id="bin-toggles" style="display:flex;gap:.4rem;justify-content:center;margin:.5rem 0"></div>
+<div id="bin-cols" style="display:flex;gap:.4rem;justify-content:center;font-family:monospace;font-size:.7rem;color:var(--g500)"></div>
+<div class="result-display" style="margin-top:.6rem"><span class="big" id="bin-result">0</span></div>
+<div style="font-size:.7rem;color:var(--g600);margin-top:.4rem;text-align:center" id="bin-explain">Click bits to flip them on (1) or off (0).</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 4: Convert Binary to Decimal -->
+<div class="ls-slide" data-screen-label="04 Binary → Decimal">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Binary → Decimal</div><div class="slide-sub">Multiply each bit by its column value, then add.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Steps</span>
+1. Write the column values above each bit (1, 2, 4, 8, 16…)<br>
+2. Multiply each bit by its column<br>
+3. Add the results</div>
+<div class="info-box"><strong>Convert 10110₂:</strong><br>
+columns: 16, 8, 4, 2, 1<br>
+1×16 + 0×8 + 1×4 + 1×2 + 0×1<br>
+= 16 + 0 + 4 + 2 + 0 = <strong>22</strong></div>
+<div class="key-point">The little ₂ subscript tells you the number is in base 2. Decimal numbers usually have no subscript.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Practice: convert <code>1011₂</code> to decimal</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="b2d-inp" placeholder="Enter decimal value">
+<button class="quiz-check-btn" onclick="checkAns('b2d-inp','b2d-fb',11,engine,3,'1×8+0×4+1×2+1×1 = 11.')">Check</button>
+</div>
+<div id="b2d-fb" class="quiz-feedback"></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 5: Decimal to Binary -->
+<div class="ls-slide" data-screen-label="05 Decimal → Binary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Decimal → Binary</div><div class="slide-sub">Repeatedly divide by 2 and read the remainders backwards.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Repeated Division Method</span>
+1. Divide the number by 2<br>
+2. Write down the remainder (0 or 1)<br>
+3. Take the quotient, divide by 2 again<br>
+4. Repeat until quotient is 0<br>
+5. Read remainders <em>bottom to top</em></div>
+<div class="info-box"><strong>Convert 13 to binary:</strong><br>
+13 ÷ 2 = 6 r <strong>1</strong><br>
+6 ÷ 2 = 3 r <strong>0</strong><br>
+3 ÷ 2 = 1 r <strong>1</strong><br>
+1 ÷ 2 = 0 r <strong>1</strong><br>
+Read up: <strong>1101₂</strong></div>
+<div class="key-point">Shortcut: find the largest power of 2 ≤ your number, subtract, repeat.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Slider: see any number 0–31 in binary</div>
+<input type="range" id="d2b-sl" min="0" max="31" value="13" oninput="updateD2B()" style="width:100%">
+<div class="result-display" style="margin-top:.5rem"><span class="big" id="d2b-out">13 = 1101₂</span></div>
+<div id="d2b-table" style="margin-top:.6rem;font-family:monospace;font-size:.72rem"></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 6: Hexadecimal -->
+<div class="ls-slide" data-screen-label="06 Hexadecimal">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Hexadecimal (Base 16)</div><div class="slide-sub">Sixteen digits: 0–9 and A–F.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="ep-text"><p>Hex uses sixteen digits. After 9 we run out of normal digits, so we use letters: <strong>A=10, B=11, C=12, D=13, E=14, F=15</strong>.</p></div>
+<div class="def-box"><span class="def-term">Why hex?</span>
+4 binary bits map exactly to 1 hex digit. So <code>11111111₂</code> (8 bits) = <code>FF₁₆</code> = 255. Hex is a compact way to write binary — used for colours (<code>#FF5733</code>) and memory addresses.</div>
+<div class="info-box"><strong>Example: 2A₁₆</strong><br>
+2 × 16 = 32<br>
+A (=10) × 1 = 10<br>
+Total: <strong>42</strong></div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Hex ↔ Decimal table</div>
+<table style="width:100%;border-collapse:collapse;font-family:monospace;font-size:.72rem">
+<tr style="background:#DBEAFE"><th style="padding:.3rem;border:1px solid #BFDBFE">Hex</th><th style="padding:.3rem;border:1px solid #BFDBFE">Dec</th><th style="padding:.3rem;border:1px solid #BFDBFE">Bin</th></tr>
+<tr><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">0–9</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">0–9</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">0000–1001</td></tr>
+<tr style="background:#F8FAFC"><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">A</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">10</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1010</td></tr>
+<tr><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">B</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">11</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1011</td></tr>
+<tr style="background:#F8FAFC"><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">C</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">12</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1100</td></tr>
+<tr><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">D</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">13</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1101</td></tr>
+<tr style="background:#F8FAFC"><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">E</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">14</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1110</td></tr>
+<tr><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center;font-weight:700">F</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">15</td><td style="padding:.25rem;border:1px solid #BFDBFE;text-align:center">1111</td></tr>
+</table>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 7: Quiz -->
+<div class="ls-slide" data-screen-label="07 Quick Check">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Quick Check</div><div class="slide-sub">A few questions to lock it in.</div></div>
+<div class="slide-content">
+<div class="qb-card">
+<div class="qb-text" id="nb-qb-text"></div>
+<div class="qb-opts" id="nb-qb-opts"></div>
+<div id="nb-qb-fb" class="quiz-feedback"></div>
+<div class="qb-footer"><div class="qb-score" id="nb-qb-score"></div><button class="qb-next" id="nb-qb-opts-next" style="display:none" onclick="nbNext()">Next →</button></div>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 8: Reward -->
+<div class="ls-slide" data-screen-label="08 Reward">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Number Bases</div><div class="slide-title">Lesson Complete!</div><div class="slide-sub">You can read decimal, binary and hex.</div></div>
+<div class="slide-content"><div style="display:flex;align-items:center;justify-content:center;min-height:300px">
+<div class="reward-box-wrap">
+<div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect your points!</div>
+<div class="reward-content" id="rcontent">
+<div class="reward-pts">+150 Points</div>
+<div class="reward-msg">Base Master!</div>
+<div class="reward-badge">🏅 Base Master</div>
+</div>
+</div>
+</div></div>
+</div>
+
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/nb-number-bases.html');
+var engine=SlideEngine({slides:8,lessonId:'m1lnb',pts:150});
+initReward('rbox','rcontent',150,'m1lnb');
+
+// ── Binary toggle widget (slide 3) ──
+(function(){
+  var bits=[0,0,0,0]; var cols=[8,4,2,1];
+  var t=document.getElementById('bin-toggles'), c=document.getElementById('bin-cols');
+  if(!t)return;
+  cols.forEach(function(v){var s=document.createElement('div');s.style.cssText='width:42px;text-align:center;font-weight:700;color:var(--or2)';s.textContent=v;c.appendChild(s);});
+  bits.forEach(function(_,i){
+    var b=document.createElement('button');
+    b.style.cssText='width:42px;height:42px;border-radius:.5rem;border:2px solid #FED7AA;background:#FFF7ED;font-family:monospace;font-size:1.1rem;font-weight:800;color:#C2410C;cursor:pointer;transition:all .15s';
+    b.textContent='0';
+    b.onclick=function(){
+      bits[i]=1-bits[i];
+      b.textContent=bits[i];
+      if(bits[i]){b.style.background='var(--grad)';b.style.color='white';b.style.borderColor='var(--or)';}
+      else{b.style.background='#FFF7ED';b.style.color='#C2410C';b.style.borderColor='#FED7AA';}
+      var v=bits[0]*8+bits[1]*4+bits[2]*2+bits[3]*1;
+      document.getElementById('bin-result').textContent=bits.join('')+'₂ = '+v;
+      var parts=[];
+      for(var j=0;j<4;j++)parts.push(bits[j]+'×'+cols[j]);
+      document.getElementById('bin-explain').textContent=parts.join(' + ')+' = '+v;
+      if(engine)engine.markAnswered(2);
+    };
+    t.appendChild(b);
+  });
+})();
+
+// ── Decimal → Binary slider (slide 5) ──
+function updateD2B(){
+  var sl=document.getElementById('d2b-sl');if(!sl)return;
+  var n=parseInt(sl.value);
+  var bin=n.toString(2).padStart(5,'0');
+  document.getElementById('d2b-out').textContent=n+' = '+bin+'₂';
+  var cur=n,steps=[];
+  if(n===0)steps.push('0 ÷ 2 = 0 r 0');
+  else{while(cur>0){steps.push(cur+' ÷ 2 = '+Math.floor(cur/2)+' r '+(cur%2));cur=Math.floor(cur/2);}}
+  document.getElementById('d2b-table').innerHTML=steps.map(function(s){return '<div>'+s+'</div>';}).join('');
+  if(engine)engine.markAnswered(4);
+}
+updateD2B();
+
+// ── Quiz (slide 7) ──
+var nbQs=[
+  {q:'What is 1010₂ in decimal?',opts:['8','10','12','5'],ans:1,msg:'1×8 + 0×4 + 1×2 + 0×1 = 10.'},
+  {q:'How many digits does base 16 use?',opts:['10','12','16','8'],ans:2,msg:'Hex uses 0–9 and A–F = 16 digits.'},
+  {q:'Which is the binary equivalent of decimal 7?',opts:['101','110','111','100'],ans:2,msg:'4+2+1 = 7, so 111.'},
+  {q:'What does the hex digit C represent?',opts:['10','11','12','13'],ans:2,msg:'A=10, B=11, C=12, D=13.'}
+];
+var nbI=0,nbScore=0;
+function nbShow(){
+  var q=nbQs[nbI];
+  document.getElementById('nb-qb-text').textContent=(nbI+1)+'. '+q.q;
+  document.getElementById('nb-qb-score').textContent='Score: '+nbScore+'/'+nbQs.length;
+  var oe=document.getElementById('nb-qb-opts');oe.innerHTML='';
+  document.getElementById('nb-qb-fb').className='quiz-feedback';document.getElementById('nb-qb-fb').textContent='';
+  document.getElementById('nb-qb-opts-next').style.display='none';
+  q.opts.forEach(function(o,i){
+    var b=document.createElement('button');b.className='quiz-opt';b.textContent=o;
+    b.onclick=function(){
+      oe.querySelectorAll('.quiz-opt').forEach(function(x){x.disabled=true;});
+      var fb=document.getElementById('nb-qb-fb');
+      var ok=(i===q.ans);
+      if(ok){b.classList.add('correct');fb.className='quiz-feedback ok';fb.textContent='Correct! '+q.msg;nbScore++;burst(b);}
+      else{b.classList.add('wrong');oe.querySelectorAll('.quiz-opt')[q.ans].classList.add('reveal');fb.className='quiz-feedback no';fb.textContent='Not quite. '+q.msg;}
+      if(engine&&engine.recordAnswer)engine.recordAnswer(ok);
+      document.getElementById('nb-qb-score').textContent='Score: '+nbScore+'/'+nbQs.length;
+      document.getElementById('nb-qb-opts-next').style.display='inline-flex';
+      if(nbI>=nbQs.length-1&&engine)engine.markAnswered(6);
+    };
+    oe.appendChild(b);
+  });
+}
+function nbNext(){if(nbI<nbQs.length-1){nbI++;nbShow();}else{engine.next();}}
+nbShow();
+</script>
+</body></html>

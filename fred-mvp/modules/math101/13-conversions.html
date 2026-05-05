@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FDP Conversions — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C2 · FDP Conversions</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Quick Check</div><div class="slide-sub">Fractions, Decimals &amp; Percentages — how much do you know?</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">What is ¾ as a percentage?</div>
+<div class="quiz-opts" id="pre-fdp"><button class="quiz-opt" onclick="preQ(this,false,'pre-fdp','pre-fdp-fb',engine,0)">34%</button><button class="quiz-opt" onclick="preQ(this,false,'pre-fdp','pre-fdp-fb',engine,0)">0.75%</button><button class="quiz-opt" onclick="preQ(this,true,'pre-fdp','pre-fdp-fb',engine,0)">75%</button><button class="quiz-opt" onclick="preQ(this,false,'pre-fdp','pre-fdp-fb',engine,0)">7.5%</button></div>
+<div class="quiz-feedback" id="pre-fdp-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">¾ = 0.75 = 75%. FDP — three ways to write the same number.</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 The Triangle">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">The FDP Triangle</div><div class="slide-sub">Fractions, Decimals, Percentages — converting in every direction.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Fractions, decimals, and percentages are <em>three different ways</em> of writing the same value. You must be able to convert between all three instantly.</p></div>
+<div class="def-box"><span class="def-term">The Three Conversion Rules</span>
+Fraction → Decimal: divide numerator ÷ denominator<br>
+Decimal → Percentage: multiply by 100<br>
+Percentage → Decimal: divide by 100<br>
+Decimal → Fraction: write over 10/100/1000, then simplify<br>
+Fraction → Percentage: convert to decimal first, then ×100</div>
+<div class="info-box"><strong>Key FDP equivalents to memorise:</strong><br>
+½ = 0.5 = 50%<br>
+¼ = 0.25 = 25%<br>
+¾ = 0.75 = 75%<br>
+⅓ = 0.333... = 33.3%<br>
+⅕ = 0.2 = 20%<br>
+1/8 = 0.125 = 12.5%</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">FDP converter:</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" step="0.001" id="fdp-val" placeholder="Enter decimal (e.g. 0.6)" value="0.6" oninput="updateFDP()">
+<button class="quiz-check-btn" onclick="updateFDP()">Convert</button>
+</div>
+<div id="fdp-result" style="margin-top:.5rem;display:flex;flex-direction:column;gap:.3rem"></div>
+<script>
+function updateFDP(){
+  var v=parseFloat(document.getElementById('fdp-val').value)||0;
+  var pct=(v*100).toFixed(2).replace(/\.?0+$/,'');
+  function gcd(a,b){return b?gcd(b,a%b):a;}
+  var denom=1000,num=Math.round(v*1000),g=gcd(num,denom);
+  var el=document.getElementById('fdp-result');
+  el.innerHTML='<div class="info-box"><strong>Decimal:</strong> '+v+'</div>'
+    +'<div class="info-box"><strong>Percentage:</strong> '+pct+'%</div>'
+    +'<div class="info-box"><strong>Fraction:</strong> '+(num/g)+'/'+(denom/g)+' (simplified from '+num+'/1000)</div>';
+}
+updateFDP();
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Fraction to Decimal">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Fraction → Decimal → Percentage</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Fraction to Decimal</span>
+Divide the numerator by the denominator.<br>
+³⁄₈ = 3 ÷ 8 = <strong>0.375</strong><br>
+⅔ = 2 ÷ 3 = <strong>0.666...</strong> = 0.6̄</div>
+<div class="def-box"><span class="def-term">Decimal to Percentage</span>
+Multiply by 100 (move decimal point 2 places right).<br>
+0.375 × 100 = <strong>37.5%</strong><br>
+0.6̄ × 100 = <strong>66.7%</strong> (to 1 dp)</div>
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Convert ⅝ to a percentage</div><div class="step-desc">5÷8=0.625. 0.625×100=62.5%</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Convert ⅑ to a decimal</div><div class="step-desc">1÷9=0.111...=0.1̄</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">What is ⅜ as a decimal?</div>
+<div class="quiz-opts" id="f2d-q1"><button class="quiz-opt" onclick="mcQ(this,false,'f2d-q1','f2d-fb',engine,2)">0.38</button><button class="quiz-opt" onclick="mcQ(this,true,'f2d-q1','f2d-fb',engine,2)">0.375</button><button class="quiz-opt" onclick="mcQ(this,false,'f2d-q1','f2d-fb',engine,2)">0.35</button><button class="quiz-opt" onclick="mcQ(this,false,'f2d-q1','f2d-fb',engine,2)">3.8</button></div>
+<div class="quiz-feedback" id="f2d-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Decimal to Fraction">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Decimal → Fraction &amp; Percentage → Fraction</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Decimal to Fraction</span>
+Write over 10/100/1000 (matching decimal places), then simplify.<br>
+0.6 = 6/10 = <strong>⅗</strong><br>
+0.35 = 35/100 = <strong>7/20</strong><br>
+0.125 = 125/1000 = <strong>⅛</strong></div>
+<div class="def-box"><span class="def-term">Percentage to Fraction</span>
+Write over 100, then simplify.<br>
+45% = 45/100 = <strong>9/20</strong><br>
+12.5% = 12.5/100 = 125/1000 = <strong>⅛</strong></div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Express 0.45 as a fraction in simplest form. (Enter numerator — denominator is 20)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="d2f-q1" placeholder="Numerator"><button class="quiz-check-btn" onclick="checkAns('d2f-q1','d2f-fb',9,engine,3,'0.45=45/100. HCF(45,100)=5. 45÷5=9, 100÷5=20. → 9/20.')">Check</button></div>
+<div class="quiz-feedback" id="d2f-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Ordering FDP">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Ordering Mixed FDP</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">How to Order a Mix of F, D, P</span>
+Step 1: Convert everything to DECIMALS<br>
+Step 2: Order the decimals<br>
+Step 3: Rewrite in original form<br><br>
+Order: ⅔, 0.6, 65%, ⅗<br>
+→ 0.667, 0.6, 0.65, 0.6<br>
+→ Ascending: 0.6=0.6, 0.6, 0.65, 0.667<br>
+= <strong>⅗=0.6, 0.6, 65%, ⅔</strong></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Which is largest: ¾, 70%, or 0.72?</div>
+<div class="quiz-opts" id="ord-fdp"><button class="quiz-opt" onclick="mcQ(this,true,'ord-fdp','ord-fdp-fb',engine,4)">¾</button><button class="quiz-opt" onclick="mcQ(this,false,'ord-fdp','ord-fdp-fb',engine,4)">70%</button><button class="quiz-opt" onclick="mcQ(this,false,'ord-fdp','ord-fdp-fb',engine,4)">0.72</button></div>
+<div class="quiz-feedback" id="ord-fdp-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="fdpqb-text">Loading…</div><div class="quiz-opts" id="fdpqb-opts"></div><div class="quiz-feedback" id="fdpqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="fdpqb-score">Score: 0/5</span><button class="quiz-check-btn" id="fdpqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Challenge: Mixed Conversions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A student scored 17/25 on a test. What percentage did they score?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-fdp1" placeholder="%"><button class="quiz-check-btn" onclick="checkAns('ch-fdp1','ch-fdp1-fb',68,engine,6,'17÷25=0.68. 0.68×100=68%.')">Check</button></div>
+<div class="quiz-feedback" id="ch-fdp1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Which is bigger: 5/8 or 62%? Type 1 for 5/8 or 2 for 62%.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-fdp2" placeholder="1 or 2"><button class="quiz-check-btn" onclick="checkAns('ch-fdp2','ch-fdp2-fb',1,engine,6,'5/8=0.625=62.5%. 62%=0.62. 62.5%>62% so 5/8 is bigger.')">Check</button></div>
+<div class="quiz-feedback" id="ch-fdp2-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Fractions, Decimals &amp; Percentages</div><div class="download-desc">All conversions, ordering, equivalences and worked examples.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Fraction→Decimal: numerator ÷ denominator</li>
+<li>Decimal→Percentage: ×100</li>
+<li>Percentage→Decimal: ÷100</li>
+<li>Decimal→Fraction: write over 10/100/1000, simplify</li>
+<li>To order mixed FDP: convert all to decimals first</li>
+<li>Must memorise: ½=0.5=50%, ¼=0.25=25%, ⅛=0.125=12.5%</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C2 · FDP</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>F→D: divide. D→%: ×100. %→D: ÷100</li><li>Order by converting to decimals</li><li>Memorise key equivalences</li></ul>
+<a href="14-variables.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Algebra — Variables <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+120 Points</div><div class="reward-msg">Conversion Champion!</div><div class="reward-badge">🏅 Conversion Champion</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/13-conversions.html');
+var engine=SlideEngine({slides:10,lessonId:'m2l06',pts:120});
+initReward('rbox','rcontent',120,'m2l06');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"What is 0.08 as a percentage?",opts:["0.8%","80%","8%","0.08%"],ans:2,msg:"Multiply by 100: 0.08×100=8%."},{q:"What is 35% as a decimal?",opts:["35","3.5","0.35","0.035"],ans:2,msg:"Divide by 100: 35÷100=0.35."},{q:"What is 0.4 as a fraction in simplest form?",opts:["4/10","2/5","4/100","40/10"],ans:1,msg:"0.4=4/10. HCF(4,10)=2. → 2/5."},{q:"Which is the same as ⅛?",opts:["12%","12.5%","0.8","0.18"],ans:1,msg:"⅛=0.125=12.5%."},{q:"Order ascending: 0.3, 25%, ⅓",opts:["25%, ⅓, 0.3","25%, 0.3, ⅓","0.3, 25%, ⅓","⅓, 0.3, 25%"],ans:1,msg:"25%=0.25, 0.3=0.3, ⅓=0.333. Ascending: 0.25,0.3,0.333 → 25%,0.3,⅓."}],'fdpqb-opts','fdpqb-text','fdpqb-fb','fdpqb-score',engine,5);
+
+</script></body></html>

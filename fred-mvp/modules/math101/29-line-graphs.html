@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Line Graphs — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C6 · Line Graphs</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Quick Check</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">What is the main purpose of a line graph?</div>
+<div class="quiz-opts" id="pre-lg"><button class="quiz-opt" onclick="preQ(this,false,'pre-lg','pre-lg-fb',engine,0)">To show categories</button><button class="quiz-opt" onclick="preQ(this,true,'pre-lg','pre-lg-fb',engine,0)">To show change over time</button><button class="quiz-opt" onclick="preQ(this,false,'pre-lg','pre-lg-fb',engine,0)">To compare proportions</button><button class="quiz-opt" onclick="preQ(this,false,'pre-lg','pre-lg-fb',engine,0)">To show 3D data</button></div>
+<div class="quiz-feedback" id="pre-lg-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">Line graphs are best for showing trends and changes over time.</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 What is a Line Graph">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">What is a Line Graph?</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>A line graph plots data points and joins them with straight lines. They are ideal for showing how a quantity changes over time — trends, rises, falls, and fluctuations.</p></div>
+<div class="def-box"><span class="def-term">Key Features</span>
+Title: what is being measured<br>
+X-axis: usually time (months, years, etc.)<br>
+Y-axis: the quantity being measured<br>
+Points plotted and connected by straight lines<br>
+Can show multiple lines (with a key/legend)</div>
+<div class="def-box"><span class="def-term">Trends</span>
+Upward trend: values generally increasing over time<br>
+Downward trend: values generally decreasing<br>
+No trend: values fluctuating with no clear direction</div>
+</div>
+<div class="interactive-panel">
+<!-- Live line graph -->
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.4rem">Monthly temperature (°C):</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Jan:</span><input type="range" class="fred-slider" id="lg-1" min="-5" max="35" value="8" oninput="updateLineGraph()"><span class="slider-row-val" id="lg-1v">8</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Apr:</span><input type="range" class="fred-slider" id="lg-2" min="-5" max="35" value="15" oninput="updateLineGraph()"><span class="slider-row-val" id="lg-2v">15</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Jul:</span><input type="range" class="fred-slider" id="lg-3" min="-5" max="35" value="28" oninput="updateLineGraph()"><span class="slider-row-val" id="lg-3v">28</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Oct:</span><input type="range" class="fred-slider" id="lg-4" min="-5" max="35" value="18" oninput="updateLineGraph()"><span class="slider-row-val" id="lg-4v">18</span></div>
+</div>
+<div id="line-graph-vis" style="margin-top:.5rem"></div>
+<script>
+function updateLineGraph(){
+  var vals=[parseInt(document.getElementById('lg-1').value),parseInt(document.getElementById('lg-2').value),parseInt(document.getElementById('lg-3').value),parseInt(document.getElementById('lg-4').value)];
+  var labels=['Jan','Apr','Jul','Oct'];
+  ['1','2','3','4'].forEach(function(k,i){document.getElementById('lg-'+k+'v').textContent=vals[i];});
+  var W=200,H=100,pad=25,minV=Math.min.apply(null,vals)-5,maxV=Math.max.apply(null,vals)+5;
+  var xs=vals.map(function(_,i){return pad+i*(W-pad)/(vals.length-1);});
+  var ys=vals.map(function(v){return H-(v-minV)/(maxV-minV)*(H-10)+5;});
+  var path='M'+xs[0].toFixed(1)+','+ys[0].toFixed(1);
+  for(var i=1;i<xs.length;i++)path+=' L'+xs[i].toFixed(1)+','+ys[i].toFixed(1);
+  var svg='<svg width="'+(W+10)+'" height="'+(H+20)+'" viewBox="0 0 '+(W+10)+' '+(H+20)+'">';
+  svg+='<path d="'+path+'" fill="none" stroke="#F97316" stroke-width="2"/>';
+  xs.forEach(function(x,i){svg+='<circle cx="'+x.toFixed(1)+'" cy="'+ys[i].toFixed(1)+'" r="4" fill="#F97316"/><text x="'+x.toFixed(1)+'" y="'+(H+15)+'" text-anchor="middle" font-size="9" fill="#6b7280">'+labels[i]+'</text><text x="'+(x-2).toFixed(1)+'" y="'+(ys[i]-6).toFixed(1)+'" text-anchor="middle" font-size="8" fill="#EA580C" font-weight="700">'+vals[i]+'</text>';});
+  svg+='</svg>';
+  document.getElementById('line-graph-vis').innerHTML=svg;
+  if(engine)engine.markAnswered(1);
+}
+updateLineGraph();
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Reading Line Graphs">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Reading Line Graphs</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Find a value at a specific time</div><div class="step-desc">Go to that point on the x-axis → trace up to the line → trace across to the y-axis.</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Find when a value occurred</div><div class="step-desc">Go to that value on the y-axis → trace across to the line → trace down to the x-axis.</div></div></div>
+<div class="step-item show"><div class="step-n">3</div><div class="step-body"><div class="step-title">Describe the trend</div><div class="step-desc">Is the overall direction up, down, or neither? Mention any unusual peaks or troughs.</div></div></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A line graph shows temperatures: Mon=12°, Tue=15°, Wed=9°, Thu=18°, Fri=14°. What day had the biggest increase from the previous day?</div>
+<div class="quiz-opts" id="lg-read1"><button class="quiz-opt" onclick="mcQ(this,false,'lg-read1','lg-read1-fb',engine,2)">Tuesday</button><button class="quiz-opt" onclick="mcQ(this,false,'lg-read1','lg-read1-fb',engine,2)">Wednesday</button><button class="quiz-opt" onclick="mcQ(this,true,'lg-read1','lg-read1-fb',engine,2)">Thursday</button></div>
+<div class="quiz-feedback" id="lg-read1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Scatter Graphs">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Scatter Graphs &amp; Correlation</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Scatter Graph</span>Plots two variables to see if there is a relationship (correlation) between them. Each point represents one item of data.</div>
+<div class="def-box"><span class="def-term">Types of Correlation</span>
+Positive: as one increases, so does the other (e.g. height and weight)<br>
+Negative: as one increases, the other decreases (e.g. speed and time)<br>
+No correlation: no pattern (e.g. shoe size and maths score)</div>
+<div class="def-box"><span class="def-term">Line of Best Fit</span>A straight line drawn through the middle of the points, with roughly equal numbers above and below. Used to estimate/predict values.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">As temperature rises, ice cream sales also rise. What correlation is this?</div>
+<div class="quiz-opts" id="corr-q1"><button class="quiz-opt" onclick="mcQ(this,true,'corr-q1','corr-fb',engine,3)">Positive correlation</button><button class="quiz-opt" onclick="mcQ(this,false,'corr-q1','corr-fb',engine,3)">Negative correlation</button><button class="quiz-opt" onclick="mcQ(this,false,'corr-q1','corr-fb',engine,3)">No correlation</button></div>
+<div class="quiz-feedback" id="corr-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Time Series">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Time Series &amp; Moving Averages</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Time Series</span>Data collected at regular intervals over time. Plotted as a line graph.</div>
+<div class="def-box"><span class="def-term">Moving Average</span>Smooths out fluctuations to show the underlying trend.<br><br>
+4-point moving average: average each group of 4 consecutive values.<br>
+Data: 3, 5, 7, 4, 6, 8, 5, 9<br>
+First MA: (3+5+7+4)÷4 = 4.75<br>
+Second MA: (5+7+4+6)÷4 = 5.5</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Data: 10, 14, 8, 12. What is the 4-point moving average?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" step="0.5" id="ma-q1" placeholder="Average"><button class="quiz-check-btn" onclick="checkAns('ma-q1','ma-q1-fb',11,engine,4,'(10+14+8+12)÷4=44÷4=11.')">Check</button></div>
+<div class="quiz-feedback" id="ma-q1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="lgqb-text">Loading…</div><div class="quiz-opts" id="lgqb-opts"></div><div class="quiz-feedback" id="lgqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="lgqb-score">Score: 0/5</span><button class="quiz-check-btn" id="lgqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Challenge Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">Sales data for 6 months: 24, 30, 18, 36, 28, 34. Calculate the 3-point moving average for the SECOND point (months 2–4).</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-lg1" placeholder="Average"><button class="quiz-check-btn" onclick="checkAns('ch-lg1','ch-lg1-fb',28,engine,6,'(30+18+36)÷3=84÷3=28.')">Check</button></div>
+<div class="quiz-feedback" id="ch-lg1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Data &amp; Statistics Notes</div><div class="download-desc">Line graphs, scatter graphs, correlation, time series, and moving averages.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Line graphs: show change over time. Connect points with straight lines.</li>
+<li>Trend: upward, downward, or no trend.</li>
+<li>Scatter graph: two variables. Shows correlation.</li>
+<li>Positive: both up. Negative: one up, other down. None: no pattern.</li>
+<li>Line of best fit: middle of points, used to predict values.</li>
+<li>Moving average: smooths data. Average every n consecutive values.</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C6 · Line Graphs</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Line graphs: time trends</li><li>Scatter: correlation type</li><li>Line of best fit: predictions</li><li>Moving average: smoothing</li></ul>
+<a href="30-mean-median-mode.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Mean, Median, Mode <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+130 Points</div><div class="reward-msg">Graph Guru!</div><div class="reward-badge">🏅 Graph Guru</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/29-line-graphs.html');
+var engine=SlideEngine({slides:10,lessonId:'m6l03',pts:130});
+initReward('rbox','rcontent',130,'m6l03');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"What does an upward trend on a line graph mean?",opts:["Values are decreasing","Values are increasing over time","Values are constant","Values are unpredictable"],ans:1,msg:"Upward trend = values generally rising over time."},{q:"'As study time increases, exam marks increase.' Correlation type?",opts:["Negative","No correlation","Positive","Inverse"],ans:2,msg:"Both variables increase together → positive correlation."},{q:"Data: 5,9,3,7. 4-point moving average?",opts:["5.0","5.5","6.0","4.5"],ans:2,msg:"(5+9+3+7)÷4=24÷4=6."},{q:"Line of best fit is used to:",opts:["Draw a perfect line","Predict values within the data range","Connect all data points","Find the median"],ans:1,msg:"Line of best fit estimates/predicts values within the range of data."},{q:"Which is better for showing 'how temperature changed each day this week'?",opts:["Pie chart","Bar chart","Line graph","Scatter graph"],ans:2,msg:"Line graph: shows change over time — perfect for temperature over days."}],'lgqb-opts','lgqb-text','lgqb-fb','lgqb-score',engine,5);
+
+</script></body></html>

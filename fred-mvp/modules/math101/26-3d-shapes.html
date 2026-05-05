@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>3D Shapes — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C5 · 3D Shapes</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Video">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">3D Shapes — Watch First</div></div>
+<div class="slide-content"><div class="video-slide"><video controls autoplay muted playsinline><source src="../../assets/videos/Intro3DShapes.mp4" type="video/mp4">No video support.</video><div class="video-unmute-hint" onclick="this.previousElementSibling.muted=false;this.previousElementSibling.play();this.style.display='none'"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>Tap to unmute</div></div><div class="key-point" style="margin-top:.625rem">Watch first, then explore each shape.</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 Vocabulary">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">3D Shape Vocabulary</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Key Terms</span>
+Face: a flat surface of a 3D shape<br>
+Edge: a line where two faces meet<br>
+Vertex: a corner where edges meet (plural: vertices)<br>
+Cross-section: the shape you see when you cut through a 3D shape</div>
+<div class="def-box"><span class="def-term">Euler's Formula</span>
+For any convex polyhedron:<br>
+<strong>Faces + Vertices − Edges = 2</strong><br><br>
+Cube: 6+8−12 = 2 ✓<br>
+Tetrahedron: 4+4−6 = 2 ✓</div>
+<div class="def-box"><span class="def-term">Prism vs Pyramid</span>
+Prism: same cross-section all the way through. Two identical parallel ends.<br>
+Pyramid: comes to a point (apex) at the top. One base, triangular faces.</div>
+</div>
+<div class="interactive-panel">
+<!-- 3D Shape selector -->
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Click a shape:</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:.375rem;margin-bottom:.5rem">
+<button onclick="show3D('cube')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Cube</button>
+<button onclick="show3D('cuboid')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Cuboid</button>
+<button onclick="show3D('cylinder')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Cylinder</button>
+<button onclick="show3D('cone')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Cone</button>
+<button onclick="show3D('sphere')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Sphere</button>
+<button onclick="show3D('pyramid')" class="quiz-opt" style="font-size:.73rem;padding:.45rem">Pyramid</button>
+</div>
+<div id="shape3d-info" style="font-size:.78rem;line-height:1.6;color:var(--g700)"><div class="key-point">Select a shape to see its properties.</div></div>
+<script>
+var shapes3D={
+  cube:{F:6,E:12,V:8,info:'<div class="def-box"><span class="def-term">Cube</span>6 square faces, 12 edges, 8 vertices.<br>All sides equal (s).<br><strong>Volume = s³</strong><br><strong>Surface Area = 6s²</strong></div>'},
+  cuboid:{F:6,E:12,V:8,info:'<div class="def-box"><span class="def-term">Cuboid</span>6 rectangular faces, 12 edges, 8 vertices.<br><strong>Volume = l × w × h</strong><br><strong>Surface Area = 2(lw + lh + wh)</strong></div>'},
+  cylinder:{F:3,E:2,V:0,info:'<div class="def-box"><span class="def-term">Cylinder</span>2 circular faces + 1 curved surface. 2 edges, 0 vertices.<br><strong>Volume = πr²h</strong><br><strong>Curved SA = 2πrh</strong><br><strong>Total SA = 2πr² + 2πrh</strong></div>'},
+  cone:{F:2,E:1,V:1,info:'<div class="def-box"><span class="def-term">Cone</span>1 circular base + 1 curved surface. 1 apex, 1 edge.<br><strong>Volume = ⅓πr²h</strong><br><strong>Curved SA = πrl</strong> (l = slant height)<br><strong>Total SA = πr² + πrl</strong></div>'},
+  sphere:{F:1,E:0,V:0,info:'<div class="def-box"><span class="def-term">Sphere</span>1 curved surface. No edges, no vertices.<br><strong>Volume = ⁴⁄₃πr³</strong><br><strong>Surface Area = 4πr²</strong></div>'},
+  pyramid:{F:5,E:8,V:5,info:'<div class="def-box"><span class="def-term">Square-based Pyramid</span>1 square base + 4 triangular faces. 5 vertices, 8 edges.<br><strong>Volume = ⅓ × base area × height</strong><br><strong>SA = base + 4 × (½ × base × slant height)</strong></div>'}
+};
+function show3D(name){var s=shapes3D[name];if(!s)return;document.getElementById('shape3d-info').innerHTML=s.info+'<div class="key-point" style="margin-top:.5rem">F='+s.F+' E='+s.E+' V='+s.V+'. Check: '+s.F+'+'+s.V+'−'+s.E+'='+(s.F+s.V-s.E)+'</div>';if(engine)engine.markAnswered(1);}
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Volume">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Volume of 3D Shapes</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Volume</span>
+The amount of 3D space inside a shape. Measured in cubic units: cm³, m³.<br><br>
+Cuboid: V = l × w × h<br>
+Cube: V = s³<br>
+Cylinder: V = πr²h<br>
+Cone: V = ⅓πr²h<br>
+Sphere: V = ⁴⁄₃πr³<br>
+Prism: V = cross-section area × length</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Cuboid volume:</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">l (cm):</span><input type="range" class="fred-slider" id="vol-l" min="1" max="10" value="5" oninput="updateVol()"><span class="slider-row-val" id="vol-lv">5</span></div>
+<div class="slider-row-item"><span class="slider-row-label">w (cm):</span><input type="range" class="fred-slider" id="vol-w" min="1" max="10" value="4" oninput="updateVol()"><span class="slider-row-val" id="vol-wv">4</span></div>
+<div class="slider-row-item"><span class="slider-row-label">h (cm):</span><input type="range" class="fred-slider" id="vol-h" min="1" max="10" value="3" oninput="updateVol()"><span class="slider-row-val" id="vol-hv">3</span></div>
+</div>
+<div class="result-display" id="vol-result"><span class="big">V = 60 cm³</span></div>
+<script>function updateVol(){var l=parseInt(document.getElementById('vol-l').value),w=parseInt(document.getElementById('vol-w').value),h=parseInt(document.getElementById('vol-h').value);document.getElementById('vol-lv').textContent=l;document.getElementById('vol-wv').textContent=w;document.getElementById('vol-hv').textContent=h;document.getElementById('vol-result').innerHTML='<span class="big">V = '+l+'×'+w+'×'+h+' = '+(l*w*h)+' cm³</span>';}</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Surface Area">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Surface Area</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Surface Area</span>
+The total area of ALL the faces of a 3D shape. Measured in cm², m².<br><br>
+To find SA: find the area of EACH face, then add them all.<br><br>
+<strong>Cuboid SA</strong> = 2(lw + lh + wh)<br>
+<strong>Cube SA</strong> = 6s²<br>
+<strong>Cylinder SA</strong> = 2πr² + 2πrh<br>
+<strong>Sphere SA</strong> = 4πr²</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Find the surface area of a cube with side 4 cm.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="sa-q1" placeholder="cm²"><button class="quiz-check-btn" onclick="checkAns('sa-q1','sa-q1-fb',96,engine,3,'SA=6×4²=6×16=96cm².')">Check</button></div>
+<div class="quiz-feedback" id="sa-q1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Nets">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Nets of 3D Shapes</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Net</span>A flat shape that can be folded to make a 3D shape. Shows all faces laid flat.<br><br>
+Cube net: 6 squares in a cross or T pattern.<br>
+Cuboid net: 6 rectangles in pairs of equal size.<br>
+Cylinder net: 2 circles + 1 rectangle (curved surface unrolled).</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">How many faces does the net of a triangular prism have?</div>
+<div class="quiz-opts" id="net-q1"><button class="quiz-opt" onclick="mcQ(this,false,'net-q1','net-fb',engine,4)">3</button><button class="quiz-opt" onclick="mcQ(this,false,'net-q1','net-fb',engine,4)">4</button><button class="quiz-opt" onclick="mcQ(this,true,'net-q1','net-fb',engine,4)">5</button><button class="quiz-opt" onclick="mcQ(this,false,'net-q1','net-fb',engine,4)">6</button></div>
+<div class="quiz-feedback" id="net-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="3dqb-text">Loading…</div><div class="quiz-opts" id="3dqb-opts"></div><div class="quiz-feedback" id="3dqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="3dqb-score">Score: 0/5</span><button class="quiz-check-btn" id="3dqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Challenge Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A cylinder has volume 502.4 cm³ and height 10 cm. Find the radius. (Use π=3.14)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-3d1" placeholder="r ="><button class="quiz-check-btn" onclick="checkAns('ch-3d1','ch-3d1-fb',4,engine,6,'πr²×10=502.4. r²=502.4÷31.4=16. r=4cm.')">Check</button></div>
+<div class="quiz-feedback" id="ch-3d1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A cone has r=6cm and h=8cm. Find the volume in terms of π (enter the number before π).</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-3d2" placeholder="Coeff. of π"><button class="quiz-check-btn" onclick="checkAns('ch-3d2','ch-3d2-fb',96,engine,6,'V=⅓×π×36×8=⅓×288π=96π.')">Check</button></div>
+<div class="quiz-feedback" id="ch-3d2-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">3D Geometry Notes</div><div class="download-desc">Volume &amp; surface area formulas, nets, Euler's formula, and worked examples.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Faces, Edges, Vertices. Euler: F+V−E=2</li>
+<li>Prism: same cross-section. Pyramid: narrows to apex.</li>
+<li>Volume in cm³/m³. Surface area in cm²/m².</li>
+<li>Cuboid V=lwh. Cylinder V=πr²h. Cone V=⅓πr²h. Sphere V=⁴⁄₃πr³.</li>
+<li>Net: 3D shape unfolded flat. Shows all faces.</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C5 · 3D Shapes</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>F+V−E=2 (Euler)</li><li>Volume formulas memorised</li><li>SA = all faces added</li></ul>
+<a href="27-tables.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Tables &amp; Data <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+140 Points</div><div class="reward-msg">3D Genius!</div><div class="reward-badge">🏅 3D Genius</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/26-3d-shapes.html');
+var engine=SlideEngine({slides:10,lessonId:'m5l05',pts:140});
+initReward('rbox','rcontent',140,'m5l05');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Volume of cuboid 6cm×4cm×3cm?",opts:["72cm³","72cm²","13cm³","144cm³"],ans:0,msg:"6×4×3=72cm³."},{q:"Surface area of cube with side 5cm?",opts:["25cm²","125cm²","150cm²","30cm²"],ans:2,msg:"6×5²=6×25=150cm²."},{q:"How many faces does a cylinder have?",opts:["2","3","4","1"],ans:1,msg:"2 circular faces + 1 curved surface = 3 faces."},{q:"Volume of cylinder r=3cm, h=10cm (π=3.14)?",opts:["282.6cm³","94.2cm³","301.4cm³","188.4cm³"],ans:0,msg:"π×9×10=3.14×90=282.6cm³."},{q:"Euler's formula F+V−E for a tetrahedron: F=4,V=4,E=6?",opts:["0","1","2","3"],ans:2,msg:"4+4−6=2. Always 2 for convex polyhedra."}],'3dqb-opts','3dqb-text','3dqb-fb','3dqb-score',engine,5);
+
+</script></body></html>

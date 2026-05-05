@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Number Types — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;">
+  <img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;">
+</a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>Concept 1 · Numbers</strong></div>
+</div><div class="ls-topbar-right">
+<span class="ls-points" id="pts-display">0 Points</span>
+<span class="ls-slide-counter" id="slideCounter">1 / 11</span>
+</div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+  <div class="ls-nav-header" style="position:relative;">
+    <div class="ls-nav-module">Maths 101</div>
+    <div class="ls-nav-title">Concepts &amp; Lessons</div>
+    <button onclick="toggleNavCollapse()" title="Collapse" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;">
+      <svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+  </div>
+  <div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+<div class="ls-slide" data-no-quiz="1">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Number Systems — Watch First</div><div class="slide-sub">Understanding how numbers are classified.</div></div>
+<div class="slide-content">
+<div class="video-slide" style="max-width:100%;border-radius:.75rem;overflow:hidden;background:#000;">
+  <video controls autoplay muted playsinline style="width:100%;max-height:400px;display:block;border-radius:.75rem;">
+    <source src="../../assets/videos/NumberSystemLesson.mp4" type="video/mp4">
+    Your browser does not support video.
+  </video>
+  <div class="video-unmute-hint" onclick="this.previousElementSibling.muted=false;this.previousElementSibling.play();this.style.display='none'">
+    <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+    Tap to unmute
+  </div>
+</div>
+<div class="key-point" style="margin-top:.75rem">Watch this introduction to number systems, then continue through the slides to learn and practise.</div>
+</div></div>
+
+
+<!-- SLIDE 1: Pre-test -->
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Before We Begin</div><div class="slide-sub">Let's see what you already know about number types.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block">
+<div class="quiz-q">Which of these is NOT a whole number?</div>
+<div class="quiz-opts" id="pre-q1">
+<button class="quiz-opt" onclick="preQ(this,false,'pre-q1','pre-fb1',engine,0)">5</button>
+<button class="quiz-opt" onclick="preQ(this,false,'pre-q1','pre-fb1',engine,0)">0</button>
+<button class="quiz-opt" onclick="preQ(this,true,'pre-q1','pre-fb1',engine,0)">−3</button>
+<button class="quiz-opt" onclick="preQ(this,false,'pre-q1','pre-fb1',engine,0)">100</button>
+</div>
+<div class="quiz-feedback" id="pre-fb1"></div>
+</div>
+<div class="key-point" style="margin-top:.75rem">Negative numbers are <em>integers</em> but NOT whole numbers. We'll learn exactly why in this lesson.</div>
+<div class="info-box" style="margin-top:.5rem">This lesson covers: Natural numbers, Whole numbers, Integers, Rational, Irrational, Even, Odd, Prime, Composite, Square &amp; Cube numbers.</div>
+</div></div>
+</div>
+
+<!-- SLIDE 2: Number families -->
+<div class="ls-slide" data-screen-label="02 Number Families">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">The Number Family Tree</div><div class="slide-sub">Every number belongs to a group. Learn the groups first.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Numbers are organised into <em>families</em>. Each family has strict rules about what belongs. Understanding these families is the foundation of all mathematics.</p></div>
+<div class="def-box"><span class="def-term">Natural Numbers (ℕ)</span>The counting numbers: <strong>1, 2, 3, 4, 5, …</strong><br>Start at 1, go on forever. Always positive. Used for counting real objects.</div>
+<div class="def-box"><span class="def-term">Whole Numbers (W)</span>Natural numbers PLUS zero: <strong>0, 1, 2, 3, 4, …</strong><br>Same as natural numbers but we include 0. Zero means "nothing".</div>
+<div class="def-box"><span class="def-term">Integers (ℤ)</span>All whole numbers AND their negatives: <strong>… −3, −2, −1, 0, 1, 2, 3, …</strong><br>They extend in BOTH directions on the number line.</div>
+<div class="key-point">Each family CONTAINS the one before it. Integers ⊃ Whole numbers ⊃ Natural numbers.</div>
+</div>
+<div class="interactive-panel">
+<div style="background:var(--or50);border:1.5px solid var(--or200);border-radius:var(--rl);padding:1rem">
+<div style="font-size:.75rem;font-weight:800;color:var(--or2);margin-bottom:.625rem">Number Family Tree</div>
+<div style="display:flex;flex-direction:column;gap:.4rem">
+<div style="padding:.5rem .875rem;background:var(--or);color:white;border-radius:.5rem;font-size:.78rem;font-weight:700">ℤ Integers: …−3, −2, −1, 0, 1, 2, 3…</div>
+<div style="margin-left:1rem;padding:.5rem .875rem;background:var(--or2);color:white;border-radius:.5rem;font-size:.78rem;font-weight:700">W Whole Numbers: 0, 1, 2, 3…</div>
+<div style="margin-left:2rem;padding:.5rem .875rem;background:var(--or3);color:white;border-radius:.5rem;font-size:.78rem;font-weight:700">ℕ Natural Numbers: 1, 2, 3…</div>
+</div></div>
+<div class="info-box" style="margin-top:.75rem"><strong>Quick test:</strong> Is −7 a natural number? A whole number? An integer?<br><strong>Answer:</strong> Only an integer. Negatives don't belong to ℕ or W.</div>
+<div class="warn-point" style="margin-top:.5rem">Zero (0) is a whole number and an integer, but NOT a natural number.</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 3: Rational & Irrational -->
+<div class="ls-slide" data-screen-label="03 Rational Irrational">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Rational &amp; Irrational Numbers</div><div class="slide-sub">Numbers that can — and cannot — be written as fractions.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Rational Numbers (ℚ)</span>Any number that can be written as a fraction <strong>p/q</strong> where p and q are integers and q ≠ 0.<br><br>Examples: ½, ¾, 0.25, −⅔, 7 (= 7/1), 0.333… (= ⅓)</div>
+<div class="def-box"><span class="def-term">Irrational Numbers</span>Numbers that CANNOT be written as a fraction. Their decimal form never ends and never repeats.<br><br>Examples: √2 = 1.41421356…, π = 3.14159265…, e = 2.71828…</div>
+<div class="key-point">ALL integers and fractions are rational. π and √2 are irrational — they go on forever with no repeating pattern.</div>
+<div class="warn-point">√4 = 2, which IS rational. Only square roots of non-perfect squares are irrational.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Classify each — click Reveal to check:</div>
+<div class="step-list" id="rat-steps">
+<div class="step-item show"><div class="step-n">?</div><div class="step-body"><div class="step-title">Is 0.75 rational or irrational?</div><div class="step-desc">Hidden until revealed.</div></div></div>
+<div class="step-item show"><div class="step-n">?</div><div class="step-body"><div class="step-title">Is √7 rational or irrational?</div><div class="step-desc">Hidden until revealed.</div></div></div>
+<div class="step-item show"><div class="step-n">?</div><div class="step-body"><div class="step-title">Is −⅘ rational?</div><div class="step-desc">Hidden until revealed.</div></div></div>
+</div>
+<button class="quiz-check-btn" id="rat-btn" onclick="revealRational()" style="width:100%;margin-top:.5rem">Reveal Answers</button>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 4: Even, Odd, Prime, Composite -->
+<div class="ls-slide" data-screen-label="04 Types">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Even, Odd, Prime &amp; Composite</div><div class="slide-sub">Special categories every mathematician must know.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Even Numbers</span>Divisible by 2 with no remainder. Always end in 0, 2, 4, 6, or 8.<br>Examples: 2, 4, 6, 8, 10, 14, 100</div>
+<div class="def-box"><span class="def-term">Odd Numbers</span>NOT divisible by 2. Always end in 1, 3, 5, 7, or 9.<br>Examples: 1, 3, 5, 7, 9, 11, 13, 99</div>
+<div class="def-box"><span class="def-term">Prime Numbers</span>Have EXACTLY two factors: 1 and themselves. Cannot be divided by anything else.<br>First primes: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31…<br><strong>Important:</strong> 1 is NOT prime. 2 is the only EVEN prime.</div>
+<div class="def-box"><span class="def-term">Composite Numbers</span>Have MORE than two factors. Can be divided by numbers other than 1 and themselves.<br>Examples: 4, 6, 8, 9, 10, 12, 15, 100</div>
+<div class="key-point">Zero (0) is even. One (1) is NEITHER prime nor composite — a special case.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Click any number to classify it:</div>
+<div id="num-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:.3rem"></div>
+<div style="margin-top:.625rem;font-size:.8rem;font-weight:600;color:var(--g700);background:var(--or50);padding:.5rem .75rem;border-radius:var(--r);border:1px solid var(--or200)" id="grid-result">Select a number above to see its type.</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 5: Square & Cube -->
+<div class="ls-slide" data-screen-label="05 Square Cube">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Square &amp; Cube Numbers</div><div class="slide-sub">Numbers with special geometric meaning.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Square Numbers (n²)</span>When you multiply a number by itself: n × n = n²<br>1, 4, 9, 16, 25, 36, 49, 64, 81, 100…<br>Called "square" because n² dots form a perfect square grid.</div>
+<div class="def-box"><span class="def-term">Cube Numbers (n³)</span>Multiply a number by itself THREE times: n × n × n = n³<br>1, 8, 27, 64, 125, 216…<br>They form a perfect cube shape.</div>
+<div class="key-point">Pattern: the difference between consecutive square numbers is always an odd number: 4−1=3, 9−4=5, 16−9=7…</div>
+<div class="step-list" style="margin-top:.5rem">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Is 49 a square number?</div><div class="step-desc">7 × 7 = 49 ✓ Yes — 49 = 7²</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Is 54 a cube number?</div><div class="step-desc">3³=27, 4³=64. 54 is NOT a perfect cube.</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.4rem">Square number visualiser:</div>
+<div class="slider-group">
+<div class="slider-row-item">
+<span class="slider-row-label">n =</span>
+<input type="range" class="fred-slider" id="sq-n" min="1" max="10" value="3" oninput="updateSquare()">
+<span class="slider-row-val" id="sq-nv">3</span>
+</div>
+</div>
+<div id="sq-dots" style="display:grid;gap:3px;margin:.5rem 0;width:fit-content"></div>
+<div class="result-display" id="sq-result"><span class="big">3² = 9</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 6: Practice QB -->
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Practice Questions</div><div class="slide-sub">Answer all 5 questions. You get instant feedback on each one.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block">
+<div class="quiz-q" id="nqb-text">Loading questions…</div>
+<div class="quiz-opts" id="nqb-opts"></div>
+<div class="quiz-feedback" id="nqb-fb"></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
+<span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="nqb-score">Score: 0/5</span>
+<button class="quiz-check-btn" id="nqb-opts-next" style="display:none">Next question →</button>
+</div>
+</div></div>
+</div>
+<script>
+QB([
+  {q:"Which set contains negative numbers?",opts:["Natural Numbers","Whole Numbers","Integers","None of these"],ans:2,msg:"Integers include negatives: …−2,−1,0,1,2…"},
+  {q:"Is 17 prime, composite, or neither?",opts:["Prime","Composite","Neither","Both"],ans:0,msg:"17 has only two factors: 1 and 17."},
+  {q:"Which is irrational?",opts:["0.5","√9","√5","4/7"],ans:2,msg:"√5 = 2.2360679… never ends or repeats."},
+  {q:"What is the square of 8?",opts:["16","24","64","512"],ans:2,msg:"8 × 8 = 64 = 8²."},
+  {q:"The number 1 is:",opts:["Prime","Composite","Rational only","Neither prime nor composite"],ans:3,msg:"1 has only one factor, so it's neither prime nor composite."}
+],'nqb-opts','nqb-text','nqb-fb','nqb-score',engine,5);
+document.getElementById('nqb-opts-next').onclick=function(){window['next_nqb-opts']&&window['next_nqb-opts']();};
+</script>
+
+<!-- SLIDE 7: Challenge -->
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Challenge: Real Numbers</div><div class="slide-sub">Harder questions — apply what you've learned.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="info-box" style="margin-bottom:.75rem">Real numbers include ALL rational and irrational numbers — everything you can place on a number line. The only numbers outside real numbers are imaginary (like √−1).</div>
+<div class="quiz-block">
+<div class="quiz-q">Which is a real number but NOT rational?</div>
+<div class="quiz-opts" id="ch-q1">
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q1','ch-fb1',engine,6)">−5</button>
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q1','ch-fb1',engine,6)">2/3</button>
+<button class="quiz-opt" onclick="chQ(this,true,'ch-q1','ch-fb1',engine,6)">π</button>
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q1','ch-fb1',engine,6)">0</button>
+</div>
+<div class="quiz-feedback" id="ch-fb1"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">A number is an integer but NOT a natural number. Which could it be?</div>
+<div class="quiz-opts" id="ch-q2">
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q2','ch-fb2',engine,6)">5</button>
+<button class="quiz-opt" onclick="chQ(this,true,'ch-q2','ch-fb2',engine,6)">−4</button>
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q2','ch-fb2',engine,6)">½</button>
+<button class="quiz-opt" onclick="chQ(this,false,'ch-q2','ch-fb2',engine,6)">π</button>
+</div>
+<div class="quiz-feedback" id="ch-fb2"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">What is the cube of 4?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="ch-cube" placeholder="Answer">
+<button class="quiz-check-btn" onclick="checkAns('ch-cube','ch-cube-fb',64,engine,6,'4³ = 4×4×4 = 64.')">Check</button>
+</div>
+<div class="quiz-feedback" id="ch-cube-fb"></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 8: Download -->
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Download Your Lecture Notes</div><div class="slide-sub">Official FredInstitute notes — keep these for revision.</div></div>
+<div class="slide-content">
+<div class="download-slide">
+<div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info">
+<div class="download-title">IGCSE Taxonomy of Number</div>
+<div class="download-desc">Full classification of all number types: natural, integer, rational, irrational, real. Includes worked examples.</div>
+</div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none">
+<svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+Download Notes</a>
+</div>
+<div class="key-point" style="margin-top:.75rem">Click the button above → Google Drive opens → download or save to your account. Study this before your exam.</div>
+<div class="info-box" style="margin-top:.5rem"><strong>What's inside:</strong> Number families diagram, rational vs irrational proofs, prime number list to 100, square &amp; cube number table.</div>
+</div>
+</div>
+
+<!-- SLIDE 9: Summary -->
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">What We Learned</div><div class="slide-sub">Key points from this lesson — review before the reward!</div></div>
+<div class="slide-content">
+<div class="explain-panel">
+<ul class="summary-list">
+<li>Natural numbers: 1, 2, 3, … (positive counting numbers only)</li>
+<li>Whole numbers: 0, 1, 2, 3, … (naturals + zero)</li>
+<li>Integers: …−2, −1, 0, 1, 2, … (include negatives)</li>
+<li>Rational: can be written as p/q (fractions, terminating/repeating decimals)</li>
+<li>Irrational: cannot be a fraction — decimal goes on forever (π, √2, e)</li>
+<li>Even: divisible by 2. Odd: not divisible by 2.</li>
+<li>Prime: exactly 2 factors. Composite: more than 2. 1 is neither.</li>
+<li>Square numbers: n² = 1, 4, 9, 16, 25… Cube numbers: n³ = 1, 8, 27, 64…</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- SLIDE 10: Reward -->
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Numbers</div><div class="slide-title">Lesson Complete! 🎉</div><div class="slide-sub">You've finished Number Types. Collect your reward!</div></div>
+<div class="slide-content">
+<div class="slide-2col">
+<div class="explain-panel">
+<ul class="summary-list">
+<li>Natural numbers: 1, 2, 3, …</li>
+<li>Whole numbers: 0, 1, 2, 3, …</li>
+<li>Integers: …−2, −1, 0, 1, 2, …</li>
+<li>Rational: writable as p/q fraction</li>
+<li>Irrational: π, √2, √3, e</li>
+<li>Prime: only 2 factors. 1 is neither prime nor composite.</li>
+<li>Square: n² | Cube: n³</li>
+</ul>
+<a href="02-place-value.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">
+Next: Place Value <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</a>
+</div>
+<div class="reward-section">
+<div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap the box to collect your points!</div>
+<div class="reward-content" id="rcontent">
+<div class="reward-pts">+150 Points</div>
+<div class="reward-msg">Excellent work! Numbers mastered.</div>
+<div class="reward-badge">🏅 Number Classifier</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/01-whole-numbers.html');
+var engine=SlideEngine({slides:11,lessonId:'m1l01',pts:150});
+initReward('rbox','rcontent',150,'m1l01');
+
+function revealRational(){
+  var steps=document.querySelectorAll('#rat-steps .step-item');
+  var answers=["0.75 = 3/4 — can be written as a fraction. → <strong>Rational ✓</strong>","√7 = 2.6457513… — never ends, never repeats. → <strong>Irrational ✓</strong>","−⅘ is already a fraction. → <strong>Rational ✓</strong>"];
+  steps.forEach(function(s,i){s.querySelector('.step-desc').innerHTML=answers[i];s.style.background='var(--or50)';s.style.borderRadius='var(--r)';s.style.padding='.4rem .6rem';});
+  document.getElementById('rat-btn').textContent='✓ Revealed';
+  document.getElementById('rat-btn').disabled=true;
+  if(engine)engine.markAnswered(2);
+}
+</script>
+</body></html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Equivalent Fractions — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>Concept 2 · Equivalent Fractions</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+  <div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div>
+    <button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+  </div>
+  <div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<!-- S1 Pre-test -->
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Quick Check</div><div class="slide-sub">What do you know about equivalent fractions?</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">Which fraction is equivalent to ½?</div>
+<div class="quiz-opts" id="pre-eq"><button class="quiz-opt" onclick="preQ(this,false,'pre-eq','pre-eq-fb',engine,0)">²⁄₅</button><button class="quiz-opt" onclick="preQ(this,true,'pre-eq','pre-eq-fb',engine,0)">⁴⁄₈</button><button class="quiz-opt" onclick="preQ(this,false,'pre-eq','pre-eq-fb',engine,0)">³⁄₅</button><button class="quiz-opt" onclick="preQ(this,false,'pre-eq','pre-eq-fb',engine,0)">²⁄₃</button></div>
+<div class="quiz-feedback" id="pre-eq-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">Equivalent fractions have the same VALUE, just written differently. ½ = 2/4 = 3/6 = 50/100</div>
+</div></div></div>
+
+<!-- S2 What are equivalent fractions -->
+<div class="ls-slide" data-screen-label="02 What Are They">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">What Are Equivalent Fractions?</div><div class="slide-sub">Same value — different appearance.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Equivalent fractions are different fractions that represent the SAME amount. Imagine cutting a pizza into 2 slices and taking 1 (½), versus cutting into 4 slices and taking 2 (²⁄₄) — you have the same amount!</p></div>
+<div class="def-box"><span class="def-term">The Golden Rule</span>Multiply OR divide BOTH the numerator AND denominator by the SAME non-zero number — the value NEVER changes.<br><br>½ = 2/4 = 3/6 = 4/8 = 5/10 = 50/100 — all identical!</div>
+<div class="key-point">This works because multiplying top AND bottom by the same number is like multiplying by 1 (e.g. ²⁄₂ = 1). Multiplying by 1 doesn't change the value.</div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Equivalent fraction explorer:</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Numerator:</span><input type="range" class="fred-slider" id="eq-n" min="1" max="6" value="1" oninput="updateEqFrac()"><span class="slider-row-val" id="eq-nv">1</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Denominator:</span><input type="range" class="fred-slider" id="eq-d" min="2" max="8" value="2" oninput="updateEqFrac()"><span class="slider-row-val" id="eq-dv">2</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Multiply by:</span><input type="range" class="fred-slider" id="eq-m" min="2" max="10" value="2" oninput="updateEqFrac()"><span class="slider-row-val" id="eq-mv">2</span></div>
+</div>
+<div class="result-display" id="eq-frac-res"><span class="big">1/2 = 2/4</span></div>
+</div>
+</div></div></div>
+
+<!-- S3 Finding equivalents -->
+<div class="ls-slide" data-screen-label="03 Finding Equivalents">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Finding Equivalent Fractions</div><div class="slide-sub">Step-by-step method for every scenario.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Method: Scale Up</span>
+To make ²⁄₃ equivalent with denominator 12:<br>
+3 × ? = 12 → ? = 4<br>
+Multiply numerator by same: 2 × 4 = 8<br>
+Answer: ²⁄₃ = <strong>⁸⁄₁₂</strong></div>
+<div class="def-box"><span class="def-term">Method: Scale Down (Simplify)</span>
+To simplify ⁸⁄₁₂:<br>
+HCF(8,12) = 4<br>
+8÷4=2, 12÷4=3<br>
+Answer: ⁸⁄₁₂ = <strong>²⁄₃</strong></div>
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Find ³⁄₄ = ?/20</div><div class="step-desc">4×5=20. Multiply numerator: 3×5=15. → ¹⁵⁄₂₀</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Simplify ¹⁰⁄₁₅</div><div class="step-desc">HCF(10,15)=5. 10÷5=2, 15÷5=3. → ²⁄₃</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Fill in the blank: ²⁄₅ = ?/25</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="eq-find1" placeholder="?"><button class="quiz-check-btn" onclick="checkAns('eq-find1','eq-find1-fb',10,engine,2,'5×5=25. Numerator: 2×5=10.')">Check</button></div>
+<div class="quiz-feedback" id="eq-find1-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S4 Comparing fractions -->
+<div class="ls-slide" data-screen-label="04 Comparing">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Comparing &amp; Ordering Fractions</div><div class="slide-sub">Use a common denominator to compare fairly.</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">How to Compare Fractions</span>
+Step 1: Find the LCM of all denominators<br>
+Step 2: Convert all fractions to that common denominator<br>
+Step 3: Compare the numerators — bigger numerator = bigger fraction<br><br>
+Compare ²⁄₃ and ³⁄₄:<br>
+LCM(3,4) = 12<br>
+²⁄₃ = ⁸⁄₁₂, ³⁄₄ = ⁹⁄₁₂<br>
+9 > 8, so <strong>³⁄₄ > ²⁄₃</strong></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Which is larger: ⅗ or ⁷⁄₁₀?</div>
+<div class="quiz-opts" id="cmp-q1"><button class="quiz-opt" onclick="mcQ(this,false,'cmp-q1','cmp-fb',engine,3)">⅗</button><button class="quiz-opt" onclick="mcQ(this,true,'cmp-q1','cmp-fb',engine,3)">⁷⁄₁₀</button><button class="quiz-opt" onclick="mcQ(this,false,'cmp-q1','cmp-fb',engine,3)">They are equal</button></div>
+<div class="quiz-feedback" id="cmp-fb"></div></div>
+</div></div></div>
+
+<!-- S5 On number line -->
+<div class="ls-slide" data-screen-label="05 Number Line">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Fractions on a Number Line</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="ep-text"><p>A number line shows fractions as points between whole numbers. Equivalent fractions land on the SAME point on the number line.</p></div>
+<div style="margin:.75rem 0;padding:1rem;background:var(--or50);border-radius:var(--r);border:1px solid var(--or200)">
+<svg viewBox="0 0 400 80" style="width:100%;max-width:400px;display:block;margin:auto">
+<line x1="20" y1="40" x2="380" y2="40" stroke="#F97316" stroke-width="2"/>
+<line x1="20" y1="32" x2="20" y2="48" stroke="#EA580C" stroke-width="2"/><text x="20" y="62" text-anchor="middle" font-size="11" fill="#374151">0</text>
+<line x1="200" y1="32" x2="200" y2="48" stroke="#EA580C" stroke-width="2"/><text x="200" y="62" text-anchor="middle" font-size="11" fill="#374151">½</text>
+<text x="200" y="74" text-anchor="middle" font-size="9" fill="#EA580C">= 2/4 = 3/6</text>
+<line x1="380" y1="32" x2="380" y2="48" stroke="#EA580C" stroke-width="2"/><text x="380" y="62" text-anchor="middle" font-size="11" fill="#374151">1</text>
+<line x1="110" y1="35" x2="110" y2="45" stroke="#EA580C" stroke-width="1.5"/><text x="110" y="28" text-anchor="middle" font-size="10" fill="#374151">¼</text>
+<line x1="290" y1="35" x2="290" y2="45" stroke="#EA580C" stroke-width="1.5"/><text x="290" y="28" text-anchor="middle" font-size="10" fill="#374151">¾</text>
+<circle cx="200" cy="40" r="5" fill="#F97316"/>
+</svg>
+</div>
+<div class="quiz-block"><div class="quiz-q">On a number line from 0 to 1, where does ⅔ sit relative to ½?</div>
+<div class="quiz-opts" id="nl-q1"><button class="quiz-opt" onclick="mcQ(this,false,'nl-q1','nl-fb',engine,4)">To the left of ½</button><button class="quiz-opt" onclick="mcQ(this,true,'nl-q1','nl-fb',engine,4)">To the right of ½</button><button class="quiz-opt" onclick="mcQ(this,false,'nl-q1','nl-fb',engine,4)">At the same point</button></div>
+<div class="quiz-feedback" id="nl-fb"></div></div>
+</div></div></div>
+
+<!-- S6 Practice QB -->
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="eqqb-text">Loading…</div><div class="quiz-opts" id="eqqb-opts"></div><div class="quiz-feedback" id="eqqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="eqqb-score">Score: 0/5</span><button class="quiz-check-btn" id="eqqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<!-- S7 Challenge -->
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Challenge Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A recipe for 4 people uses ³⁄₄ cup of sugar. You want to make it for 12 people. How many cups of sugar? (Give numerator — denominator is 4)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-eq1" placeholder="Numerator"><button class="quiz-check-btn" onclick="checkAns('ch-eq1','ch-eq1-fb',9,engine,6,'Scale factor: 12÷4=3. ¾ × 3/3 = ⁹⁄₄ = 2¼ cups.')">Check</button></div>
+<div class="quiz-feedback" id="ch-eq1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A test has 60 questions. A student answers ⅘ correctly. How many did they get right?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-eq2" placeholder="Questions correct"><button class="quiz-check-btn" onclick="checkAns('ch-eq2','ch-eq2-fb',48,engine,6,'⅘ of 60: 60÷5=12, 12×4=48.')">Check</button></div>
+<div class="quiz-feedback" id="ch-eq2-fb"></div></div>
+</div></div></div>
+
+<!-- S8 Download -->
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Fractions, Decimals &amp; Percentages</div><div class="download-desc">Equivalent fractions, comparing, ordering, simplifying, and real-world applications.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div><div class="key-point" style="margin-top:.75rem">Download and keep for exam revision.</div></div></div>
+
+<!-- S9 Summary -->
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Equivalent fractions: same value, different appearance (½ = 2/4 = 3/6…)</li>
+<li>Golden rule: multiply or divide BOTH top and bottom by the same number</li>
+<li>To find equivalent: find what to multiply denominator by, do same to numerator</li>
+<li>To compare: convert to same denominator, then compare numerators</li>
+<li>To simplify: divide both by HCF</li>
+<li>Fractions on number line: equivalent fractions land on same point</li>
+</ul></div></div></div>
+
+<!-- S10 Reward -->
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C2 · Equivalent Fractions</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>× or ÷ both top &amp; bottom by same = equivalent</li><li>Simplify: divide by HCF</li><li>Compare: common denominator first</li></ul>
+<a href="10-fraction-operations.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Fraction Operations <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+100 Points</div><div class="reward-msg">Equivalence Expert!</div><div class="reward-badge">🏅 Equivalence Expert</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div></div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/09-equivalent-fractions.html');
+var engine=SlideEngine({slides:10,lessonId:'m2l02',pts:100});
+initReward('rbox','rcontent',100,'m2l02');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Which is equivalent to ¾?",opts:["⁶⁄₁₀","⁹⁄₁₂","⁴⁄₅","²⁄₃"],ans:1,msg:"¾ × 3/3 = ⁹⁄₁₂. Both numerator and denominator multiplied by 3."},{q:"Simplify ²⁴⁄₃₂.",opts:["¾","⅔","⁵⁄₈","⁶⁄₈"],ans:0,msg:"HCF(24,32)=8. 24÷8=3, 32÷8=4. → ¾."},{q:"Fill in: ⁵⁄₆ = ?/30",opts:["20","24","25","30"],ans:2,msg:"6×5=30. Numerator: 5×5=25."},{q:"Order from smallest to largest: ½, ⅓, ⅔",opts:["½, ⅓, ⅔","⅓, ½, ⅔","⅔, ½, ⅓","⅓, ⅔, ½"],ans:1,msg:"Common denom 6: ½=³⁄₆, ⅓=²⁄₆, ⅔=⁴⁄₆. Order: 2<3<4 → ⅓, ½, ⅔."},{q:"Which pair are NOT equivalent?",opts:["²⁄₄ and ½","⅔ and ⁴⁄₆","¾ and ⁶⁄₈","²⁄₅ and ³⁄₁₀"],ans:3,msg:"²⁄₅=⁴⁄₁₀, but ³⁄₁₀ ≠ ⁴⁄₁₀. So ²⁄₅ ≠ ³⁄₁₀."}],'eqqb-opts','eqqb-text','eqqb-fb','eqqb-score',engine,5);
+
+</script></body></html>

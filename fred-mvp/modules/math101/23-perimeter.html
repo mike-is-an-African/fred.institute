@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Perimeter — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C5 · Perimeter</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Quick Check</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">What is the perimeter of a rectangle 8 cm long and 5 cm wide?</div>
+<div class="quiz-opts" id="pre-per"><button class="quiz-opt" onclick="preQ(this,false,'pre-per','pre-per-fb',engine,0)">13 cm</button><button class="quiz-opt" onclick="preQ(this,true,'pre-per','pre-per-fb',engine,0)">26 cm</button><button class="quiz-opt" onclick="preQ(this,false,'pre-per','pre-per-fb',engine,0)">40 cm</button><button class="quiz-opt" onclick="preQ(this,false,'pre-per','pre-per-fb',engine,0)">16 cm</button></div>
+<div class="quiz-feedback" id="pre-per-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">Perimeter = distance all the way around. 2(8+5) = 2×13 = 26 cm.</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 What is Perimeter">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">What is Perimeter?</div><div class="slide-sub">The total distance around the outside of a shape.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Perimeter</span>The total length of all the sides of a shape. It is a LENGTH measurement — always in units like cm, m, km.</div>
+<div class="def-box"><span class="def-term">Perimeter Formulas</span>
+Square: P = 4s<br>
+Rectangle: P = 2(l + w)<br>
+Triangle: P = a + b + c<br>
+Regular polygon with n sides: P = n × s<br>
+Circle (circumference): C = 2πr = πd</div>
+<div class="key-point">For any shape: add ALL the side lengths. If the shape is irregular, add every side individually.</div>
+<div class="warn-point">Perimeter is 1D (a length). Area is 2D. Don't mix them up!</div>
+</div>
+<div class="interactive-panel">
+<!-- Live rectangle perimeter slider -->
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Rectangle perimeter explorer:</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Length (cm):</span><input type="range" class="fred-slider" id="per-l" min="1" max="15" value="8" oninput="updatePerimeter()"><span class="slider-row-val" id="per-lv">8</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Width (cm):</span><input type="range" class="fred-slider" id="per-w" min="1" max="10" value="5" oninput="updatePerimeter()"><span class="slider-row-val" id="per-wv">5</span></div>
+</div>
+<div id="per-rect-vis" style="margin:.5rem 0;display:flex;justify-content:center"></div>
+<div class="result-display" id="per-result"><span class="big">P = 26 cm</span></div>
+<script>
+function updatePerimeter(){
+  var l=parseInt(document.getElementById('per-l').value),w=parseInt(document.getElementById('per-w').value);
+  document.getElementById('per-lv').textContent=l;document.getElementById('per-wv').textContent=w;
+  var maxW=150,maxH=100,rW=Math.round(l/15*maxW),rH=Math.round(w/10*maxH);
+  document.getElementById('per-rect-vis').innerHTML='<svg width="'+(rW+20)+'" height="'+(rH+20)+'" viewBox="0 0 '+(rW+20)+' '+(rH+20)+'"><rect x="10" y="10" width="'+rW+'" height="'+rH+'" fill="#FED7AA" stroke="#F97316" stroke-width="2"/><text x="'+(10+rW/2)+'" y="8" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">'+l+'cm</text><text x="'+(10+rW/2)+'" y="'+(rH+20)+'" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">'+l+'cm</text><text x="5" y="'+(10+rH/2)+'" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">'+w+'</text></svg>';
+  document.getElementById('per-result').innerHTML='<span class="big">P = 2('+l+'+'+w+') = '+(2*(l+w))+' cm</span>';
+}
+updatePerimeter();
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Circle Circumference">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Circle Circumference</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Circumference of a Circle</span>
+C = 2πr (r = radius)<br>
+C = πd (d = diameter = 2r)<br>
+π ≈ 3.14159 (use 3.14 unless told otherwise)<br><br>
+If r = 5 cm: C = 2×π×5 = 31.4 cm<br>
+If d = 12 cm: C = π×12 = 37.7 cm</div>
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Find radius from circumference</div><div class="step-desc">C=44 cm. r=C÷(2π)=44÷6.28=7.0 cm</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Radius (cm):</span><input type="range" class="fred-slider" id="circ-r" min="1" max="12" value="5" oninput="updateCirc()"><span class="slider-row-val" id="circ-rv">5</span></div>
+</div>
+<div id="circ-vis" style="margin:.5rem 0;display:flex;justify-content:center"></div>
+<div class="result-display" id="circ-result"><span class="big">C = 31.4 cm</span></div>
+<script>
+function updateCirc(){
+  var r=parseInt(document.getElementById('circ-r').value);
+  document.getElementById('circ-rv').textContent=r;
+  var d=Math.min(r*7,120);
+  document.getElementById('circ-vis').innerHTML='<svg width="'+(d+20)+'" height="'+(d+20)+'"><circle cx="'+(d/2+10)+'" cy="'+(d/2+10)+'" r="'+(d/2)+'" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><line x1="'+(d/2+10)+'" y1="'+(d/2+10)+'" x2="'+(d+10)+'" y2="'+(d/2+10)+'" stroke="#EA580C" stroke-width="2"/><text x="'+(d*3/4+10)+'" y="'+(d/2+5)+'" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">r='+r+'</text></svg>';
+  document.getElementById('circ-result').innerHTML='<span class="big">C = 2π×'+r+' = '+(2*Math.PI*r).toFixed(1)+' cm</span>';
+}
+updateCirc();
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Compound Shapes">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Perimeter of Compound Shapes</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Compound (Composite) Shapes</span>
+Shapes made from two or more basic shapes joined together.<br><br>
+To find perimeter: trace around the OUTSIDE boundary only. Add only the external sides — NOT shared internal sides.</div>
+<div class="info-box"><strong>Example:</strong> An L-shape made of two rectangles. Only trace the outer edges. Interior boundaries don't count.</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">An L-shape has outer dimensions: top=6cm, right side=8cm, bottom=10cm, step height=4cm, step width=4cm, left side=4cm. What is the perimeter?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="comp-per" placeholder="cm"><button class="quiz-check-btn" onclick="checkAns('comp-per','comp-per-fb',36,engine,3,'6+8+4+4+10+4=36cm. Add all outer edges.')">Check</button></div>
+<div class="quiz-feedback" id="comp-per-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Arc Length">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Arc Length &amp; Sector Perimeter</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Arc Length</span>
+Part of a circle's circumference.<br>
+Arc length = (θ/360) × 2πr<br>
+where θ = the angle at the centre in degrees<br><br>
+For a quarter circle (θ=90°): arc = (90/360)×2πr = ½πr</div>
+<div class="def-box"><span class="def-term">Sector Perimeter</span>
+A "pizza slice" shape.<br>
+Perimeter = arc length + 2r</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Find the arc length of a semicircle with radius 7 cm. (Use π=3.14, give 1 dp)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" step="0.1" id="arc-q1" placeholder="cm"><button class="quiz-check-btn" onclick="checkAns('arc-q1','arc-q1-fb',22.0,engine,4,'(180/360)×2×3.14×7=½×2×3.14×7=22.0cm.')">Check</button></div>
+<div class="quiz-feedback" id="arc-q1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="perqb-text">Loading…</div><div class="quiz-opts" id="perqb-opts"></div><div class="quiz-feedback" id="perqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="perqb-score">Score: 0/5</span><button class="quiz-check-btn" id="perqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Challenge: Real-World Perimeter</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A running track consists of two semicircles (r=36m) and two straight sections (100m each). What is the total perimeter? (Use π=3.14, round to nearest metre)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-per1" placeholder="m"><button class="quiz-check-btn" onclick="checkAns('ch-per1','ch-per1-fb',426,engine,6,'Two semicircles = one full circle: 2×3.14×36=226.1m. Two straights: 200m. Total≈426m.')">Check</button></div>
+<div class="quiz-feedback" id="ch-per1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Geometry — Perimeter &amp; Area Notes</div><div class="download-desc">Perimeter formulas, circumference, arc length, compound shapes.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Perimeter = total distance around the outside of a shape</li>
+<li>Rectangle: P=2(l+w). Square: P=4s. Triangle: P=a+b+c</li>
+<li>Circle circumference: C=2πr=πd</li>
+<li>Compound shapes: trace OUTER boundary only</li>
+<li>Arc length = (θ/360) × 2πr</li>
+<li>Sector perimeter = arc + 2r</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C5 · Perimeter</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Perimeter=outer boundary</li><li>C=2πr for circles</li><li>Compound: outer edges only</li></ul>
+<a href="24-area.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Area <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+120 Points</div><div class="reward-msg">Perimeter Pro!</div><div class="reward-badge">🏅 Perimeter Pro</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/23-perimeter.html');
+var engine=SlideEngine({slides:10,lessonId:'m5l02',pts:120});
+initReward('rbox','rcontent',120,'m5l02');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Perimeter of a square with side 9 cm?",opts:["18cm","36cm","81cm","27cm"],ans:1,msg:"4×9=36cm."},{q:"Circumference of circle with diameter 10 cm? (π=3.14)",opts:["31.4cm","62.8cm","15.7cm","28.3cm"],ans:0,msg:"C=π×d=3.14×10=31.4cm."},{q:"A rectangle has perimeter 34 cm and length 10 cm. What is the width?",opts:["7cm","14cm","3.4cm","24cm"],ans:0,msg:"2(10+w)=34. 10+w=17. w=7cm."},{q:"Perimeter of equilateral triangle with side 6.5 cm?",opts:["13cm","19.5cm","26cm","6.5cm"],ans:1,msg:"3×6.5=19.5cm."},{q:"Radius of circle with circumference 50.24 cm? (π=3.14)",opts:["8cm","16cm","25cm","4cm"],ans:0,msg:"r=C÷(2π)=50.24÷6.28=8cm."}],'perqb-opts','perqb-text','perqb-fb','perqb-score',engine,5);
+
+</script></body></html>

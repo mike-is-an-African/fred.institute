@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Division — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>Concept 1 · Division</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+  <div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div>
+    <button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+  </div>
+  <div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<!-- S1 Pre-test -->
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Quick Check</div><div class="slide-sub">What do you already know about division?</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">What is 252 ÷ 7?</div>
+<div class="quiz-opts" id="pre-div"><button class="quiz-opt" onclick="preQ(this,false,'pre-div','pre-div-fb',engine,0)">34</button><button class="quiz-opt" onclick="preQ(this,true,'pre-div','pre-div-fb',engine,0)">36</button><button class="quiz-opt" onclick="preQ(this,false,'pre-div','pre-div-fb',engine,0)">38</button><button class="quiz-opt" onclick="preQ(this,false,'pre-div','pre-div-fb',engine,0)">32</button></div>
+<div class="quiz-feedback" id="pre-div-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">This lesson: division vocabulary, short &amp; long division, remainders, dividing decimals, and word problems.</div>
+</div></div></div>
+
+<!-- S2 Vocabulary -->
+<div class="ls-slide" data-screen-label="02 Vocabulary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Division — Key Vocabulary</div><div class="slide-sub">Know the terms before the method.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Division is splitting a quantity into equal groups. 12 ÷ 4 = 3 means "split 12 into 4 equal groups — each group has 3."</p></div>
+<div class="def-box"><span class="def-term">Dividend</span>The number being divided. In 12 ÷ 4 = 3, the dividend is 12.</div>
+<div class="def-box"><span class="def-term">Divisor</span>The number you are dividing BY. In 12 ÷ 4 = 3, the divisor is 4.</div>
+<div class="def-box"><span class="def-term">Quotient</span>The result (answer) of division. In 12 ÷ 4 = 3, the quotient is 3.</div>
+<div class="def-box"><span class="def-term">Remainder</span>What is left over when a number doesn't divide exactly. 13 ÷ 4 = 3 remainder 1.</div>
+<div class="warn-point">Division by ZERO is undefined — it is impossible. You can never divide by 0.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">In 45 ÷ 6 = 7 remainder 3, what is the divisor?</div>
+<div class="quiz-opts" id="vocab-div"><button class="quiz-opt" onclick="mcQ(this,false,'vocab-div','vocab-div-fb',engine,1)">45</button><button class="quiz-opt" onclick="mcQ(this,true,'vocab-div','vocab-div-fb',engine,1)">6</button><button class="quiz-opt" onclick="mcQ(this,false,'vocab-div','vocab-div-fb',engine,1)">7</button><button class="quiz-opt" onclick="mcQ(this,false,'vocab-div','vocab-div-fb',engine,1)">3</button></div>
+<div class="quiz-feedback" id="vocab-div-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S3 Short & long division -->
+<div class="ls-slide" data-screen-label="03 Long Division">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Short &amp; Long Division — Step by Step</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Short Division (bus stop method)</span>
+1. Write dividend under the "bus stop" bracket<br>
+2. Divide the divisor into the first digit(s)<br>
+3. Write quotient above, carry remainder to next digit<br>
+4. Repeat until all digits are used<br><br>
+Example: 459 ÷ 3<br>
+4÷3=1r1. Bring down: 15÷3=5. 9÷3=3.<br>
+<strong>Answer: 153</strong></div>
+<div class="def-box"><span class="def-term">Long Division</span>Used for larger divisors (2+ digits). Same principle but working is shown in full — divide, multiply, subtract, bring down. Repeat.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">What is 728 ÷ 8?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="short-div1" placeholder="Answer"><button class="quiz-check-btn" onclick="checkAns('short-div1','short-div1-fb',91,engine,2,'7÷8=0r7. 72÷8=9. 8÷8=1. Answer: 91.')">Check</button></div>
+<div class="quiz-feedback" id="short-div1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">What is 546 ÷ 6?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="short-div2" placeholder="Answer"><button class="quiz-check-btn" onclick="checkAns('short-div2','short-div2-fb',91,engine,2,'5÷6=0r5. 54÷6=9. 6÷6=1. Answer: 91.')">Check</button></div>
+<div class="quiz-feedback" id="short-div2-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S4 Remainders & decimals -->
+<div class="ls-slide" data-screen-label="04 Remainders Decimals">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Remainders &amp; Dividing Decimals</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Expressing Remainders</span>
+As a remainder: 17 ÷ 5 = 3 r 2<br>
+As a fraction: 17 ÷ 5 = 3 and 2/5<br>
+As a decimal: 17 ÷ 5 = 3.4 (continue dividing: 20÷5=4)</div>
+<div class="def-box"><span class="def-term">Dividing Decimals</span>
+Method 1: multiply both by 10/100 to make divisor a whole number.<br>
+3.6 ÷ 0.4 → multiply both by 10 → 36 ÷ 4 = <strong>9</strong><br><br>
+Method 2: short division, adding decimal point and zeros as needed.</div>
+<div class="warn-point">When dividing by a decimal, always convert the divisor to a whole number first.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">What is 15 ÷ 4 as a decimal?</div>
+<div class="quiz-opts" id="rem-div"><button class="quiz-opt" onclick="mcQ(this,false,'rem-div','rem-div-fb',engine,3)">3.5</button><button class="quiz-opt" onclick="mcQ(this,true,'rem-div','rem-div-fb',engine,3)">3.75</button><button class="quiz-opt" onclick="mcQ(this,false,'rem-div','rem-div-fb',engine,3)">3.25</button><button class="quiz-opt" onclick="mcQ(this,false,'rem-div','rem-div-fb',engine,3)">4.0</button></div>
+<div class="quiz-feedback" id="rem-div-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Calculate 7.2 ÷ 0.9.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="dec-div1" placeholder="Answer"><button class="quiz-check-btn" onclick="checkAns('dec-div1','dec-div1-fb',8,engine,3,'Multiply both by 10: 72÷9=8.')">Check</button></div>
+<div class="quiz-feedback" id="dec-div1-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S5 Sign rules -->
+<div class="ls-slide" data-screen-label="05 Sign Rules">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Division Sign Rules</div><div class="slide-sub">Same rules as multiplication.</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="info-box"><strong>Sign rules for division:</strong><br>
+Positive ÷ Positive = Positive: 12 ÷ 3 = 4<br>
+Negative ÷ Negative = Positive: −12 ÷ (−3) = 4<br>
+Positive ÷ Negative = Negative: 12 ÷ (−3) = −4<br>
+Negative ÷ Positive = Negative: −12 ÷ 3 = −4</div>
+<div class="key-point">Same signs → positive result. Different signs → negative result. This applies to both multiplication AND division.</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">What is −36 ÷ 9?</div>
+<div class="quiz-opts" id="sign-div"><button class="quiz-opt" onclick="mcQ(this,false,'sign-div','sign-div-fb',engine,4)">4</button><button class="quiz-opt" onclick="mcQ(this,true,'sign-div','sign-div-fb',engine,4)">−4</button><button class="quiz-opt" onclick="mcQ(this,false,'sign-div','sign-div-fb',engine,4)">−45</button><button class="quiz-opt" onclick="mcQ(this,false,'sign-div','sign-div-fb',engine,4)">45</button></div>
+<div class="quiz-feedback" id="sign-div-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">What is −48 ÷ (−6)?</div>
+<div class="quiz-opts" id="sign-div2"><button class="quiz-opt" onclick="mcQ(this,true,'sign-div2','sign-div2-fb',engine,4)">8</button><button class="quiz-opt" onclick="mcQ(this,false,'sign-div2','sign-div2-fb',engine,4)">−8</button><button class="quiz-opt" onclick="mcQ(this,false,'sign-div2','sign-div2-fb',engine,4)">−54</button><button class="quiz-opt" onclick="mcQ(this,false,'sign-div2','sign-div2-fb',engine,4)">54</button></div>
+<div class="quiz-feedback" id="sign-div2-fb"></div></div>
+</div></div></div>
+
+<!-- S6 Practice QB -->
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="divqb-text">Loading…</div><div class="quiz-opts" id="divqb-opts"></div><div class="quiz-feedback" id="divqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="divqb-score">Score: 0/5</span><button class="quiz-check-btn" id="divqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<!-- S7 Challenge -->
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Challenge: Word Problems</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A school buys 1,248 pencils and distributes them equally to 32 classrooms. How many pencils per classroom?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="div-wp1" placeholder="Pencils"><button class="quiz-check-btn" onclick="checkAns('div-wp1','div-wp1-fb',39,engine,6,'1248÷32=39.')">Check</button></div>
+<div class="quiz-feedback" id="div-wp1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A cake weighing 4.5 kg is cut into slices of 0.075 kg each. How many slices?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="div-wp2" placeholder="Slices"><button class="quiz-check-btn" onclick="checkAns('div-wp2','div-wp2-fb',60,engine,6,'4.5÷0.075. Multiply by 1000: 4500÷75=60.')">Check</button></div>
+<div class="quiz-feedback" id="div-wp2-fb"></div></div>
+</div></div></div>
+
+<!-- S8 Download -->
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Factors, Multiples &amp; Division Notes</div><div class="download-desc">Long division, remainders, sign rules, and decimal division methods.</div></div>
+<a href="https://drive.google.com/file/d/1bGEnE4g4dqXe5FyiYxGqhJMVhKqAIaJ1/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div><div class="key-point" style="margin-top:.75rem">Download and save for exam revision.</div></div></div>
+
+<!-- S9 Summary -->
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Dividend ÷ Divisor = Quotient (+ Remainder)</li>
+<li>Short division: bus-stop method, carry remainders left to right</li>
+<li>Remainders: express as whole number, fraction, or decimal</li>
+<li>Decimal division: make divisor a whole number first (×10, ×100…)</li>
+<li>Sign rules: same signs = positive, different signs = negative</li>
+<li>Division by zero is undefined — always impossible!</li>
+</ul></div></div></div>
+
+<!-- S10 Reward -->
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Division</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Dividend ÷ Divisor = Quotient</li><li>Bus-stop method for short division</li><li>Decimals: clear the divisor first</li><li>Same signs → positive result</li></ul>
+<a href="07-bodmas.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: BODMAS <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+100 Points</div><div class="reward-msg">Division Champion!</div><div class="reward-badge">🏅 Division Champion</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div></div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/06-division.html');
+var engine=SlideEngine({slides:10,lessonId:'m1l06',pts:100});
+initReward('rbox','rcontent',100,'m1l06');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"What is 936 ÷ 8?",opts:["107","117","127","97"],ans:1,msg:"936÷8=117. Short division: 9÷8=1r1. 16÷8=2. No wait: 93÷8=11r5. 56÷8=7. Answer:117."},{q:"Express 19 ÷ 4 as a decimal.",opts:["4.5","4.75","4.25","5.25"],ans:1,msg:"19÷4=4 remainder 3. 30÷4=7 remainder 2. 20÷4=5. → 4.75."},{q:"What is 5.4 ÷ 0.6?",opts:["0.9","9","0.09","90"],ans:1,msg:"Multiply both by 10: 54÷6=9."},{q:"What is (−60) ÷ (−12)?",opts:["5","−5","72","−72"],ans:0,msg:"Neg÷Neg=Pos. 60÷12=5."},{q:"A rope 84m long is cut into pieces of 0.7m. How many pieces?",opts:["60","120","84","12"],ans:1,msg:"84÷0.7: multiply both by 10 → 840÷7=120."}],'divqb-opts','divqb-text','divqb-fb','divqb-score',engine,5);
+
+</script></body></html>
