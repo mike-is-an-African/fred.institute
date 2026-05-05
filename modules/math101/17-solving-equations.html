@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Solving Equations — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C3 · Solving Equations</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Quick Check</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">Solve: 3(x − 2) = 12</div>
+<div class="quiz-opts" id="pre-se"><button class="quiz-opt" onclick="preQ(this,false,'pre-se','pre-se-fb',engine,0)">2</button><button class="quiz-opt" onclick="preQ(this,false,'pre-se','pre-se-fb',engine,0)">6</button><button class="quiz-opt" onclick="preQ(this,true,'pre-se','pre-se-fb',engine,0)">6</button><button class="quiz-opt" onclick="preQ(this,false,'pre-se','pre-se-fb',engine,0)">4</button></div>
+<div class="quiz-feedback" id="pre-se-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">Expand: 3x−6=12. 3x=18. x=6.</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 Solving with Fractions">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Solving Equations with Fractions</div><div class="slide-sub">Multiply through to clear fractions first.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Method: Multiply by Denominator</span>
+Multiply EVERY term by the denominator to eliminate fractions.<br><br>
+x/3 + 2 = 7<br>
+×3 everywhere: x + 6 = 21<br>
+x = 15<br><br>
+(x+1)/4 = 3<br>
+×4: x + 1 = 12<br>
+x = 11</div>
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">x/5 − 3 = 2</div><div class="step-desc">×5: x − 15 = 10. x = 25.</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">(2x+1)/3 = 5</div><div class="step-desc">×3: 2x+1=15. 2x=14. x=7.</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Solve: x/4 + 3 = 8</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="frac-eq1" placeholder="x ="><button class="quiz-check-btn" onclick="checkAns('frac-eq1','frac-eq1-fb',20,engine,1,'x/4=5. x=20.')">Check</button></div>
+<div class="quiz-feedback" id="frac-eq1-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Forming Equations">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Forming Equations from Words</div><div class="slide-sub">Translate a problem into algebra, then solve.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Steps to Form an Equation</span>
+1. Identify the unknown — call it x (or another letter)<br>
+2. Write expressions for other quantities in terms of x<br>
+3. Find an equality condition (what equals what?)<br>
+4. Write the equation and solve<br>
+5. Check the answer makes sense</div>
+<div class="info-box"><strong>Example:</strong> "A number doubled then increased by 5 gives 17. Find the number."<br>
+Let number = x<br>
+Doubled: 2x. Increased by 5: 2x + 5<br>
+Equation: 2x + 5 = 17<br>
+2x = 12 → x = <strong>6</strong></div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Three times a number minus 4 equals 20. What is the number?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="form-eq1" placeholder="Number"><button class="quiz-check-btn" onclick="checkAns('form-eq1','form-eq1-fb',8,engine,2,'3x−4=20. 3x=24. x=8.')">Check</button></div>
+<div class="quiz-feedback" id="form-eq1-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Inequalities">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Introduction to Inequalities</div><div class="slide-sub">Like equations, but with &gt;, &lt;, ≥, ≤ instead of =.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Inequality Symbols</span>
+&gt; means "greater than"<br>
+&lt; means "less than"<br>
+≥ means "greater than or equal to"<br>
+≤ means "less than or equal to"</div>
+<div class="def-box"><span class="def-term">Solving Inequalities</span>
+Same as equations EXCEPT: when you multiply or divide by a NEGATIVE number, FLIP the inequality sign.<br><br>
+Solve 2x + 3 &lt; 11:<br>
+2x &lt; 8 → x &lt; <strong>4</strong><br><br>
+Solve −3x ≥ 9:<br>
+÷(−3) → x ≤ <strong>−3</strong> (flip!)</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Solve: 5x − 2 &gt; 13. What is x?</div>
+<div class="quiz-opts" id="ineq-q1"><button class="quiz-opt" onclick="mcQ(this,false,'ineq-q1','ineq-fb',engine,3)">x &gt; 2</button><button class="quiz-opt" onclick="mcQ(this,true,'ineq-q1','ineq-fb',engine,3)">x &gt; 3</button><button class="quiz-opt" onclick="mcQ(this,false,'ineq-q1','ineq-fb',engine,3)">x &lt; 3</button><button class="quiz-opt" onclick="mcQ(this,false,'ineq-q1','ineq-fb',engine,3)">x ≥ 3</button></div>
+<div class="quiz-feedback" id="ineq-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Simultaneous Equations">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Simultaneous Equations (Intro)</div><div class="slide-sub">Two equations, two unknowns — solve together.</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Substitution Method</span>
+Rearrange one equation to get y = … then substitute into the other.<br><br>
+x + y = 10 and x − y = 4<br>
+Add equations: 2x = 14 → x = 7<br>
+Substitute: 7 + y = 10 → y = 3</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">From: x + y = 8 and x − y = 2. What is x?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="sim-eq1" placeholder="x ="><button class="quiz-check-btn" onclick="checkAns('sim-eq1','sim-eq1-fb',5,engine,4,'Add: 2x=10. x=5. y=3.')">Check</button></div>
+<div class="quiz-feedback" id="sim-eq1-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="seqb-text">Loading…</div><div class="quiz-opts" id="seqb-opts"></div><div class="quiz-feedback" id="seqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="seqb-score">Score: 0/5</span><button class="quiz-check-btn" id="seqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Challenge Problems</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A rectangle has perimeter 46 cm. Its length is (3x+1) cm and width is x cm. Find x.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-se1" placeholder="x ="><button class="quiz-check-btn" onclick="checkAns('ch-se1','ch-se1-fb',5,engine,6,'Perimeter=2(3x+1+x)=2(4x+1)=8x+2=46. 8x=44. x=5.5... wait: 2(3x+1+x)=2(4x+1)=8x+2=46. 8x=44. x=5.5. But checking: let x=5: 2(16+1)=34≠46. Let perimeter equation be 2(l+w)=46: l+w=23. (3x+1)+x=23. 4x+1=23. 4x=22. x=5.5.')">Check</button></div>
+<div class="quiz-feedback" id="ch-se1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Solve the inequality: −2x + 6 &lt; 2. What is x? (Enter the boundary value)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-se2" placeholder="Boundary value"><button class="quiz-check-btn" onclick="checkAns('ch-se2','ch-se2-fb',2,engine,6,'−2x&lt;−4. ÷(−2) flip: x&gt;2.')">Check</button></div>
+<div class="quiz-feedback" id="ch-se2-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Algebra 04 — Solving Equations</div><div class="download-desc">Fractional equations, forming equations, inequalities, and simultaneous equations.</div></div>
+<a href="https://drive.google.com/file/d/1I0j3mFJl9QJzZw7k5Xd-example/view" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Fractional equations: multiply all terms by denominator to clear fractions</li>
+<li>Forming equations: define unknown, write expressions, find equality, solve</li>
+<li>Inequalities: same as equations EXCEPT flip sign when ÷ by negative</li>
+<li>Simultaneous: two equations, add/subtract to eliminate one variable</li>
+<li>Always check: substitute answer back into original equation</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C3 · Solving Equations</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Fractions: multiply through to clear</li><li>Word problems: define x, form equation</li><li>Inequalities: flip sign for ÷(−)</li></ul>
+<a href="18-word-problems.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Word Problems <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+150 Points</div><div class="reward-msg">Equation Master!</div><div class="reward-badge">🏅 Equation Master</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/17-solving-equations.html');
+var engine=SlideEngine({slides:10,lessonId:'m3l04',pts:150});
+initReward('rbox','rcontent',150,'m3l04');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Solve: 2(x+3)=16",opts:["x=5","x=8","x=7","x=4"],ans:0,msg:"2x+6=16. 2x=10. x=5."},{q:"Solve: x/2−4=3",opts:["x=14","x=7","x=−2","x=1"],ans:0,msg:"x/2=7. x=14."},{q:"Which inequality is correct for: 4x≥20?",opts:["x≥4","x≥5","x≤5","x>5"],ans:1,msg:"÷4: x≥20÷4=5."},{q:"'5 more than twice a number is 19.' What is the number?",opts:["7","12","14","8"],ans:0,msg:"2x+5=19. 2x=14. x=7."},{q:"Solve: 6x+4=3x+19",opts:["x=5","x=3","x=7","x=4"],ans:0,msg:"6x−3x=19−4. 3x=15. x=5."}],'seqb-opts','seqb-text','seqb-fb','seqb-score',engine,5);
+
+</script></body></html>

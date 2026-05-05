@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Variables — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C3 · Algebra — Variables</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Video">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Introduction to Algebra — Watch First</div></div>
+<div class="slide-content">
+<div class="video-slide"><video controls autoplay muted playsinline><source src="../../assets/videos/IntroToAlgebraLesson.mp4" type="video/mp4">No video support.</video>
+<div class="video-unmute-hint" onclick="this.previousElementSibling.muted=false;this.previousElementSibling.play();this.style.display='none'"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>Tap to unmute</div></div>
+<div class="key-point" style="margin-top:.625rem">Watch first, then practise through each slide.</div>
+</div></div>
+
+<div class="ls-slide" data-screen-label="02 What is a Variable">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">What is a Variable?</div><div class="slide-sub">A letter that represents an unknown or changing quantity.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Algebra uses <em>letters</em> (called variables) to represent numbers we don't know yet — or numbers that can change. Instead of solving one specific problem, algebra solves an entire category of problems at once.</p></div>
+<div class="def-box"><span class="def-term">Variable</span>A letter (usually x, y, n, a, b…) that stands in for an unknown or changing number.<br><br>In "the price + tax = total", if price=x and tax=5: x + 5 = total</div>
+<div class="def-box"><span class="def-term">Constant</span>A fixed, known number that doesn't change. In 3x + 7, the constant is 7.</div>
+<div class="def-box"><span class="def-term">Coefficient</span>The number multiplying a variable. In 3x, the coefficient of x is 3. In −5y², the coefficient of y² is −5.</div>
+<div class="key-point">A single letter like x means 1×x. We write x, not 1x.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">In the expression 7y, what is the coefficient?</div>
+<div class="quiz-opts" id="var-q1"><button class="quiz-opt" onclick="mcQ(this,false,'var-q1','var-fb',engine,1)">y</button><button class="quiz-opt" onclick="mcQ(this,true,'var-q1','var-fb',engine,1)">7</button><button class="quiz-opt" onclick="mcQ(this,false,'var-q1','var-fb',engine,1)">7y</button><button class="quiz-opt" onclick="mcQ(this,false,'var-q1','var-fb',engine,1)">1</button></div>
+<div class="quiz-feedback" id="var-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Substitution">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Substitution</div><div class="slide-sub">Replacing variables with numbers to find the value.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">What is Substitution?</span>
+Replace each variable with a given number value, then calculate.<br><br>
+If x = 3 and y = 4, find 2x + 3y:<br>
+= 2(3) + 3(4)<br>
+= 6 + 12<br>
+= <strong>18</strong></div>
+<div class="warn-point">Always use BODMAS when substituting: do powers first, then × and ÷, then + and −.</div>
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Find 5a − b when a=4, b=7</div><div class="step-desc">5(4)−7 = 20−7 = 13</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Find x² + 2x when x=−3</div><div class="step-desc">(−3)²+2(−3) = 9+(−6) = 3</div></div></div>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">If p = 5 and q = 2, what is 3p − q²?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="sub-q1" placeholder="Answer"><button class="quiz-check-btn" onclick="checkAns('sub-q1','sub-q1-fb',11,engine,2,'3(5)−2²=15−4=11.')">Check</button></div>
+<div class="quiz-feedback" id="sub-q1-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Like Terms">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Like Terms &amp; Collecting</div><div class="slide-sub">Only add or subtract terms that are the same kind.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Like Terms</span>Terms with exactly the same variable(s) AND power(s).<br>
+3x and 7x are like (both x).<br>
+3x and 3x² are NOT like (different powers).<br>
+4xy and 5xy are like (both xy).</div>
+<div class="def-box"><span class="def-term">Collecting Like Terms</span>Add or subtract the coefficients of like terms. Keep different terms separate.<br><br>
+5x + 3y − 2x + 7y<br>
+= (5x−2x) + (3y+7y)<br>
+= <strong>3x + 10y</strong></div>
+<div class="key-point">You CANNOT add x + x² — they are NOT like terms. They must stay separate.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">Simplify: 4a + 3b − a + 5b</div>
+<div class="quiz-opts" id="like-q1"><button class="quiz-opt" onclick="mcQ(this,false,'like-q1','like-fb',engine,3)">4a + 8b</button><button class="quiz-opt" onclick="mcQ(this,true,'like-q1','like-fb',engine,3)">3a + 8b</button><button class="quiz-opt" onclick="mcQ(this,false,'like-q1','like-fb',engine,3)">5a + 8b</button><button class="quiz-opt" onclick="mcQ(this,false,'like-q1','like-fb',engine,3)">3a + 2b</button></div>
+<div class="quiz-feedback" id="like-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Multiplication & Division">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Multiplying &amp; Dividing with Variables</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="info-box"><strong>Multiplying:</strong> multiply coefficients, then add powers of same variables.<br>
+3x × 4x = 12x² (3×4=12, x×x=x²)<br>
+2a × 5b = 10ab<br>
+2x² × 3x = 6x³</div>
+<div class="info-box"><strong>Dividing:</strong> divide coefficients, then subtract powers.<br>
+12x⁴ ÷ 3x² = 4x² (12÷3=4, x⁴÷x²=x²)<br>
+8ab ÷ 4b = 2a</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">What is 5x² × 3x?</div>
+<div class="quiz-opts" id="alg-mul"><button class="quiz-opt" onclick="mcQ(this,false,'alg-mul','alg-mul-fb',engine,4)">15x²</button><button class="quiz-opt" onclick="mcQ(this,true,'alg-mul','alg-mul-fb',engine,4)">15x³</button><button class="quiz-opt" onclick="mcQ(this,false,'alg-mul','alg-mul-fb',engine,4)">8x³</button><button class="quiz-opt" onclick="mcQ(this,false,'alg-mul','alg-mul-fb',engine,4)">15x⁵</button></div>
+<div class="quiz-feedback" id="alg-mul-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="varqb-text">Loading…</div><div class="quiz-opts" id="varqb-opts"></div><div class="quiz-feedback" id="varqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="varqb-score">Score: 0/5</span><button class="quiz-check-btn" id="varqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Challenge: Applied Algebra</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">The formula for speed is v = u + at. Find v when u=10, a=3, t=5.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-var1" placeholder="v ="><button class="quiz-check-btn" onclick="checkAns('ch-var1','ch-var1-fb',25,engine,6,'v=10+(3×5)=10+15=25.')">Check</button></div>
+<div class="quiz-feedback" id="ch-var1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A rectangle has length (3x+2) cm and width 4 cm. Write the area as a simplified expression in terms of x.</div>
+<div class="quiz-opts" id="ch-var2"><button class="quiz-opt" onclick="chQ(this,true,'ch-var2','ch-var2-fb',engine,6)">(12x+8) cm²</button><button class="quiz-opt" onclick="chQ(this,false,'ch-var2','ch-var2-fb',engine,6)">(3x+6) cm²</button><button class="quiz-opt" onclick="chQ(this,false,'ch-var2','ch-var2-fb',engine,6)">(3x+8) cm²</button></div>
+<div class="quiz-feedback" id="ch-var2-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Algebra 01 — Variables &amp; Expressions</div><div class="download-desc">Variables, coefficients, substitution, like terms, collecting, and algebraic manipulation.</div></div>
+<a href="https://drive.google.com/file/d/1I0j3mFJl9QJzZw7k5Xd-example/view" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Variable: a letter representing an unknown number (x, y, n…)</li>
+<li>Coefficient: the number multiplying a variable (in 3x, coefficient=3)</li>
+<li>Constant: a fixed number (in 3x+7, constant=7)</li>
+<li>Substitution: replace variables with numbers, use BODMAS</li>
+<li>Like terms: same variable AND same power — only these can be added/subtracted</li>
+<li>Multiply variables: multiply coefficients, ADD powers. Divide: subtract powers.</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C3 · Algebra</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Variable=letter. Coefficient=multiplier. Constant=fixed.</li><li>Substitute: replace &amp; calculate</li><li>Like terms only: add/subtract same variables</li></ul>
+<a href="15-expressions.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Expressions <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+130 Points</div><div class="reward-msg">Algebra Starter!</div><div class="reward-badge">🏅 Algebra Starter</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/14-variables.html');
+var engine=SlideEngine({slides:10,lessonId:'m3l01',pts:130});
+initReward('rbox','rcontent',130,'m3l01');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"If x=4, what is 3x−5?",opts:["7","12","17","−17"],ans:0,msg:"3(4)−5=12−5=7."},{q:"Simplify: 6m + 4n − 3m + n",opts:["3m+5n","9m+5n","3m+3n","3m−5n"],ans:0,msg:"(6m−3m)+(4n+n)=3m+5n."},{q:"What is 4x × 2y?",opts:["6xy","8xy","8x²y","8x"],ans:1,msg:"4×2=8. x×y=xy. → 8xy."},{q:"What is 12a²b ÷ 4ab?",opts:["3a","3ab","3a²","8ab"],ans:0,msg:"12÷4=3. a²÷a=a. b÷b=1. → 3a."},{q:"In −8z², what is the coefficient of z²?",opts:["8","z²","−8","−8z"],ans:2,msg:"Coefficient is the number multiplying the variable: −8."}],'varqb-opts','varqb-text','varqb-fb','varqb-score',engine,5);
+
+</script></body></html>

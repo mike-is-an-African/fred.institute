@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2D Shapes — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C5 · 2D Shapes</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<!-- S1 Video -->
+<div class="ls-slide" data-screen-label="01 Video">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">2D Shapes — Watch First</div></div>
+<div class="slide-content">
+<div class="video-slide"><video controls autoplay muted playsinline><source src="../../assets/videos/Intro2DShapes.mp4" type="video/mp4">No video support.</video>
+<div class="video-unmute-hint" onclick="this.previousElementSibling.muted=false;this.previousElementSibling.play();this.style.display='none'"><svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>Tap to unmute</div></div>
+<div class="key-point" style="margin-top:.625rem">Watch first, then explore each shape interactively.</div>
+</div></div>
+
+<!-- S2 Key vocabulary -->
+<div class="ls-slide" data-screen-label="02 Vocabulary">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">2D Shape Vocabulary</div><div class="slide-sub">Every term you need to know.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>2D (two-dimensional) shapes are flat — they have length and width but no depth. Every polygon has sides, vertices, and angles.</p></div>
+<div class="def-box"><span class="def-term">Key Terms</span>
+Polygon: a closed 2D shape with straight sides<br>
+Vertex (plural: vertices): a corner where two sides meet<br>
+Side/Edge: a straight line forming part of the boundary<br>
+Interior angle: angle INSIDE the shape<br>
+Exterior angle: angle OUTSIDE (= 180° − interior angle)<br>
+Regular polygon: all sides equal AND all angles equal</div>
+<div class="def-box"><span class="def-term">Interior Angle Sum Formula</span>
+For a polygon with n sides:<br>
+Sum of interior angles = <strong>(n − 2) × 180°</strong><br><br>
+Triangle (n=3): 1×180 = 180°<br>
+Quadrilateral (n=4): 2×180 = 360°<br>
+Pentagon (n=5): 3×180 = 540°<br>
+Hexagon (n=6): 4×180 = 720°</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">What is the sum of interior angles of an octagon (8 sides)?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="poly-pre" placeholder="°"><button class="quiz-check-btn" onclick="checkAns('poly-pre','poly-pre-fb',1080,engine,1,'(8−2)×180=6×180=1080°.')">Check</button></div>
+<div class="quiz-feedback" id="poly-pre-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S3 Interactive shapes -->
+<div class="ls-slide" data-screen-label="03 Interactive Shapes">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Interactive Shape Explorer</div><div class="slide-sub">Click any shape to see its properties and formulas.</div></div>
+<div class="slide-content">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.75rem">
+<button onclick="showShape2D('square')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Square</button>
+<button onclick="showShape2D('rectangle')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Rectangle</button>
+<button onclick="showShape2D('triangle')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Triangle</button>
+<button onclick="showShape2D('circle')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Circle</button>
+<button onclick="showShape2D('trapezium')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Trapezium</button>
+<button onclick="showShape2D('parallelogram')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Parallelogram</button>
+<button onclick="showShape2D('rhombus')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Rhombus</button>
+<button onclick="showShape2D('pentagon')" class="quiz-opt" style="padding:.6rem .4rem;font-size:.75rem;font-weight:700">Pentagon</button>
+</div>
+<div style="display:flex;gap:1rem;align-items:flex-start">
+<svg id="shape2d-svg" width="170" height="150" viewBox="0 0 170 150" style="flex-shrink:0;background:var(--or50);border-radius:var(--rl);border:1.5px solid var(--or200)"></svg>
+<div id="shape2d-info" style="flex:1">
+<div class="key-point">Select a shape above to explore its properties, formulas, and angles.</div>
+</div>
+</div>
+<script>
+var shapes2D={
+  square:{draw:function(s){s.innerHTML='<rect x="30" y="25" width="110" height="110" fill="#FED7AA" stroke="#F97316" stroke-width="2.5" rx="2"/><text x="83" y="18" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">s</text><text x="83" y="148" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">s</text><text x="18" y="83" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">s</text><text x="152" y="83" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">s</text><text x="56" y="62" font-size="9" fill="#EA580C">90°</text><text x="95" y="62" font-size="9" fill="#EA580C">90°</text>';},info:'<div class="def-box"><span class="def-term">Square</span>4 equal sides (s). 4 right angles (90°).<br><strong>Perimeter = 4s</strong><br><strong>Area = s²</strong><br>Diagonals: equal, perpendicular bisectors.</div>'},
+  rectangle:{draw:function(s){s.innerHTML='<rect x="15" y="40" width="140" height="70" fill="#FED7AA" stroke="#F97316" stroke-width="2.5" rx="2"/><text x="83" y="32" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">l</text><text x="83" y="125" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">l</text><text x="7" y="78" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">w</text><text x="160" y="78" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">w</text>';},info:'<div class="def-box"><span class="def-term">Rectangle</span>Opposite sides equal. 4 right angles.<br><strong>Perimeter = 2(l+w)</strong><br><strong>Area = l × w</strong><br>Diagonals: equal length.</div>'},
+  triangle:{draw:function(s){s.innerHTML='<polygon points="83,15 15,135 151,135" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><text x="83" y="10" text-anchor="middle" font-size="9" fill="#EA580C" font-weight="700">A</text><text x="37" y="148" text-anchor="middle" font-size="9" fill="#EA580C" font-weight="700">b (base)</text><text x="20" y="78" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">a</text><text x="148" y="78" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">c</text><line x1="83" y1="15" x2="83" y2="135" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="4,3"/><text x="92" y="78" font-size="9" fill="#EA580C">h</text>';},info:'<div class="def-box"><span class="def-term">Triangle</span>3 sides, 3 angles summing to 180°.<br><strong>Perimeter = a+b+c</strong><br><strong>Area = ½ × base × height</strong><br>Height must be perpendicular to base.</div>'},
+  circle:{draw:function(s){s.innerHTML='<circle cx="83" cy="75" r="60" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><line x1="83" y1="75" x2="143" y2="75" stroke="#EA580C" stroke-width="2"/><text x="113" y="68" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">r</text><circle cx="83" cy="75" r="3.5" fill="#EA580C"/>';},info:'<div class="def-box"><span class="def-term">Circle</span>All points equal distance (r) from centre.<br><strong>Circumference = 2πr = πd</strong><br><strong>Area = πr²</strong><br>π ≈ 3.14159. Diameter d = 2r.</div>'},
+  trapezium:{draw:function(s){s.innerHTML='<polygon points="45,25 125,25 150,125 20,125" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><text x="83" y="18" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">a (top)</text><text x="83" y="140" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">b (bottom)</text><line x1="83" y1="25" x2="83" y2="125" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="4,3"/><text x="93" y="78" font-size="9" fill="#EA580C">h</text>';},info:'<div class="def-box"><span class="def-term">Trapezium</span>One pair of parallel sides (a and b).<br><strong>Area = ½(a+b) × h</strong><br>Perimeter = sum of all 4 sides.<br>h = perpendicular height.</div>'},
+  parallelogram:{draw:function(s){s.innerHTML='<polygon points="40,25 150,25 130,125 20,125" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><text x="93" y="18" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">b (base)</text><text x="18" y="78" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">a</text><line x1="83" y1="25" x2="73" y2="125" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="4,3"/><text x="93" y="78" font-size="9" fill="#EA580C">h</text>';},info:'<div class="def-box"><span class="def-term">Parallelogram</span>2 pairs of parallel sides. Opposite sides &amp; angles equal.<br><strong>Area = base × height</strong><br>(h = perpendicular height, NOT the slant side!)<br>Perimeter = 2(a+b)</div>'},
+  rhombus:{draw:function(s){s.innerHTML='<polygon points="83,15 150,75 83,135 16,75" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><text x="83" y="8" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">s</text><line x1="83" y1="15" x2="83" y2="135" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="4,3"/><line x1="16" y1="75" x2="150" y2="75" stroke="#EA580C" stroke-width="1.5" stroke-dasharray="4,3"/><text x="100" y="50" font-size="9" fill="#EA580C">d₁</text><text x="100" y="100" font-size="9" fill="#EA580C">d₂</text>';},info:'<div class="def-box"><span class="def-term">Rhombus</span>All 4 sides equal. Diagonals perpendicular.<br><strong>Perimeter = 4s</strong><br><strong>Area = ½ × d₁ × d₂</strong><br>(d₁,d₂ = the two diagonals)</div>'},
+  pentagon:{draw:function(s){var pts=[];for(var i=0;i<5;i++){var a=i*72-90;pts.push((83+60*Math.cos(a*Math.PI/180)).toFixed(1)+','+(75+60*Math.sin(a*Math.PI/180)).toFixed(1));}s.innerHTML='<polygon points="'+pts.join(' ')+'" fill="#FED7AA" stroke="#F97316" stroke-width="2.5"/><text x="83" y="8" text-anchor="middle" font-size="10" fill="#EA580C" font-weight="700">Regular Pentagon</text>';},info:'<div class="def-box"><span class="def-term">Pentagon</span>5 sides &amp; 5 angles.<br>Sum of interior angles = 540°<br>Regular pentagon: each angle = 108°<br>Perimeter = 5s (regular)</div>'}
+};
+function showShape2D(name){
+  var sh=shapes2D[name];if(!sh)return;
+  sh.draw(document.getElementById('shape2d-svg'));
+  document.getElementById('shape2d-info').innerHTML=sh.info;
+  document.querySelectorAll('#slidesTrack .ls-slide:nth-child(3) .quiz-opt').forEach(function(b){b.style.background='var(--or50)';b.style.color='var(--g900)';});
+  if(engine)engine.markAnswered(2);
+}
+showShape2D('square');
+</script>
+</div></div>
+
+<!-- S4 Triangle types -->
+<div class="ls-slide" data-screen-label="04 Triangle Types">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Types of Triangles</div><div class="slide-sub">Classified by sides AND by angles.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">By Sides</span>
+Equilateral: 3 equal sides, 3 equal angles (60° each)<br>
+Isosceles: 2 equal sides, 2 equal base angles<br>
+Scalene: all sides different, all angles different</div>
+<div class="def-box"><span class="def-term">By Angles</span>
+Acute: all angles &lt; 90°<br>
+Right-angled: one angle = exactly 90° (has a square corner mark)<br>
+Obtuse: one angle &gt; 90°</div>
+<div class="key-point">Every triangle has exactly 180° total. If you know two angles, subtract from 180° to find the third.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block"><div class="quiz-q">A triangle has angles 50°, 65°, and 65°. What type is it?</div>
+<div class="quiz-opts" id="tri-type"><button class="quiz-opt" onclick="mcQ(this,false,'tri-type','tri-type-fb',engine,3)">Equilateral &amp; acute</button><button class="quiz-opt" onclick="mcQ(this,true,'tri-type','tri-type-fb',engine,3)">Isosceles &amp; acute</button><button class="quiz-opt" onclick="mcQ(this,false,'tri-type','tri-type-fb',engine,3)">Scalene &amp; obtuse</button></div>
+<div class="quiz-feedback" id="tri-type-fb"></div></div>
+</div>
+</div></div></div>
+
+<!-- S5 Angle properties -->
+<div class="ls-slide" data-screen-label="05 Angle Properties">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Key Angle Properties</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Angles on a straight line = 180°</div><div class="step-desc">If a + b + c are on one side of a line: a + b + c = 180°</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Angles around a point = 360°</div><div class="step-desc">All angles meeting at one point sum to 360°</div></div></div>
+<div class="step-item show"><div class="step-n">3</div><div class="step-body"><div class="step-title">Vertically opposite angles are equal</div><div class="step-desc">When two straight lines cross, opposite angles are identical</div></div></div>
+<div class="step-item show"><div class="step-n">4</div><div class="step-body"><div class="step-title">Exterior angle of a triangle = sum of other two interior angles</div><div class="step-desc">The exterior angle equals the sum of the two non-adjacent interior angles</div></div></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Two angles in a triangle are 47° and 83°. Find the third angle.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ang-q1" placeholder="°"><button class="quiz-check-btn" onclick="checkAns('ang-q1','ang-q1-fb',50,engine,4,'180−47−83=50°.')">Check</button></div>
+<div class="quiz-feedback" id="ang-q1-fb"></div></div>
+</div></div></div>
+
+<!-- S6 Practice QB -->
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="shqb-text">Loading…</div><div class="quiz-opts" id="shqb-opts"></div><div class="quiz-feedback" id="shqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="shqb-score">Score: 0/5</span><button class="quiz-check-btn" id="shqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<!-- S7 Challenge -->
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Challenge Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A regular polygon has exterior angles of 40°. How many sides does it have?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-sh1" placeholder="sides"><button class="quiz-check-btn" onclick="checkAns('ch-sh1','ch-sh1-fb',9,engine,6,'Sum of exterior angles=360°. 360÷40=9 sides.')">Check</button></div>
+<div class="quiz-feedback" id="ch-sh1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">In a quadrilateral, three angles are 85°, 110°, and 95°. Find the fourth angle.</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-sh2" placeholder="°"><button class="quiz-check-btn" onclick="checkAns('ch-sh2','ch-sh2-fb',70,engine,6,'Quadrilateral=360°. 360−85−110−95=70°.')">Check</button></div>
+<div class="quiz-feedback" id="ch-sh2-fb"></div></div>
+</div></div></div>
+
+<!-- S8 Download -->
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">IGCSE Number Taxonomy (includes Geometry intro)</div><div class="download-desc">2D shapes, angles, triangle types, and polygon angle formulas.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<!-- S9 Summary -->
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Interior angle sum: (n−2)×180°</li>
+<li>Exterior angles of any polygon always sum to 360°</li>
+<li>Triangle types: equilateral, isosceles, scalene (by side); acute, right, obtuse (by angle)</li>
+<li>Key formulas: square A=s², rectangle A=lw, triangle A=½bh, circle A=πr²</li>
+<li>Vertically opposite angles are equal; angles on a line = 180°</li>
+</ul></div></div></div>
+
+<!-- S10 Reward -->
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C5 · 2D Shapes</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Polygon angles: (n−2)×180°</li><li>Exterior sum=360°</li><li>Triangles: 3 types each way</li></ul>
+<a href="23-perimeter.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Perimeter <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+130 Points</div><div class="reward-msg">Shape Spotter!</div><div class="reward-badge">🏅 Shape Spotter</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/22-shapes.html');
+var engine=SlideEngine({slides:10,lessonId:'m5l01',pts:130});
+initReward('rbox','rcontent',130,'m5l01');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Sum of interior angles of a hexagon?",opts:["540°","720°","900°","360°"],ans:1,msg:"(6−2)×180=4×180=720°."},{q:"How many sides does a heptagon have?",opts:["6","7","8","9"],ans:1,msg:"Hepta=7 in Greek."},{q:"A regular polygon has interior angles of 135°. How many sides?",opts:["6","7","8","9"],ans:2,msg:"(n−2)×180/n=135. n=8 (octagon)."},{q:"Which has 4 equal sides but angles NOT necessarily 90°?",opts:["Rectangle","Square","Rhombus","Trapezium"],ans:2,msg:"Rhombus: all sides equal but angles can be any value."},{q:"Exterior angle of a regular hexagon?",opts:["60°","45°","72°","30°"],ans:0,msg:"Sum of exterior angles always=360°. 360÷6=60°."}],'shqb-opts','shqb-text','shqb-fb','shqb-score',engine,5);
+
+</script></body></html>

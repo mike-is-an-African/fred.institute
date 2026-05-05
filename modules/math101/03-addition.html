@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Addition — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>Concept 1 · Addition</strong></div>
+</div><div class="ls-topbar-right">
+<span class="ls-points" id="pts-display">0 Points</span>
+<span class="ls-slide-counter" id="slideCounter">1 / 10</span>
+</div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+  <div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div>
+    <button onclick="toggleNavCollapse()" title="Collapse" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+  </div>
+  <div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<!-- SLIDE 1: Pre-test -->
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">What Do You Already Know?</div><div class="slide-sub">A quick question before we start.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block">
+<div class="quiz-q">What is 347 + 285?</div>
+<div class="quiz-opts" id="pre-add">
+<button class="quiz-opt" onclick="preQ(this,false,'pre-add','pre-add-fb',engine,0)">622</button>
+<button class="quiz-opt" onclick="preQ(this,true,'pre-add','pre-add-fb',engine,0)">632</button>
+<button class="quiz-opt" onclick="preQ(this,false,'pre-add','pre-add-fb',engine,0)">612</button>
+<button class="quiz-opt" onclick="preQ(this,false,'pre-add','pre-add-fb',engine,0)">642</button>
+</div>
+<div class="quiz-feedback" id="pre-add-fb"></div>
+</div>
+<div class="key-point" style="margin-top:.75rem">In this lesson: column addition, carrying, adding decimals, mental methods, and word problems.</div>
+</div></div>
+</div>
+
+<!-- SLIDE 2: Key definitions -->
+<div class="ls-slide" data-screen-label="02 Definitions">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Addition — Key Vocabulary</div><div class="slide-sub">Know the words before the maths.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Addition is the process of combining two or more quantities into a single total. It is one of the four basic arithmetic operations.</p></div>
+<div class="def-box"><span class="def-term">Addend</span>The numbers being added together. In 4 + 7 = 11, both 4 and 7 are addends.</div>
+<div class="def-box"><span class="def-term">Sum</span>The result (answer) of an addition. In 4 + 7 = 11, the sum is 11.</div>
+<div class="def-box"><span class="def-term">Carrying (Regrouping)</span>When digits in a column add up to 10 or more, you carry the tens digit into the next column to the left.</div>
+<div class="key-point">Addition is commutative: a + b = b + a. Order doesn't change the sum!</div>
+<div class="key-point">Addition is associative: (a + b) + c = a + (b + c). Grouping doesn't matter!</div>
+</div>
+<div class="interactive-panel">
+<div class="info-box"><strong>Real-world addition:</strong><br>You buy a book for $12.50 and a pen for $3.75. Total = $12.50 + $3.75 = $16.25</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">In 28 + 35 = 63, what is the sum?</div>
+<div class="quiz-opts" id="def-q1">
+<button class="quiz-opt" onclick="mcQ(this,false,'def-q1','def-q1-fb',engine,1)">28</button>
+<button class="quiz-opt" onclick="mcQ(this,false,'def-q1','def-q1-fb',engine,1)">35</button>
+<button class="quiz-opt" onclick="mcQ(this,true,'def-q1','def-q1-fb',engine,1)">63</button>
+<button class="quiz-opt" onclick="mcQ(this,false,'def-q1','def-q1-fb',engine,1)">7</button>
+</div>
+<div class="quiz-feedback" id="def-q1-fb"></div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 3: Column addition method -->
+<div class="ls-slide" data-screen-label="03 Column Method">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Column Addition — Step by Step</div><div class="slide-sub">The most reliable method for large numbers.</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">How to use Column Addition</span>
+Step 1: Line up the digits by place value (units under units, tens under tens, etc.)<br>
+Step 2: Start from the RIGHTMOST column (units)<br>
+Step 3: Add the digits in that column<br>
+Step 4: If the sum ≥ 10, write the units digit and CARRY the tens digit to the next column<br>
+Step 5: Repeat for each column moving left</div>
+<div class="info-box">
+<strong>Example: 347 + 285</strong><br>
+<pre style="font-family:monospace;font-size:.9rem;line-height:1.6">
+  3 4 7
++ 2 8 5
+-------
+  6 3 2
+</pre>
+Units: 7+5=12 → write 2, carry 1<br>
+Tens: 4+8+1=13 → write 3, carry 1<br>
+Hundreds: 3+2+1=6 → write 6<br>
+<strong>Answer: 632</strong>
+</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block">
+<div class="quiz-q">Use column addition: 568 + 374 = ?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="col-add1" placeholder="Answer">
+<button class="quiz-check-btn" onclick="checkAns('col-add1','col-add1-fb',942,engine,2,'Units:8+4=12,carry1. Tens:6+7+1=14,carry1. Hundreds:5+3+1=9. Answer:942.')">Check</button>
+</div>
+<div class="quiz-feedback" id="col-add1-fb"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">What is 1,456 + 2,788?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="col-add2" placeholder="Answer">
+<button class="quiz-check-btn" onclick="checkAns('col-add2','col-add2-fb',4244,engine,2,'1456+2788=4244. Check: units 6+8=14, carry 1. Tens: 5+8+1=14, carry 1. Hundreds: 4+7+1=12, carry 1. Thousands: 1+2+1=4.')">Check</button>
+</div>
+<div class="quiz-feedback" id="col-add2-fb"></div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 4: Adding decimals -->
+<div class="ls-slide" data-screen-label="04 Adding Decimals">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Adding Decimals &amp; Negatives</div><div class="slide-sub">The same column method — just align the decimal points!</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Adding Decimals</span>
+Rule: align the decimal points in a column. Fill gaps with zeros.<br><br>
+Example: 12.5 + 7.38<br>
+<pre style="font-family:monospace;font-size:.875rem;line-height:1.6">
+  12.50
++  7.38
+------
+  19.88
+</pre></div>
+<div class="def-box"><span class="def-term">Adding Negative Numbers</span>
+Adding a negative = subtracting: 5 + (−3) = 5 − 3 = 2<br>
+Two negatives together: (−4) + (−6) = −10<br>
+Think of a number line — negatives move LEFT</div>
+<div class="key-point">Always line up decimal points before adding. Add trailing zeros if needed so all numbers have the same decimal places.</div>
+</div>
+<div class="interactive-panel">
+<div class="quiz-block">
+<div class="quiz-q">What is 3.75 + 8.6?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" step="0.01" id="dec-add1" placeholder="Answer">
+<button class="quiz-check-btn" onclick="checkAns('dec-add1','dec-add1-fb',12.35,engine,3,'3.75 + 8.60 = 12.35. Line up decimals: units 5+0=5... wait: 3.75+8.60. Units:3+8=11... tenths:7+6=13,carry1. Final:12.35.')">Check</button>
+</div>
+<div class="quiz-feedback" id="dec-add1-fb"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">What is (−7) + 4?</div>
+<div class="quiz-opts" id="neg-add1">
+<button class="quiz-opt" onclick="mcQ(this,false,'neg-add1','neg-add1-fb',engine,3)">11</button>
+<button class="quiz-opt" onclick="mcQ(this,false,'neg-add1','neg-add1-fb',engine,3)">3</button>
+<button class="quiz-opt" onclick="mcQ(this,true,'neg-add1','neg-add1-fb',engine,3)">−3</button>
+<button class="quiz-opt" onclick="mcQ(this,false,'neg-add1','neg-add1-fb',engine,3)">−11</button>
+</div>
+<div class="quiz-feedback" id="neg-add1-fb"></div>
+</div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 5: Mental methods -->
+<div class="ls-slide" data-screen-label="05 Mental Methods">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Mental Addition Strategies</div><div class="slide-sub">Smart shortcuts that make mental maths faster.</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="step-list">
+<div class="step-item show"><div class="step-n">1</div><div class="step-body"><div class="step-title">Partitioning</div><div class="step-desc">Break numbers into parts: 46+37 = (40+30)+(6+7) = 70+13 = 83</div></div></div>
+<div class="step-item show"><div class="step-n">2</div><div class="step-body"><div class="step-title">Rounding and Adjusting</div><div class="step-desc">Round one number up, then subtract: 47+38 = 47+40−2 = 87−2 = 85</div></div></div>
+<div class="step-item show"><div class="step-n">3</div><div class="step-body"><div class="step-title">Making 10s</div><div class="step-desc">Find pairs that make 10: 7+3+8+2+5 = (7+3)+(8+2)+5 = 10+10+5 = 25</div></div></div>
+<div class="step-item show"><div class="step-n">4</div><div class="step-body"><div class="step-title">Near doubles</div><div class="step-desc">6+7 = 6+6+1 = 12+1 = 13. Use doubles as a starting point.</div></div></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">Using partitioning: 63 + 48 = ?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="mental-add1" placeholder="Answer">
+<button class="quiz-check-btn" onclick="checkAns('mental-add1','mental-add1-fb',111,engine,4,'(60+40)+(3+8) = 100+11 = 111.')">Check</button>
+</div>
+<div class="quiz-feedback" id="mental-add1-fb"></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 6: Practice QB -->
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Practice Questions</div><div class="slide-sub">5 questions — instant feedback on every answer.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block">
+<div class="quiz-q" id="addqb-text">Loading…</div>
+<div class="quiz-opts" id="addqb-opts"></div>
+<div class="quiz-feedback" id="addqb-fb"></div>
+</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem">
+<span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="addqb-score">Score: 0/5</span>
+<button class="quiz-check-btn" id="addqb-opts-next" style="display:none">Next question →</button>
+</div>
+</div></div>
+</div>
+<script>
+QB([
+  {q:"What is 649 + 357?",opts:["996","1,006","986","1,016"],ans:1,msg:"Units:9+7=16,carry1. Tens:4+5+1=10,carry1. Hundreds:6+3+1=10,carry1. Result:1,006."},
+  {q:"What is 4.25 + 3.8?",opts:["8.05","7.95","8.05","7.05"],ans:0,msg:"4.25+3.80=8.05. Tenths:2+8=10,carry1. Units:4+3+1=8."},
+  {q:"What is (−5) + (−9)?",opts:["4","−4","−14","14"],ans:2,msg:"Both negative: add the values, keep negative sign. 5+9=14 → −14."},
+  {q:"Which addition property says order doesn't matter?",opts:["Associative","Commutative","Distributive","Identity"],ans:1,msg:"Commutative: a+b = b+a. Order doesn't affect the sum."},
+  {q:"What is 1,237 + 2,894 + 456?",opts:["4,587","4,487","4,687","4,577"],ans:0,msg:"1237+2894=4131. 4131+456=4587."}
+],'addqb-opts','addqb-text','addqb-fb','addqb-score',engine,5);
+document.getElementById('addqb-opts-next').onclick=function(){window['next_addqb-opts']&&window['next_addqb-opts']();};
+</script>
+
+<!-- SLIDE 7: Challenge word problems -->
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Challenge: Word Problems</div><div class="slide-sub">Apply addition to real situations.</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block">
+<div class="quiz-q">A shop sells 1,247 items on Monday, 983 on Tuesday, and 1,565 on Wednesday. How many items sold in total?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="add-wp1" placeholder="Total items">
+<button class="quiz-check-btn" onclick="checkAns('add-wp1','add-wp1-fb',3795,engine,6,'1247+983=2230. 2230+1565=3795.')">Check</button>
+</div>
+<div class="quiz-feedback" id="add-wp1-fb"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">A temperature starts at −8°C and rises by 15°C. What is the new temperature?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" id="add-wp2" placeholder="°C">
+<button class="quiz-check-btn" onclick="checkAns('add-wp2','add-wp2-fb',7,engine,6,'−8+15=7°C. Rise means add: −8+15=7.')">Check</button>
+</div>
+<div class="quiz-feedback" id="add-wp2-fb"></div>
+</div>
+<div class="quiz-block" style="margin-top:.75rem">
+<div class="quiz-q">What is the perimeter of a triangle with sides 4.5 cm, 6.2 cm, and 3.8 cm?</div>
+<div class="quiz-input-row">
+<input class="quiz-input" type="number" step="0.1" id="add-wp3" placeholder="cm">
+<button class="quiz-check-btn" onclick="checkAns('add-wp3','add-wp3-fb',14.5,engine,6,'Perimeter = sum of all sides: 4.5+6.2+3.8=14.5 cm.')">Check</button>
+</div>
+<div class="quiz-feedback" id="add-wp3-fb"></div>
+</div>
+</div></div>
+</div>
+
+<!-- SLIDE 8: Download -->
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content">
+<div class="download-slide">
+<div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info">
+<div class="download-title">Multi-Level Addition Notes</div>
+<div class="download-desc">Column addition, carrying, decimal addition, negative numbers, and word problems.</div>
+</div>
+<a href="https://drive.google.com/file/d/1bGEnE4g4dqXe5FyiYxGqhJMVhKqAIaJ1/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none">
+<svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+Download Notes</a>
+</div>
+<div class="key-point" style="margin-top:.75rem">Save these notes for exam revision.</div>
+</div></div>
+</div>
+
+<!-- SLIDE 9: Summary -->
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Key Points to Remember</div></div>
+<div class="slide-content"><div class="explain-panel">
+<ul class="summary-list">
+<li>Sum = the result of addition. Addend = numbers being added.</li>
+<li>Column addition: line up by place value, start from the right, carry when ≥ 10</li>
+<li>Decimals: align the decimal points before adding</li>
+<li>Adding a negative = subtraction: 5 + (−3) = 2</li>
+<li>Commutative: a+b = b+a. Associative: (a+b)+c = a+(b+c)</li>
+<li>Mental strategies: partitioning, rounding &amp; adjusting, making 10s</li>
+</ul>
+</div></div>
+</div>
+
+<!-- SLIDE 10: Reward -->
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">Concept 1 · Addition</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<ul class="summary-list">
+<li>Addend + Addend = Sum</li>
+<li>Column method: right to left, carry when ≥ 10</li>
+<li>Decimals: align decimal points</li>
+<li>Negative + positive: use number line</li>
+<li>Commutative &amp; associative properties</li>
+</ul>
+<a href="04-subtraction.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">
+Next: Subtraction <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+</a>
+</div>
+<div class="reward-section">
+<div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect your points!</div>
+<div class="reward-content" id="rcontent">
+<div class="reward-pts">+100 Points</div>
+<div class="reward-msg">Addition Ace!</div>
+<div class="reward-badge">🏅 Addition Ace</div>
+</div>
+</div>
+</div></div>
+</div>
+
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/03-addition.html');
+var engine=SlideEngine({slides:10,lessonId:'m1l03',pts:100});
+initReward('rbox','rcontent',100,'m1l03');
+</script>
+</body></html>

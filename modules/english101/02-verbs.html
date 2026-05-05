@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Verbs — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;">
+<img src="../../assets/fred-logo.png" alt="FredInstitute" style="width:24px;height:24px;object-fit:contain;">
+</a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">English 101 · <strong>Concept 1 · Parts of Speech</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 7</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:0%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav">
+<div class="ls-nav-header" style="position:relative;">
+<div class="ls-nav-module">English 101</div>
+<div class="ls-nav-title">Concepts & Lessons</div>
+<button onclick="toggleNavCollapse()" title="Collapse" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;">
+<svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+</div>
+<div class="ls-nav-scroll" id="navScroll"></div>
+</nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+<div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">What is a Verb?</div><div class="slide-sub">A verb is a word that expresses an action, state, or occurrence.</div></div><div class="slide-content"><div class="slide-2col"><div class="explain-panel"><div class="ep-text"><p>Verbs are the engine of every sentence. Without a verb, a sentence cannot exist. A verb tells us what the subject does, is, or has. Every complete sentence must have at least one verb.</p></div><div class="def-box"><span class="def-term">Types of Verbs</span><strong>Action verbs:</strong> show physical or mental action — run, think, write, eat<br><strong>Linking verbs:</strong> connect the subject to a description — is, am, are, was, were, become, seem<br><strong>Helping (auxiliary) verbs:</strong> support the main verb — have, has, had, do, does, did, will, shall, can, could, may, might<br><strong>Modal verbs:</strong> show possibility, permission, obligation — can, could, may, might, must, should, would</div></div><div class="interactive-panel"><div class="info-box"><strong>Action:</strong> She <u>runs</u> every morning.<br><strong>Linking:</strong> He <u>is</u> a teacher.<br><strong>Helping:</strong> They <u>have been</u> waiting.<br><strong>Modal:</strong> You <u>should</u> study harder.</div></div></div></div></div><div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Verb Tenses — Overview</div><div class="slide-sub">Verbs change form to show when something happens.</div></div><div class="slide-content"><div class="full-interactive"><div class="def-box"><span class="def-term">Three Main Time Frames</span><strong>Past:</strong> already happened — walked, ran, ate<br><strong>Present:</strong> happening now or regularly — walk, run, eat<br><strong>Future:</strong> will happen — will walk, will run, will eat</div><div class="def-box"><span class="def-term">Simple vs Continuous vs Perfect</span><strong>Simple:</strong> I eat (habit) | I ate (completed) | I will eat<br><strong>Continuous:</strong> I am eating (now) | I was eating (then) | I will be eating<br><strong>Perfect:</strong> I have eaten (completed with present relevance) | I had eaten | I will have eaten</div><div class="key-point">The form of the verb changes to match the tense. Regular verbs add -ed for past. Irregular verbs change completely: go→went, eat→ate, see→saw.</div></div></div></div><div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Regular vs Irregular Verbs</div><div class="slide-sub">How verbs change in the past tense.</div></div><div class="slide-content"><div class="slide-2col"><div class="explain-panel"><div class="def-box"><span class="def-term">Regular Verbs</span>Add -ed to form the past: walk→walked, play→played, cook→cooked<br>Spelling rules: double the consonant after a short vowel (stop→stopped), change y to i (carry→carried)</div><div class="def-box"><span class="def-term">Common Irregular Verbs</span>These must be memorised — no pattern:<br>go→went→gone | see→saw→seen | take→took→taken<br>eat→ate→eaten | write→wrote→written | speak→spoke→spoken<br>come→came→come | run→ran→run | begin→began→begun</div></div><div class="interactive-panel"><div class="info-box">The three forms: <strong>Base → Past Simple → Past Participle</strong><br>Regular: play→played→played (same for both)<br>Irregular: eat→ate→eaten (all different)</div></div></div></div></div><div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Practice: Verbs</div></div><div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="vqb-text">Loading...</div><div class="quiz-opts" id="vqb-opts"></div><div class="quiz-feedback" id="vqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;margin-top:.5rem"><span style="font-size:.73rem;color:var(--g400)" id="vqb-score">Score: 0/5</span><button class="quiz-check-btn" id="vqb-opts-next" style="display:none" onclick="window['next_vqb-opts']&&window['next_vqb-opts']()">Next question →</button></div>
+</div></div></div>
+<div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Subject-Verb Agreement</div><div class="slide-sub">The verb must agree with its subject in number.</div></div><div class="slide-content"><div class="full-interactive"><div class="def-box"><span class="def-term">Rules</span><strong>Singular subject → singular verb:</strong> The dog runs. He is tired.<br><strong>Plural subject → plural verb:</strong> The dogs run. They are tired.<br><br>Tricky cases:<br>• "Everyone" is singular: Everyone <u>is</u> welcome (NOT are)<br>• "The team" is singular: The team <u>has</u> won (NOT have)<br>• Two subjects joined by "and" = plural: Tom and Jerry <u>are</u> friends</div><div class="key-point">Quick test: if you can replace the subject with "he/she/it", use singular verb. If you can replace with "they", use plural.</div></div></div></div><div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Active vs Passive Voice</div><div class="slide-sub">Who does the action — and does it matter?</div></div><div class="slide-content"><div class="full-interactive"><div class="def-box"><span class="def-term">Active Voice</span>The subject DOES the action:<br>"The cat caught the mouse." (subject = cat, does the catching)</div><div class="def-box"><span class="def-term">Passive Voice</span>The subject RECEIVES the action:<br>"The mouse was caught by the cat." (subject = mouse, receives the catching)</div><div class="info-box"><strong>Active</strong> is usually preferred — clearer and more direct.<br><strong>Passive</strong> is used when the action matters more than the doer, or when the doer is unknown:<br>"The window was broken." (We don't know who broke it.)</div></div></div></div><div class="ls-slide"><div class="slide-hdr"><div class="slide-tag">C1·Parts of Speech</div><div class="slide-title">Lesson Complete!</div></div><div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Verbs express action, state, or occurrence</li><li>Action verbs show doing; linking verbs connect; helping verbs support</li><li>Regular past: add -ed. Irregular: memorise (go→went, eat→ate)</li><li>Subject-verb agreement: singular subject→singular verb</li><li>Active voice: subject does action. Passive: subject receives action</li></ul>
+<a href="03-adjectives.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Adjectives & Adverbs →</a></div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect your points!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+100 Points</div><div class="reward-msg">Lesson mastered!</div><div class="reward-badge">Verb Master</div></div>
+</div></div></div></div>
+</div></div>
+<div class="ls-slide-nav">
+<button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button>
+<div class="ls-dots" id="slideDots"></div>
+<button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div></div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var ENG_NAV=[
+  {id:'c1',label:'Concept 1',title:'Parts of Speech',lessons:[
+    {id:'e01',title:'Nouns',file:'modules/english101/01-nouns.html'},
+    {id:'e02',title:'Verbs',file:'modules/english101/02-verbs.html'},
+    {id:'e03',title:'Adjectives & Adverbs',file:'modules/english101/03-adjectives.html'},
+    {id:'e04',title:'Pronouns & Prepositions',file:'modules/english101/04-pronouns.html'},
+  ]},
+  {id:'c2',label:'Concept 2',title:'Sentence Structure',lessons:[
+    {id:'e05',title:'Subjects & Predicates',file:'modules/english101/05-subjects.html'},
+    {id:'e06',title:'Clauses & Phrases',file:'modules/english101/06-clauses.html'},
+    {id:'e07',title:'Sentence Types',file:'modules/english101/07-sentence-types.html'},
+  ]},
+  {id:'c3',label:'Concept 3',title:'Tenses',lessons:[
+    {id:'e08',title:'Present Tense',file:'modules/english101/08-present-tense.html'},
+    {id:'e09',title:'Past Tense',file:'modules/english101/09-past-tense.html'},
+    {id:'e10',title:'Future & Perfect Tenses',file:'modules/english101/10-future-tense.html'},
+  ]},
+  {id:'c4',label:'Concept 4',title:'Punctuation & Grammar',lessons:[
+    {id:'e11',title:'Punctuation Rules',file:'modules/english101/11-punctuation.html'},
+    {id:'e12',title:'Common Grammar Errors',file:'modules/english101/12-grammar-errors.html'},
+  ]},
+  {id:'c5',label:'Concept 5',title:'Comprehension',lessons:[
+    {id:'e13',title:'Reading & Summarising',file:'modules/english101/13-comprehension.html'},
+    {id:'e14',title:'Inference & Analysis',file:'modules/english101/14-inference.html'},
+  ]},
+  {id:'c6',label:'Concept 6',title:'Essay Writing',lessons:[
+    {id:'e15',title:'Essay Structure',file:'modules/english101/15-essay-structure.html'},
+    {id:'e16',title:'Paragraphs & Linking',file:'modules/english101/16-paragraphs.html'},
+  ]},
+];
+var NAV=ENG_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})})});
+initNavPanel(NAV,'../../modules/english101/02-verbs.html');
+var engine=SlideEngine({slides:7,lessonId:'e02',pts:100});
+initReward('rbox','rcontent',100,'e02');
+// QB calls
+QB([{"q": "Which is a linking verb?", "opts": ["run", "jump", "is", "write"], "ans": 2, "msg": "\"Is\" connects the subject to a description \u2014 it does not show action."}, {"q": "What is the past tense of \"go\"?", "opts": ["goed", "gone", "went", "going"], "ans": 2, "msg": "Go is irregular: go\u2192went\u2192gone."}, {"q": "In \"She has been studying\", what is the helping verb?", "opts": ["She", "has been", "studying", "been studying"], "ans": 1, "msg": "\"Has been\" helps the main verb \"studying\"."}, {"q": "Which sentence uses the correct verb form?", "opts": ["He runned fast.", "He ran fast.", "He has ran fast.", "He runed fast."], "ans": 1, "msg": "Run is irregular: run\u2192ran\u2192run. \"Ran\" is the correct past simple."}, {"q": "\"Must\" is an example of a:", "opts": ["Action verb", "Linking verb", "Modal verb", "Regular verb"], "ans": 2, "msg": "\"Must\" shows obligation \u2014 it is a modal verb."}],'vqb-opts','vqb-text','vqb-fb','vqb-score',null,3);
+
+</script></body></html>

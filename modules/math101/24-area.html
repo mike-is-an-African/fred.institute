@@ -1,0 +1,200 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Area — FredInstitute</title>
+<link rel="stylesheet" href="../../lesson-shell.css">
+<script src="../../lesson-engine-v2.js?v=3"></script>
+</head><body><div class="lesson-wrapper">
+<div class="ls-topbar"><div class="ls-topbar-left">
+<a href="../../modules.html" style="display:flex;align-items:center;gap:.375rem;text-decoration:none;"><img src="../../assets/fred-logo.png" alt="FI" style="width:24px;height:24px;object-fit:contain;mix-blend-mode:multiply;"></a>
+<button class="ls-hamburger" onclick="toggleMobileNav()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<a href="../../modules.html" class="ls-back"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Modules</a>
+<div class="ls-breadcrumb">Maths 101 <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg><strong>C5 · Area</strong></div>
+</div><div class="ls-topbar-right"><span class="ls-points" id="pts-display">0 Points</span><span class="ls-slide-counter" id="slideCounter">1 / 10</span></div></div>
+<div class="ls-progress"><div class="pg-fill" id="progFill" style="width:10%"></div></div>
+<div class="ls-body">
+<div id="navOverlay" class="ls-nav-overlay" onclick="toggleMobileNav()"></div>
+<nav class="ls-nav" id="lessonNav"><div class="ls-nav-header" style="position:relative;"><div class="ls-nav-module">Maths 101</div><div class="ls-nav-title">Concepts &amp; Lessons</div><button onclick="toggleNavCollapse()" style="position:absolute;right:8px;top:12px;width:28px;height:28px;border-radius:50%;background:white;border:1.5px solid #e5e7eb;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.1);z-index:10;"><svg width="10" height="10" fill="none" stroke="#9ca3af" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button></div><div class="ls-nav-scroll" id="navScroll"></div></nav>
+<div class="ls-slides-area"><div class="ls-slide-viewport"><div class="ls-slides-track" id="slidesTrack">
+
+<div class="ls-slide" data-screen-label="01 Pre-Test">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Quick Check</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">What is the area of a triangle with base 10 cm and height 6 cm?</div>
+<div class="quiz-opts" id="pre-area"><button class="quiz-opt" onclick="preQ(this,false,'pre-area','pre-area-fb',engine,0)">60 cm²</button><button class="quiz-opt" onclick="preQ(this,true,'pre-area','pre-area-fb',engine,0)">30 cm²</button><button class="quiz-opt" onclick="preQ(this,false,'pre-area','pre-area-fb',engine,0)">16 cm²</button><button class="quiz-opt" onclick="preQ(this,false,'pre-area','pre-area-fb',engine,0)">15 cm²</button></div>
+<div class="quiz-feedback" id="pre-area-fb"></div></div>
+<div class="key-point" style="margin-top:.75rem">Triangle area = ½ × base × height = ½ × 10 × 6 = 30 cm²</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="02 What is Area">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">What is Area?</div><div class="slide-sub">The amount of space inside a 2D shape.</div></div>
+<div class="slide-content"><div class="slide-2col slide-2col-wide">
+<div class="explain-panel">
+<div class="ep-text"><p>Area measures the surface covered by a shape. It is always measured in <em>square units</em> — cm², m², km², etc.</p></div>
+<div class="def-box"><span class="def-term">Area Formulas</span>
+Square: A = s²<br>
+Rectangle: A = l × w<br>
+Triangle: A = ½ × base × height<br>
+Parallelogram: A = base × height (perpendicular!)<br>
+Trapezium: A = ½(a + b) × h<br>
+Circle: A = πr²</div>
+<div class="warn-point">Height in area formulas ALWAYS means perpendicular height — the vertical distance, NOT the slant side!</div>
+<div class="key-point">Area is 2D — measured in square units (cm², m²). Perimeter is 1D — measured in linear units (cm, m).</div>
+</div>
+<div class="interactive-panel">
+<!-- Live area sliders -->
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Rectangle area explorer:</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Length (cm):</span><input type="range" class="fred-slider" id="area-l" min="1" max="15" value="8" oninput="updateArea()"><span class="slider-row-val" id="area-lv">8</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Width (cm):</span><input type="range" class="fred-slider" id="area-w" min="1" max="10" value="5" oninput="updateArea()"><span class="slider-row-val" id="area-wv">5</span></div>
+</div>
+<div id="area-vis" style="margin:.5rem 0;display:flex;justify-content:center;align-items:center"></div>
+<div class="result-display" id="area-result"><span class="big">A = 40 cm²</span></div>
+<script>
+function updateArea(){
+  var l=parseInt(document.getElementById('area-l').value),w=parseInt(document.getElementById('area-w').value);
+  document.getElementById('area-lv').textContent=l;document.getElementById('area-wv').textContent=w;
+  var rW=Math.round(l/15*150),rH=Math.round(w/10*100);
+  var svg='<svg width="'+(rW+20)+'" height="'+(rH+20)+'" viewBox="0 0 '+(rW+20)+' '+(rH+20)+'">';
+  svg+='<defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="#FED7AA" stroke-width="0.8"/></pattern></defs>';
+  svg+='<rect x="10" y="10" width="'+rW+'" height="'+rH+'" fill="url(#grid)" stroke="#F97316" stroke-width="2"/>';
+  svg+='<text x="'+(10+rW/2)+'" y="8" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700">'+l+' cm</text>';
+  svg+='<text x="5" y="'+(10+rH/2)+'" text-anchor="middle" font-size="11" fill="#EA580C" font-weight="700" transform="rotate(-90,5,'+(10+rH/2)+')">'+w+'</text>';
+  svg+='</svg>';
+  document.getElementById('area-vis').innerHTML=svg;
+  document.getElementById('area-result').innerHTML='<span class="big">A = '+l+' × '+w+' = '+(l*w)+' cm²</span>';
+}
+updateArea();
+</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="03 Triangle & Circle">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Triangle &amp; Circle Area</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Triangle Area</span>
+A = ½ × base × perpendicular height<br><br>
+Worked example: base=9cm, height=6cm<br>
+A = ½ × 9 × 6 = <strong>27 cm²</strong></div>
+<div class="def-box"><span class="def-term">Circle Area</span>
+A = πr²<br><br>
+If r=7cm: A = π×7² = π×49 ≈ <strong>153.9 cm²</strong><br>
+If diameter=10cm: r=5, A=π×25≈78.5 cm²</div>
+<div class="key-point">For a triangle: the height must be perpendicular to the base — even if the triangle looks tilted!</div>
+</div>
+<div class="interactive-panel">
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Radius (cm):</span><input type="range" class="fred-slider" id="ca-r" min="1" max="10" value="5" oninput="updateCircleArea()"><span class="slider-row-val" id="ca-rv">5</span></div>
+</div>
+<div class="result-display" id="ca-result" style="margin-top:.5rem"><span class="big">A = 78.5 cm²</span></div>
+<script>function updateCircleArea(){var r=parseInt(document.getElementById('ca-r').value);document.getElementById('ca-rv').textContent=r;document.getElementById('ca-result').innerHTML='<span class="big">A = π×'+r+'² = '+(Math.PI*r*r).toFixed(1)+' cm²</span>';}</script>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Triangle: base=12cm, height=5cm. Area?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="tri-area1" placeholder="cm²"><button class="quiz-check-btn" onclick="checkAns('tri-area1','tri-area1-fb',30,engine,2,'½×12×5=30cm².')">Check</button></div>
+<div class="quiz-feedback" id="tri-area1-fb"></div></div>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="04 Compound Areas">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Area of Compound Shapes</div></div>
+<div class="slide-content"><div class="explain-panel">
+<div class="def-box"><span class="def-term">Method for Compound Shapes</span>
+Split the shape into simple shapes (rectangles, triangles, circles, etc.)<br>
+Calculate each area separately.<br>
+Add them together (or subtract if a piece is removed).<br><br>
+<strong>Example — L-shape:</strong> Split into 2 rectangles.<br>
+Rectangle A: 6×4=24cm². Rectangle B: 3×2=6cm².<br>
+Total = 24+6 = <strong>30 cm²</strong></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">A rectangle 10×8 cm has a hole: a circle of radius 2cm. What is the shaded area? (Use π=3.14, give 1 dp)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" step="0.1" id="comp-area" placeholder="cm²"><button class="quiz-check-btn" onclick="checkAns('comp-area','comp-area-fb',67.4,engine,3,'Rect=80. Circle=3.14×4=12.56. Shaded=80−12.56=67.44≈67.4.')">Check</button></div>
+<div class="quiz-feedback" id="comp-area-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="05 Trapezium & Parallelogram">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Trapezium &amp; Parallelogram Area</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel">
+<div class="def-box"><span class="def-term">Parallelogram</span>
+A = base × perpendicular height<br>
+NOT base × slant side!<br><br>
+Base=8cm, perpendicular height=5cm:<br>
+A = 8×5 = <strong>40 cm²</strong></div>
+<div class="def-box"><span class="def-term">Trapezium</span>
+A = ½(a + b) × h<br>
+where a and b are the parallel sides and h is the perpendicular height<br><br>
+a=5cm, b=9cm, h=4cm:<br>
+A = ½(5+9)×4 = ½×14×4 = <strong>28 cm²</strong></div>
+</div>
+<div class="interactive-panel">
+<div style="font-size:.75rem;font-weight:700;color:var(--g600);margin-bottom:.5rem">Trapezium area:</div>
+<div class="slider-group">
+<div class="slider-row-item"><span class="slider-row-label">Top (a):</span><input type="range" class="fred-slider" id="trap-a" min="2" max="12" value="5" oninput="updateTrap()"><span class="slider-row-val" id="trap-av">5</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Bottom (b):</span><input type="range" class="fred-slider" id="trap-b" min="4" max="15" value="9" oninput="updateTrap()"><span class="slider-row-val" id="trap-bv">9</span></div>
+<div class="slider-row-item"><span class="slider-row-label">Height (h):</span><input type="range" class="fred-slider" id="trap-h" min="2" max="10" value="4" oninput="updateTrap()"><span class="slider-row-val" id="trap-hv">4</span></div>
+</div>
+<div class="result-display" id="trap-result"><span class="big">A = 28 cm²</span></div>
+<script>function updateTrap(){var a=parseInt(document.getElementById('trap-a').value),b=parseInt(document.getElementById('trap-b').value),h=parseInt(document.getElementById('trap-h').value);document.getElementById('trap-av').textContent=a;document.getElementById('trap-bv').textContent=b;document.getElementById('trap-hv').textContent=h;document.getElementById('trap-result').innerHTML='<span class="big">A = ½('+a+'+'+b+')×'+h+' = '+(0.5*(a+b)*h)+' cm²</span>';}</script>
+</div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="06 Practice">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Practice Questions</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q" id="areaqb-text">Loading…</div><div class="quiz-opts" id="areaqb-opts"></div><div class="quiz-feedback" id="areaqb-fb"></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:.5rem"><span style="font-size:.73rem;font-weight:600;color:var(--g400)" id="areaqb-score">Score: 0/5</span><button class="quiz-check-btn" id="areaqb-opts-next" style="display:none">Next →</button></div>
+</div></div></div>
+
+
+<div class="ls-slide" data-screen-label="07 Challenge">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Challenge: Applied Area</div></div>
+<div class="slide-content"><div class="full-interactive">
+<div class="quiz-block"><div class="quiz-q">A garden is a rectangle 12m × 8m with a circular pond (r=2m) in the middle. What area of grass must be mowed? (Use π=3.14, give 1 dp)</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" step="0.1" id="ch-area1" placeholder="m²"><button class="quiz-check-btn" onclick="checkAns('ch-area1','ch-area1-fb',83.4,engine,6,'Rect=96m². Pond=3.14×4=12.56m². Grass=96−12.56=83.44≈83.4m².')">Check</button></div>
+<div class="quiz-feedback" id="ch-area1-fb"></div></div>
+<div class="quiz-block" style="margin-top:.75rem"><div class="quiz-q">Tiles cost $8 per m². A floor is 6.5m × 4m. How much do the tiles cost?</div>
+<div class="quiz-input-row"><input class="quiz-input" type="number" id="ch-area2" placeholder="$"><button class="quiz-check-btn" onclick="checkAns('ch-area2','ch-area2-fb',208,engine,6,'Area=26m². Cost=26×8=$208.')">Check</button></div>
+<div class="quiz-feedback" id="ch-area2-fb"></div></div>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="08 Download">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Download Lecture Notes</div></div>
+<div class="slide-content"><div class="download-slide"><div class="download-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+<div class="download-info"><div class="download-title">Geometry — Perimeter &amp; Area</div><div class="download-desc">All area formulas, compound shapes, sector area, and real-world problems.</div></div>
+<a href="https://drive.google.com/file/d/13f4-7LkYqfotd2QxgIaTVxM9aVI-T6ma/view?usp=sharing" target="_blank" class="download-btn" style="text-decoration:none"><svg width="13" height="13" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Download Notes</a>
+</div></div></div>
+
+<div class="ls-slide" data-screen-label="09 Summary">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Key Points</div></div>
+<div class="slide-content"><div class="explain-panel"><ul class="summary-list">
+<li>Area = space inside a shape. Always in square units (cm², m²)</li>
+<li>Rectangle: l×w. Square: s². Triangle: ½bh. Circle: πr²</li>
+<li>Parallelogram: base × perpendicular height (NOT slant)</li>
+<li>Trapezium: ½(a+b)×h</li>
+<li>Compound: split into simples, add/subtract areas</li>
+<li>Sector area = (θ/360) × πr²</li>
+</ul></div></div></div>
+
+<div class="ls-slide" data-screen-label="10 Reward">
+<div class="slide-hdr"><div class="slide-tag">C5 · Area</div><div class="slide-title">Lesson Complete! 🎉</div></div>
+<div class="slide-content"><div class="slide-2col">
+<div class="explain-panel"><ul class="summary-list"><li>Area = space inside, in square units</li><li>Key formulas memorised</li><li>Perpendicular height always!</li><li>Compound: split &amp; combine</li></ul>
+<a href="25-angles.html" style="display:inline-flex;align-items:center;gap:.4rem;margin-top:.875rem;padding:.55rem 1.1rem;background:var(--grad);color:white;border-radius:99px;font-size:.8rem;font-weight:700;text-decoration:none">Next: Angles <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></a>
+</div>
+<div class="reward-section"><div class="reward-box" id="rbox"><svg width="36" height="36" fill="none" stroke="white" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></div>
+<div class="reward-prompt">Tap to collect!</div>
+<div class="reward-content" id="rcontent"><div class="reward-pts">+130 Points</div><div class="reward-msg">Area Ace!</div><div class="reward-badge">🏅 Area Ace</div></div>
+</div></div></div></div>
+
+</div></div>
+<div class="ls-slide-nav"><button class="ls-nav-btn ls-nav-prev" id="prevSlide" disabled><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>Back</button><div class="ls-dots" id="slideDots"></div><button class="ls-nav-btn ls-nav-next" id="nextSlide">Next<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+</div></div></div>
+<script src="../../concept-nav.js?v=3"></script>
+<script>
+document.getElementById('pts-display').textContent=(localStorage.getItem('fi_pts')||'0')+' Points';
+var NAV=window.CONCEPT_NAV.map(function(c){return Object.assign({},c,{lessons:c.lessons.map(function(l){return Object.assign({},l,{file:'../../'+l.file});})});});
+initNavPanel(NAV,'../../modules/math101/24-area.html');
+var engine=SlideEngine({slides:10,lessonId:'m5l03',pts:130});
+initReward('rbox','rcontent',130,'m5l03');
+// QB calls moved to bottom - engine is already ready
+QB([{q:"Area of rectangle 14cm × 6cm?",opts:["40cm²","84cm²","20cm²","96cm²"],ans:1,msg:"14×6=84cm²."},{q:"Area of circle with r=6cm? (π=3.14)",opts:["18.8cm²","113.0cm²","37.7cm²","144cm²"],ans:1,msg:"3.14×36=113.0cm²."},{q:"Area of trapezium: a=7, b=11, h=6cm?",opts:["54cm²","48cm²","108cm²","66cm²"],ans:0,msg:"½(7+11)×6=½×18×6=54cm²."},{q:"Area of triangle: base=15cm, height=8cm?",opts:["120cm²","60cm²","23cm²","45cm²"],ans:1,msg:"½×15×8=60cm²."},{q:"Parallelogram: base=12cm, perpendicular height=7cm. Area?",opts:["38cm²","84cm²","42cm²","60cm²"],ans:1,msg:"12×7=84cm²."}],'areaqb-opts','areaqb-text','areaqb-fb','areaqb-score',engine,5);
+
+</script></body></html>
