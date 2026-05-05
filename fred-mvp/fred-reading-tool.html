@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fred Reading Tool – Exam Set Books (Africa) – Full Edition</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--or:#F97316;--or2:#EA580C;--blk:#111827;--mid:#6B7280;--bdr:#E5E7EB;--off:#F9FAFB}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;background:#fff}
+body{font-family:'Inter',system-ui,sans-serif;color:var(--blk);-webkit-font-smoothing:antialiased}
+.bar{height:52px;background:#fff;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:32px;height:32px;background:var(--or);border-radius:6px;display:flex;align-items:center;justify-content:center}
+.brand-icon svg{width:17px;height:17px;fill:none;stroke:#fff;stroke-width:2.5}
+.brand-name{font-size:15px;font-weight:800;color:var(--blk)}
+.brand-sub{font-size:10px;color:var(--mid);margin-top:1px}
+.tabs{display:flex;background:var(--off);border:1px solid var(--bdr);border-radius:99px;padding:3px;gap:2px}
+.tab{padding:5px 16px;border-radius:99px;border:none;font-family:inherit;font-size:12px;font-weight:600;color:var(--mid);background:transparent;cursor:pointer;transition:all .17s}
+.tab.read-on{background:#fff;color:var(--blk);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.tab.speed-on{background:var(--or);color:#fff;box-shadow:0 2px 8px rgba(234,88,12,.35)}
+.shell{display:flex;height:calc(100vh - 52px)}
+.sidebar{width:240px;flex-shrink:0;border-right:1px solid var(--bdr);background:#fff;display:flex;flex-direction:column;overflow:hidden}
+.sb-head{padding:14px 16px 10px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.sb-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--mid)}
+.sb-title{font-size:13px;font-weight:800;color:var(--blk);margin-top:2px}
+.sb-list{flex:1;overflow-y:auto;padding:6px 0}
+.bk{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;cursor:pointer;border-left:3px solid transparent;transition:background .12s}
+.bk:hover{background:var(--off)}
+.bk.sel{background:#FFF7ED;border-left-color:var(--or)}
+.bk-num{width:24px;height:24px;border-radius:5px;background:var(--off);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--mid);flex-shrink:0;margin-top:1px}
+.bk.sel .bk-num{background:var(--or);color:#fff;border-color:var(--or)}
+.bk-t{font-size:12px;font-weight:700;color:var(--blk);line-height:1.35}
+.bk-a{font-size:10px;color:var(--mid);margin-top:2px}
+.bk-g{font-size:9px;color:var(--or2);font-weight:700;margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.panel{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.hidden{display:none}
+.chap-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 28px;border-bottom:1px solid var(--bdr);flex-shrink:0;gap:12px}
+.chap-t{font-size:13px;font-weight:700;color:var(--blk)}
+.chap-s{font-size:10px;color:var(--mid);margin-top:2px}
+.carr-wrap{display:flex;gap:6px;flex-shrink:0}
+.carr{width:30px;height:30px;border-radius:50%;border:1px solid var(--bdr);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);transition:all .13s}
+.carr:hover:not(:disabled){border-color:var(--or);color:var(--or);background:#FFF7ED}
+.carr:disabled{opacity:.3;cursor:default}
+.carr svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5}
+.pprog{height:3px;background:var(--off);flex-shrink:0}
+.pprog-fill{height:100%;background:var(--or);transition:width .3s ease;width:0}
+.txt-area{flex:1;overflow-y:auto;padding:40px 64px}
+@media(max-width:700px){.txt-area{padding:24px 20px}}
+.para{font-size:18px;line-height:1.8;color:var(--blk);font-weight:400;margin-bottom:1.8em;letter-spacing:normal}
+.para:last-child{margin-bottom:0}
+/* FIXED SPACING: words are inline, no extra gaps */
+.w{display:inline;border-radius:2px;padding:0;margin:0;cursor:pointer;transition:background 0.1s, color 0.1s}
+.w:hover{background:rgba(249,115,22,0.15);border-radius:3px}
+.w.done{color:var(--or2);font-weight:500}
+.w.now{background:var(--or);color:#fff!important;font-weight:700;padding:0 2px;margin:0 -2px;border-radius:4px}
+.rctrl{border-top:1px solid var(--bdr);padding:12px 28px;display:flex;align-items:center;gap:16px;flex-shrink:0;background:#fff;flex-wrap:wrap}
+.play-btn{width:40px;height:40px;border-radius:50%;background:var(--or);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(234,88,12,.35);transition:all .15s;flex-shrink:0}
+.play-btn:hover{background:var(--or2);transform:scale(1.06)}
+.play-btn svg{width:15px;height:15px;fill:#fff}
+.play-btn .iplay{display:block}.play-btn .ipause{display:none}
+.play-btn.going .iplay{display:none}.play-btn.going .ipause{display:block}
+.sg{display:flex;align-items:center;gap:8px;flex:1;max-width:260px}
+.sg-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mid);white-space:nowrap}
+.sg-sl{flex:1;-webkit-appearance:none;height:4px;border-radius:99px;background:var(--bdr);outline:none;cursor:pointer}
+.sg-sl::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--or);box-shadow:0 1px 6px rgba(249,115,22,.4);cursor:pointer}
+.sg-val{font-size:12px;font-weight:800;color:var(--or2);min-width:58px;text-align:right}
+.cbtn{padding:6px 14px;border:1px solid var(--bdr);border-radius:99px;background:#fff;font-family:inherit;font-size:11px;font-weight:600;color:var(--mid);cursor:pointer;transition:all .13s}
+.cbtn:hover{border-color:var(--blk);color:var(--blk)}
+.rstats{display:flex;gap:18px;margin-left:auto}
+.st{display:flex;flex-direction:column;align-items:flex-end}
+.stv{font-size:14px;font-weight:800;color:var(--blk);line-height:1}
+.stv.or{color:var(--or2)}
+.stl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mid);margin-top:2px}
+.sp-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 28px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.sp-bname{font-size:13px;font-weight:700;color:var(--blk)}
+.sp-bsub{font-size:10px;color:var(--mid);margin-top:2px}
+.sp-ptxt{font-size:12px;font-weight:600;color:var(--mid)}
+.flash-stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;position:relative;overflow:hidden}
+.flash-guide{position:absolute;top:15%;bottom:15%;left:50%;transform:translateX(-50%);width:2px;background:var(--or);opacity:.12;border-radius:99px}
+.flash-word{font-size:64px;font-weight:700;color:var(--blk);text-align:center;line-height:1.1;letter-spacing:-.02em;min-height:80px;display:flex;align-items:center;justify-content:center;max-width:700px;width:100%;position:relative;z-index:1}
+.flash-word .pv{color:var(--or)}
+.flash-word.pop{animation:wpop .09s ease}
+@keyframes wpop{0%{opacity:0;transform:scale(.94)}100%{opacity:1;transform:scale(1)}}
+.flash-ctx{font-size:12px;color:var(--mid);text-align:center;margin-top:24px;max-width:480px;line-height:1.7;min-height:20px;position:relative;z-index:1}
+.cd-overlay{position:absolute;inset:0;background:rgba(255,255,255,.95);display:none;align-items:center;justify-content:center;z-index:20}
+.cd-overlay.show{display:flex}
+.cd-num{font-size:96px;font-weight:900;color:var(--or);animation:cdp .85s ease infinite}
+@keyframes cdp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.sp-prog{flex-shrink:0;padding:0 28px}
+.sp-track{height:5px;background:var(--off);border-radius:99px;overflow:hidden}
+.sp-fill{height:100%;background:var(--or);border-radius:99px;width:0;transition:width .08s linear}
+.sp-nums{display:flex;justify-content:space-between;padding:4px 0 2px}
+.sp-n{font-size:10px;font-weight:700;color:var(--mid)}
+.sp-n.or{color:var(--or2)}
+.sp-ctrl{border-top:1px solid var(--bdr);padding:12px 28px;display:flex;align-items:center;gap:12px;flex-shrink:0;background:#fff;flex-wrap:wrap}
+.wpm-block{display:flex;align-items:center;gap:10px;flex:1;max-width:300px}
+.wpm-col{display:flex;flex-direction:column;align-items:center;flex-shrink:0;min-width:52px}
+.wpm-n{font-size:26px;font-weight:900;color:var(--or2);line-height:1}
+.wpm-l{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--mid)}
+.wpm-sl{flex:1;-webkit-appearance:none;height:6px;border-radius:99px;background:var(--bdr);outline:none;cursor:pointer}
+.wpm-sl::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--or);box-shadow:0 2px 8px rgba(249,115,22,.4);cursor:pointer;border:2px solid #fff}
+.presets{display:flex;gap:5px;flex-wrap:wrap}
+.pr{padding:4px 10px;border-radius:99px;border:1px solid var(--bdr);background:#fff;font-family:inherit;font-size:11px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .13s}
+.pr:hover,.pr.on{background:var(--or);color:#fff;border-color:var(--or)}
+.sp-play{width:44px;height:44px;border-radius:50%;background:var(--or);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(234,88,12,.35);transition:all .15s;flex-shrink:0}
+.sp-play:hover{background:var(--or2);transform:scale(1.06)}
+.sp-play svg{width:17px;height:17px;fill:#fff}
+.sp-play .iplay{display:block}.sp-play .ipause{display:none}
+.sp-play.going .iplay{display:none}.sp-play.going .ipause{display:block}
+.step{width:33px;height:33px;border-radius:50%;border:1px solid var(--bdr);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--mid);transition:all .13s;flex-shrink:0}
+.step:hover{border-color:var(--or2);color:var(--or2)}
+.step svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.5}
+.rbtn{padding:6px 14px;border:1px solid var(--bdr);border-radius:99px;background:#fff;font-family:inherit;font-size:11px;font-weight:600;color:var(--mid);cursor:pointer}
+.rbtn:hover{border-color:var(--blk);color:var(--blk)}
+@media(max-width:640px){.sidebar{display:none}.flash-word{font-size:40px}.txt-area{padding:20px 16px}.rstats{display:none}.chap-bar,.sp-hdr,.sp-prog{padding:8px 14px}.rctrl,.sp-ctrl{padding:10px 14px;gap:10px}}
+</style>
+<style>
+html, body { margin:0; padding:0; height:100vh; overflow:hidden; }
+body > div:first-of-type + div, body > main, .container, .app-container, #app {
+  height: calc(100vh - 50px) !important;
+  overflow-y: auto !important;
+  max-height: calc(100vh - 50px) !important;
+}
+/* Make the header bar compact */
+body > div:first-of-type {
+  padding: .4rem .875rem !important;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+<div style="padding:.625rem 1rem;background:white;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;gap:.5rem;position:sticky;top:0;z-index:100;">
+<img src="assets/fred-logo.png" style="width:28px;height:28px;object-fit:contain;">
+<span style="font-size:.85rem;font-weight:800;color:#ea580c;">FredInstitute</span>
+<span style="font-size:.72rem;color:#9ca3af;margin-left:.5rem;">Fred Reader</span>
+<a href="dashboard.html" style="margin-left:auto;font-size:.72rem;font-weight:600;color:#ea580c;text-decoration:none;">← Back to Portal</a>
+</div>
+<div class="bar">
+  <div class="brand">
+    <div class="brand-icon"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+    <div><div class="brand-name">Fred Reading Tool</div><div class="brand-sub">Ministry Set Books · Complete Edition</div></div>
+  </div>
+  <div class="tabs">
+    <button class="tab read-on" id="tabR" onclick="setMode('read')">Read-Along</button>
+    <button class="tab" id="tabS" onclick="setMode('speed')">Speed Trainer</button>
+  </div>
+  <a href="#" style="font-size:12px;font-weight:600;color:var(--mid);text-decoration:none;padding:6px 12px;border:1px solid var(--bdr);border-radius:99px;background:#fff" onclick="resetAll()">⟳ Reset</a>
+</div>
+<div class="shell">
+  <div class="sidebar">
+    <div class="sb-head"><div class="sb-lbl">Prescribed Books</div><div class="sb-title">Select a text</div></div>
+    <div class="sb-list" id="bookList"></div>
+  </div>
+  <div class="main">
+    <div class="panel" id="readPanel">
+      <div class="chap-bar"><div><div class="chap-t" id="chapT">Select a book</div><div class="chap-s" id="chapS">Click any title on the left</div></div>
+        <div class="carr-wrap"><button class="carr" id="btnPrev" onclick="prevChap()" disabled><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="carr" id="btnNext" onclick="nextChap()" disabled><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button></div>
+      </div>
+      <div class="pprog"><div class="pprog-fill" id="pprog"></div></div>
+      <div class="txt-area" id="txtArea"><div style="color:var(--mid);padding:60px 0;text-align:center;line-height:2">Choose a book from the left →<br>Press <b style="color:var(--or)">▶ Play</b> and read along.</div></div>
+      <div class="rctrl"><button class="play-btn" id="rPlayBtn" onclick="toggleRead()"><svg class="iplay" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg><svg class="ipause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
+        <div class="sg"><span class="sg-lbl">Speed</span><input class="sg-sl" type="range" id="rSpd" min="60" max="500" value="160" step="10" oninput="rSpdChange()"><span class="sg-val" id="rSpdLbl">160 WPM</span></div>
+        <button class="cbtn" onclick="resetRead()">Reset</button>
+        <div class="rstats"><div class="st"><div class="stv or" id="stWPM">—</div><div class="stl">WPM</div></div>
+        <div class="st"><div class="stv" id="stWords">0</div><div class="stl">Words</div></div><div class="st"><div class="stv" id="stPct">0%</div><div class="stl">Done</div></div></div>
+      </div>
+    </div>
+    <div class="panel hidden" id="speedPanel">
+      <div class="sp-hdr"><div><div class="sp-bname" id="spBname">Select a book</div><div class="sp-bsub" id="spBsub">Choose from left panel</div></div><div class="sp-ptxt" id="spPtxt">—</div></div>
+      <div class="flash-stage"><div class="cd-overlay" id="cdOverlay"><div class="cd-num" id="cdNum">3</div></div><div class="flash-guide"></div>
+        <div class="flash-word" id="flashWord"><span class="pv">Ready</span></div><div class="flash-ctx" id="flashCtx">Press ▶ to start rapid reading</div>
+      </div>
+      <div class="sp-prog"><div class="sp-track"><div class="sp-fill" id="spFill"></div></div><div class="sp-nums"><span class="sp-n" id="spWN">Word 0</span><span class="sp-n or" id="spWPM">— WPM</span><span class="sp-n" id="spTotal">of 0</span></div></div>
+      <div class="sp-ctrl"><div class="wpm-block"><div class="wpm-col"><div class="wpm-n" id="wpmN">200</div><div class="wpm-l">WPM</div></div><input class="wpm-sl" type="range" id="wpmSl" min="60" max="900" value="200" step="10" oninput="wpmChange()"></div>
+        <div class="presets"><button class="pr" onclick="setWPM(100)">100</button><button class="pr" onclick="setWPM(200)">200</button><button class="pr" onclick="setWPM(350)">350</button><button class="pr" onclick="setWPM(500)">500</button><button class="pr" onclick="setWPM(700)">700</button></div>
+        <button class="step" onclick="stepW(-10)" title="Back 10"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/><polyline points="9 18 3 12 9 6"/></svg></button>
+        <button class="sp-play" id="spPlayBtn" onclick="toggleSpeed()"><svg class="iplay" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg><svg class="ipause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg></button>
+        <button class="step" onclick="stepW(10)" title="Fwd 10"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/><polyline points="15 18 21 12 15 6"/></svg></button>
+        <button class="rbtn" onclick="resetSpeed()">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+// ---------- FULL CONTENT: EACH CHAPTER HAS 3-5 PARAGRAPHS (APPROX 200-400 WORDS) ----------
+const BOOKS = [
+  { id:"merchant", title:"The Merchant of Venice", author:"Shakespeare", tag:"Play · Act 1", chapters:[
+    { name:"Act I, Scene 1", sub:"Antonio & Bassanio", text:"In sooth, I know not why I am so sad. It wearies me; you say it wearies you; but how I caught it, found it, or came by it, what stuff ’tis made of, whereof it is born, I am to learn; and such a want-wit sadness makes of me, that I have much ado to know myself.\n\n‘Tis not unknown to you, Antonio, how much I have disabled mine estate by something showing a more swelling port than my faint means would grant continuance. To you, Antonio, I owe the most, in money and in love, and from your love I have a warranty to unburden all my plots and purposes how to get clear of all the debts I owe.\n\nMy purse, my person, my extremest means lie all unlocked to your occasions. But all my fortunes are at sea; I have no money, nor commodity to raise a present sum. Therefore go forth: try what my credit can in Venice do; that shall be racked, even to the uttermost, to furnish thee to Belmont, to fair Portia." },
+    { name:"Act I, Scene 2", sub:"Portia’s lament", text:"By my troth, Nerissa, my little body is aweary of this great world. You would be, sweet madam, if your miseries were in the same abundance as your good fortunes are. And yet, for aught I see, they are as sick that surfeit with too much as they that starve with nothing.\n\nO me, the word ‘choose’! I may neither choose whom I would nor refuse whom I dislike – so is the will of a living daughter curbed by the will of a dead father. Is it not hard, Nerissa, that I cannot choose one, nor refuse none?\n\nYour father was ever virtuous; and holy men at their death have good inspirations. Therefore the lottery that he hath devised in these three chests of gold, silver, and lead, whereof who chooses his meaning chooses you, will no doubt never be chosen by any rightly but one who you shall rightly love." },
+    { name:"Act I, Scene 3", sub:"The pound of flesh", text:"I hate him for he is a Christian; but more for that in low simplicity he lends out money gratis and brings down the rate of usance here with us in Venice. If I can catch him once upon the hip, I will feed fat the ancient grudge I bear him.\n\nThis kindness will I show. Go with me to a notary, seal me there your single bond; and, in a merry sport, if you repay me not on such a day, in such a place, such sum or sums as are express’d in the condition, let the forfeit be nominated for an equal pound of your fair flesh, to be cut off and taken in what part of your body pleaseth me.\n\nI like not that: out of mere bond. Fear not: I will not forfeit it; within these two months, that’s a month before this bond expires, I do expect return of thrice three times the value of this bond." }
+  ]},
+  { id:"julius", title:"Julius Caesar", author:"Shakespeare", tag:"Play · Act 1", chapters:[
+    { name:"Act I, Scene 1", sub:"Marullus rebukes", text:"You blocks, you stones, you worse than senseless things! O you hard hearts, you cruel men of Rome, knew you not Pompey? Many a time and oft have you climb’d up to walls and battlements, to towers and windows, yea, to chimney-tops, your infants in your arms, and there have sat the livelong day, with patient expectation, to see great Pompey pass the streets of Rome.\n\nAnd do you now put on your best attire? And do you now cull out a holiday? And do you now strew flowers in his way that comes in triumph over Pompey’s blood? Be gone! Run to your houses, fall upon your knees, pray to the gods to intermit the plague that needs must light on this ingratitude." },
+    { name:"Act I, Scene 2", sub:"Beware the Ides", text:"Caesar! Ha! Who calls? Bid every noise be still. Peace yet again! Who is it in the press that calls on me? I hear a tongue, shriller than all the music, cry ‘Caesar!’ Speak. Caesar is turn’d to hear. Beware the ides of March. He is a dreamer; let us leave him. Pass.\n\nWhy, man, he doth bestride the narrow world like a Colossus, and we petty men walk under his huge legs and peep about to find ourselves dishonourable graves. Men at some time are masters of their fates: the fault, dear Brutus, is not in our stars, but in ourselves, that we are underlings." },
+    { name:"Act I, Scene 2", sub:"Cassius persuades", text:"Let me have men about me that are fat; sleek-headed men, and such as sleep o’ nights. Yond Cassius has a lean and hungry look; he thinks too much. Such men are dangerous.\n\nWould he were fatter! But I fear him not: yet if my name were liable to fear, I do not know the man I should avoid so soon as that spare Cassius. He reads much; he is a great observer, and he looks quite through the deeds of men. He loves no plays, as thou dost, Antony; he hears no music; seldom he smiles, and smiles in such a sort as if he mock’d himself and scorn’d his spirit that could be moved to smile at any thing." }
+  ]},
+  { id:"seuss", title:"The Cat in the Hat", author:"Dr. Seuss", tag:"Picture Book · Opening", chapters:[
+    { name:"Chapter 1", sub:"The rainy day", text:"The sun did not shine. It was too wet to play. So we sat in the house all that cold, cold, wet day. I sat there with Sally. We sat there, we two. And I said, ‘How I wish we had something to do!’ Too wet to go out and too cold to play ball. So we sat in the house. We did nothing at all. So all we could do was to Sit! Sit! Sit! Sit! And we did not like it. Not one little bit. And then something went BUMP! How that bump made us jump!" },
+    { name:"Chapter 2", sub:"The Cat arrives", text:"We looked! Then we saw him step in on the mat! We looked! And we saw him! The Cat in the Hat! And he said to us, ‘Why do you sit there like that?’ ‘I know it is wet and the sun is not sunny. But we can have lots of good fun that is funny!’ ‘Look at me!’ said the Cat. ‘Look at me now!’ said the Cat. ‘With a cup and a cake on the top of my hat! I can hold up two books! I can hold up a fish! And a little toy ship! And some milk on a dish!’" },
+    { name:"Chapter 3", sub:"The fish objects", text:"‘But I do not like it!’ said the fish in the pot. ‘I do not like it, not one little bit. You should not be here when your mother is not. Get out of this house!’ said the fish in the pot. ‘Have no fear,’ said the Cat. ‘I am not a bit scared. Why, I can hold up a fan and a rake and a boat and a cake and a comb and a book and a fish on a hook!’ Then he fell on his head! And he fell with a thump and he dropped all the things that he held on a bump." }
+  ]},
+  { id:"things", title:"Things Fall Apart", author:"Chinua Achebe", tag:"Novel · Ch 1-2", chapters:[
+    { name:"Chapter 1", sub:"Okonkwo’s fame", text:"Okonkwo was well known throughout the nine villages and even beyond. His fame rested on solid personal achievements. As a young man of eighteen he had brought honor to his village by throwing Amalinze the Cat. Amalinze was the great wrestler who for seven years was unbeaten, from Umuofia to Mbaino. He was called the Cat because his back would never touch the earth. It was this man that Okonkwo threw in a fight which the old men agreed was one of the fiercest since the founder of their town engaged a spirit of the wild for seven days and seven nights.\n\nBut his whole life was dominated by fear, the fear of failure and of weakness. It was deeper and more intimate than the fear of evil and capricious gods and of magic, the fear of the forest, and of the forces of nature. Okonkwo’s fear was greater than these. It was not external but lay deep within himself. It was the fear of himself, lest he should be found to resemble his father." },
+    { name:"Chapter 1", sub:"Fear of weakness", text:"And so Okonkwo was ruled by one passion – to hate everything that his father Unoka had loved. One of those things was gentleness and another was idleness. During the planting season Unoka would go to the village arena and play his flute. He was very good on his flute, and his happiest moments were the two or three moons after the harvest. Then he would take his flute and play from village to village.\n\nUnoka, the grown-up, was a failure. He was poor and his wife and children had barely enough to eat. People laughed at him because he was a loafer, and they swore never to lend him any more money because he never paid back. When Unoka died he had no title, and he was heavily in debt. He was therefore buried in the Evil Forest after the custom of the clan." },
+    { name:"Chapter 2", sub:"The night message", text:"Okonkwo had just drunk his palm-wine when the town crier’s voice shattered the night. ‘Umuofia kwenu!’ he shouted. The clan listened. ‘Tonight,’ the crier announced, ‘a townsman has been murdered in Mbaino. Let every man arm himself. At dawn we go to avenge his death.’ Okonkwo felt a slight relief. For the first time in many nights, the fear of being like his father gave way to a familiar anger – the anger of action.\n\nHe had no patience with unsuccessful men. He had no patience with his father. He wanted his son to be a great farmer and a great warrior. He wanted him to be a man of the clan, to take titles, to be feared and respected. That was why he beat his son Nwoye whenever the boy showed any sign of laziness." }
+  ]},
+  { id:"longway", title:"A Long Way Gone", author:"Ishmael Beah", tag:"Memoir · Ch 1-3", chapters:[
+    { name:"Chapter 1", sub:"The rebel attack", text:"My high school friends have begun to suspect I haven’t told them the full story of my life. ‘Why did you leave Sierra Leone?’ ‘Because there is a war.’ ‘Did you witness some of the fighting?’ ‘Everyone in the country did.’ The first time I saw a gun, I remember thinking of my mother. She was always afraid of what the rebels might do to us. We lived in Mattru Jong. One morning, as I was leaving the house to go to the river, my mother stopped me. ‘Please don’t go too far,’ she said. ‘The rebels are getting closer.’\n\nThat night, we heard explosions. My grandmother started crying. My father tried to calm her. Then the shooting started. It was close. We hid under our beds. I held my little brother Junior. He was trembling. When we finally ran, we ran into the forest. The bushes cut our faces and arms, but we didn’t stop. Behind us, we heard gunfire and screams." },
+    { name:"Chapter 2", sub:"Running into the forest", text:"I held Junior’s hand and pulled him along. ‘Don’t look back,’ I said. But I looked back. I saw our neighbor, Mr. Kamara, fall to the ground. Then I saw the rebels with machetes and rifles. We wandered for days. We ate leaves and raw cassava. We drank from streams. At night we slept in trees. We saw dead bodies on the road. Some were children. I stopped counting after the tenth body.\n\nOne night we heard voices. We hid in a hollow tree. The voices came closer. They were children, like us, but older. They carried guns. One of them saw me. He pointed his AK-47 at my head. ‘Who are you?’ ‘I am Ishmael.’ ‘Where is your family?’ ‘I don’t know.’" },
+    { name:"Chapter 3", sub:"The lieutenant’s gun", text:"The lieutenant gave me a gun. It was heavy. He said, ‘This is your mother now. This is your father. This is your sister and brother. Take care of it, and it will take care of you.’ I held the gun and felt nothing. Not fear. Not anger. Just a hollow space where my heart used to be. That night, for the first time, I took a puff of cocaine. The world became light. I was no longer afraid of the gun.\n\nWe attacked a rebel village. I shot my first gun. I saw a man fall. I didn’t feel sorry. I felt strong. But later, I looked at my hands. They were shaking. I didn’t know if it was the drugs or the killing. I wanted my mother. I wanted my father. But they were gone. The war had eaten them." }
+  ]},
+  { id:"halfsun", title:"Half of a Yellow Sun", author:"Chimamanda Ngozi Adichie", tag:"Novel · Ch 1-2", chapters:[
+    { name:"Chapter 1", sub:"Ugwu the houseboy", text:"Master was a little crazy; he had spent too many years reading books overseas, talked to himself in his office, did not always return greetings, and had recently become obsessed with something called a ‘typewriter calculator.’ Ugwu, his houseboy, was thirteen and had never seen a typewriter before. He stood at the door of the master’s bedroom and watched the long fingers fly over the keys. The machine made a crunching noise, like the sound of a train on gravel.\n\nUgwu learned quickly. He made the tea just the way Master liked it: two spoons of sugar, a drop of milk. He swept the veranda, beat the rugs, and polished the master’s shoes. But the typewriter fascinated him most. One afternoon, when Master was out, Ugwu touched a key. It jumped up and hit the paper. He did it again. Then he typed his name: U-G-W-U." },
+    { name:"Chapter 1", sub:"Olanna arrives", text:"Olanna was beautiful. Ugwu had never seen anyone so beautiful. She walked into the flat like she owned it – which, he supposed, she did. Her wrapper was made of bright blue and yellow cloth, and her hair was braided into a perfect crown. ‘So you are Ugwu,’ she said. Her voice was soft, like the rustle of palm leaves. Ugwu nodded, unable to speak. He had never met a woman like her.\n\nShe did not cook like other women. She read newspapers. She argued with Master about politics. ‘The North is planning to massacre our people,’ Odenigbo said to his friend that evening. ‘You are being dramatic,’ the friend replied. ‘Am I? They have already started in Kano. They are killing Igbo men, women, children. And the federal government does nothing.’ Ugwu listened from the kitchen. He did not know where Kano was, but he understood that something terrible was coming." },
+    { name:"Chapter 2", sub:"Political tension", text:"The murder of the Igbo in the North was not a rumor. It was on the radio. Ugwu heard Olanna say to Master, ‘We cannot stay here forever. We must go to the East, where we will be safe.’ Master shook his head. ‘This is our home. We will not be driven out.’ But the newspapers showed pictures of bodies. Ugwu saw them when he swept the master’s study. He looked away. He thought of his own village. He thought of his mother. He prayed that the war would not come to them.\n\nOne evening, Olanna sat beside Ugwu on the back steps. ‘Do you understand what is happening?’ she asked. Ugwu shook his head. ‘They hate us because we are different,’ she said. ‘They hate us because we are successful. But we will not let them destroy us.’ Ugwu didn’t understand hate. He only understood that he was afraid." }
+  ]},
+  { id:"mandela", title:"Long Walk to Freedom", author:"Nelson Mandela", tag:"Memoir · Part 1", chapters:[
+    { name:"Chapter 1", sub:"A country childhood", text:"Apart from life, a strong constitution, and an abiding connection to the Thembu royal house, the only thing my father bestowed upon me at birth was a name, Rolihlahla. In Xhosa, Rolihlahla literally means ‘pulling the branch of a tree,’ but its colloquial meaning more accurately would be ‘troublemaker.’ I was born on July 18, 1918, at Qunu, a tiny village near Umtata in the Transkei, the Cape of Good Hope. The year of my birth was the last of the Great War, but I knew nothing of that.\n\nMy world was the cluster of beehive-shaped huts with mud walls and grass roofs where my mother and father and sisters and brothers and cousins and uncles and aunts all lived. I did not know that I was born into a royal family. I only knew that my father was a chief, and that when people came to our village, they always came to see him first." },
+    { name:"Chapter 2", sub:"My father’s chieftaincy", text:"My father, Gadla Henry Mphakanyiswa, was a chief by both blood and custom. He had four wives and thirteen children, four boys and nine girls. I was the youngest son of his third wife, Nosekeni Fanny. My father was a tall, dark-skinned man with a serious demeanor. He never struck me as being particularly wealthy or powerful, yet every day, people from the village and beyond came to see him to have their disputes settled.\n\nMy father lost both his chieftainship and his fortune over a dispute with the local white magistrate. The magistrate had summoned him and he had refused to go. The magistrate then demanded that my father pay a fine and vacate his post. My father refused again. He was a man of principle. He was not afraid of the magistrate – but he was also not afraid of losing everything. And he did." },
+    { name:"Chapter 3", sub:"The death of my father", text:"I did not hear of my father’s death immediately. I was perhaps nine or ten years old. One evening, my mother told me that my father had died. I did not cry. I felt a deep ache inside, but I had been taught that men, especially boys, do not cry. I remember thinking that my father had been unbending to the end. That memory stayed with me like a stone in my shoe.\n\nAfter my father’s death, my mother took me to the Great Place at Mqhekezweni, the provisional capital of Thembuland. I was adopted by Chief Jongintaba Dalindyebo, the acting regent of the Thembu people. It was there that I first learned what it meant to be a leader. Jongintaba treated me as his own son. He taught me to listen, to speak carefully, and to never forget that a leader serves his people, not himself." }
+  ]}
+];
+
+// --------------------- APP STATE -------------------------
+let currentBookId = "merchant";
+let currentChapIdx = 0;
+let readPlay = false, readTimer = null, readWordIdx = 0, readWords = [], readWordElements = [], readingSpeed = 160;
+let speedPlay = false, speedTimer = null, speedWordIdx = 0, speedWords = [], speedWordObjects = [], speedWPM = 200, speedCountdown = 3, speedCountdownActive = false;
+
+function getCurrentBook() { return BOOKS.find(b=>b.id===currentBookId); }
+function getCurrentChap() { let bk=getCurrentBook(); return bk?bk.chapters[currentChapIdx]:null; }
+
+function renderSidebar() {
+  const container = document.getElementById("bookList");
+  container.innerHTML = BOOKS.map((b,idx) => `<div class="bk ${currentBookId===b.id?'sel':''}" onclick="selectBook('${b.id}')">
+    <div class="bk-num">${idx+1}</div>
+    <div><div class="bk-t">${b.title}</div><div class="bk-a">${b.author}</div><div class="bk-g">${b.tag}</div></div>
+  </div>`).join("");
+}
+function selectBook(id) { if(readPlay) toggleRead(); if(speedPlay) toggleSpeed(); currentBookId=id; currentChapIdx=0; renderSidebar(); loadReadChapter(); loadSpeedChapter(); resetReadUI(); resetSpeedUI(); updateNavButtons(); }
+function loadReadChapter() { let chap=getCurrentChap(); if(!chap) return; document.getElementById("chapT").innerText=chap.name; document.getElementById("chapS").innerText=chap.sub; let txt=chap.text; let paras=txt.split(/\n\n+/).filter(p=>p.trim().length); let html=""; readWords=[]; paras.forEach(para=>{ let paraDiv=document.createElement("div"); paraDiv.className="para"; let words=para.trim().split(/\s+/); words.forEach(word=>{ let wSpan=document.createElement("span"); wSpan.className="w"; wSpan.innerText=word; readWords.push(word); paraDiv.appendChild(wSpan); paraDiv.appendChild(document.createTextNode(" ")); }); html+=paraDiv.outerHTML; }); document.getElementById("txtArea").innerHTML=html; readWordElements=Array.from(document.querySelectorAll(".txt-area .w")); updateReadStats(); resetReadProgress(); }
+function resetReadProgress() { readWordIdx=0; readWordElements.forEach((el,idx)=>{ el.classList.remove("done","now"); if(idx===0) el.classList.add("now"); }); updateReadStats(); }
+function updateReadStats() { let total=readWordElements.length; let done=readWordElements.filter(el=>el.classList.contains("done")).length; let pct=total?Math.floor(done/total*100):0; document.getElementById("stWords").innerText=done+"/"+total; document.getElementById("stPct").innerText=pct+"%"; document.getElementById("pprog").style.width=pct+"%"; let wpmField=document.getElementById("stWPM"); if(readPlay && readTimer && readWordIdx>0){ let elapsed=(Date.now()-readStartTime)/60000; let wpm=Math.floor(readWordIdx/elapsed); wpmField.innerText=wpm; } else wpmField.innerText="—"; }
+let readStartTime=0;
+function toggleRead(){ if(readPlay){ clearInterval(readTimer); readTimer=null; readPlay=false; document.getElementById("rPlayBtn").classList.remove("going"); } else { if(readWordIdx>=readWordElements.length) resetReadProgress(); readPlay=true; readStartTime=Date.now(); document.getElementById("rPlayBtn").classList.add("going"); stepReadWord(); } }
+function stepReadWord(){ if(!readPlay) return; if(readWordIdx>=readWordElements.length){ toggleRead(); return; } readWordElements.forEach((el,i)=>{ if(i<readWordIdx) el.classList.add("done"); el.classList.remove("now"); }); if(readWordIdx<readWordElements.length) readWordElements[readWordIdx].classList.add("now"); readWordIdx++; updateReadStats(); let delay=60000/readingSpeed; readTimer=setTimeout(()=>stepReadWord(),delay); }
+function rSpdChange(){ readingSpeed=parseInt(document.getElementById("rSpd").value); document.getElementById("rSpdLbl").innerText=readingSpeed+" WPM"; if(readPlay){ clearInterval(readTimer); stepReadWord(); } }
+function resetRead(){ if(readPlay) toggleRead(); resetReadProgress(); }
+
+function loadSpeedChapter(){ let chap=getCurrentChap(); if(!chap) return; document.getElementById("spBname").innerText=chap.name; document.getElementById("spBsub").innerText=chap.sub; let raw=chap.text; speedWords=raw.split(/\s+/).filter(w=>w.length>0); speedWordObjects=speedWords.map((w,i)=>({word:w,idx:i})); document.getElementById("spTotal").innerText=speedWords.length; document.getElementById("spFill").style.width="0"; document.getElementById("spWN").innerText="Word 0"; document.getElementById("flashWord").innerHTML=`<span class="pv">${speedWords[0]||"Ready"}</span>`; document.getElementById("flashCtx").innerHTML=`${speedWords.length} words · WPM ${speedWPM}`; resetSpeedUI(); }
+function resetSpeedUI(){ if(speedPlay) toggleSpeed(); speedWordIdx=0; document.getElementById("spFill").style.width="0"; document.getElementById("spWN").innerText="Word 0"; if(speedWords.length) document.getElementById("flashWord").innerHTML=`<span class="pv">${speedWords[0]}</span>`; document.getElementById("flashCtx").innerHTML=`${speedWords.length} words · WPM ${speedWPM}`; }
+function wpmChange(){ speedWPM=parseInt(document.getElementById("wpmSl").value); document.getElementById("wpmN").innerText=speedWPM; document.getElementById("spWPM").innerText=speedWPM+" WPM"; if(speedWords.length) document.getElementById("flashCtx").innerHTML=`${speedWords.length} words · WPM ${speedWPM}`; }
+function setWPM(val){ speedWPM=val; document.getElementById("wpmSl").value=val; document.getElementById("wpmN").innerText=val; document.getElementById("spWPM").innerText=val+" WPM"; if(speedWords.length) document.getElementById("flashCtx").innerHTML=`${speedWords.length} words · WPM ${speedWPM}`; }
+function stepW(delta){ let newIdx=speedWordIdx+delta; if(newIdx<0) newIdx=0; if(newIdx>=speedWords.length) newIdx=speedWords.length-1; speedWordIdx=newIdx; updateFlashWord(); document.getElementById("spFill").style.width=(speedWordIdx/speedWords.length*100)+"%"; document.getElementById("spWN").innerText=`Word ${speedWordIdx+1}`; }
+function updateFlashWord(){ if(speedWords.length){ document.getElementById("flashWord").innerHTML=`<span class="pv">${speedWords[speedWordIdx]}</span>`; let el=document.getElementById("flashWord"); el.classList.add("pop"); setTimeout(()=>el.classList.remove("pop"),100); } }
+function startSpeedCountdown(){ if(speedCountdownActive) return; speedCountdown=3; let overlay=document.getElementById("cdOverlay"); overlay.classList.add("show"); document.getElementById("cdNum").innerText="3"; let interval=setInterval(()=>{ speedCountdown--; if(speedCountdown>=1) document.getElementById("cdNum").innerText=speedCountdown; else { clearInterval(interval); overlay.classList.remove("show"); speedCountdownActive=false; actuallyStartSpeed(); } },800); speedCountdownActive=true; }
+function actuallyStartSpeed(){ if(speedPlay) return; speedPlay=true; document.getElementById("spPlayBtn").classList.add("going"); let delay=60000/speedWPM; function showNext(){ if(!speedPlay) return; if(speedWordIdx>=speedWords.length){ toggleSpeed(); return; } updateFlashWord(); document.getElementById("spFill").style.width=(speedWordIdx/speedWords.length*100)+"%"; document.getElementById("spWN").innerText=`Word ${speedWordIdx+1}`; speedWordIdx++; speedTimer=setTimeout(showNext,delay); } showNext(); }
+function toggleSpeed(){ if(speedCountdownActive) return; if(speedPlay){ clearTimeout(speedTimer); speedPlay=false; document.getElementById("spPlayBtn").classList.remove("going"); } else { if(speedWordIdx>=speedWords.length) speedWordIdx=0; startSpeedCountdown(); } }
+function resetSpeed(){ if(speedPlay) toggleSpeed(); speedWordIdx=0; updateFlashWord(); document.getElementById("spFill").style.width="0"; document.getElementById("spWN").innerText="Word 0"; }
+function resetAll(){ if(readPlay) toggleRead(); if(speedPlay) toggleSpeed(); selectBook(currentBookId); }
+function setMode(mode){ document.getElementById("readPanel").classList.toggle("hidden",mode!="read"); document.getElementById("speedPanel").classList.toggle("hidden",mode!="speed"); let tabR=document.getElementById("tabR"),tabS=document.getElementById("tabS"); if(mode=="read"){ tabR.classList.add("read-on"); tabS.classList.remove("speed-on"); }else{ tabS.classList.add("speed-on"); tabR.classList.remove("read-on"); } }
+function prevChap(){ if(currentChapIdx>0){ currentChapIdx--; loadReadChapter(); loadSpeedChapter(); resetReadUI(); resetSpeedUI(); updateNavButtons(); } }
+function nextChap(){ let bk=getCurrentBook(); if(bk && currentChapIdx<bk.chapters.length-1){ currentChapIdx++; loadReadChapter(); loadSpeedChapter(); resetReadUI(); resetSpeedUI(); updateNavButtons(); } }
+function updateNavButtons(){ let bk=getCurrentBook(); document.getElementById("btnPrev").disabled=currentChapIdx===0; document.getElementById("btnNext").disabled=!bk || currentChapIdx===bk.chapters.length-1; }
+function resetReadUI(){ if(readPlay) toggleRead(); resetReadProgress(); }
+
+renderSidebar(); selectBook("merchant"); setMode("read"); updateNavButtons();
+</script>
+</body>
+</html>

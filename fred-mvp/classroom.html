@@ -269,128 +269,38 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
 .cpf-status { font-size:0.65rem; font-weight:600; }
 .cpf-status.on  { color:#4ade80; }
 .cpf-status.off { color:var(--gray-400); }
-
-/* ══ WHITEBOARD OVERLAY ══ */
-#wb-overlay {
-  position:fixed; inset:0; z-index:500;
-  background:rgba(17,24,39,0.55);
-  backdrop-filter:blur(4px);
-  display:none; flex-direction:column; align-items:center; justify-content:center;
-  padding:1rem;
-}
-#wb-overlay.open { display:flex; }
-.wb-modal {
-  width:100%; max-width:1100px; height:92vh;
-  background:var(--white);
-  border-radius:var(--radius-xl);
-  box-shadow:0 25px 60px rgba(0,0,0,0.3);
-  display:flex; flex-direction:column; overflow:hidden;
-}
-.wb-header {
-  height:50px; background:var(--white);
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 1rem; flex-shrink:0;
-}
-.wb-title { font-size:0.85rem; font-weight:700; color:var(--gray-800); display:flex; align-items:center; gap:0.5rem; }
-.wb-tools {
-  display:flex; align-items:center; gap:0.35rem; flex:1; justify-content:center;
-}
-.wb-tool-btn {
-  width:34px; height:34px;
-  border-radius:var(--radius); border:1px solid var(--border);
-  background:var(--gray-50); color:var(--gray-600);
-  cursor:pointer; display:flex; align-items:center; justify-content:center;
-  transition:all 0.15s; font-size:0.85rem;
-}
-.wb-tool-btn:hover { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
-.wb-tool-btn.active { background:var(--orange-500); color:white; border-color:var(--orange-600); }
-.wb-sep { width:1px; height:22px; background:var(--border); margin:0 0.25rem; }
-.wb-color-swatch {
-  width:24px; height:24px; border-radius:50%; border:2px solid white;
-  box-shadow:0 0 0 1px var(--border); cursor:pointer; flex-shrink:0;
-}
-.wb-color-swatch.active { box-shadow:0 0 0 2px var(--orange-500); }
-.wb-size-btn {
-  padding:0.25rem 0.5rem;
-  border-radius:var(--radius); border:1px solid var(--border);
-  background:var(--gray-50); color:var(--gray-700);
-  font-family:inherit; font-size:0.7rem; font-weight:600;
-  cursor:pointer; transition:all 0.15s;
-}
-.wb-size-btn.active { background:var(--orange-50); color:var(--orange-600); border-color:var(--orange-200); }
-.wb-actions { display:flex; align-items:center; gap:0.4rem; }
-.wb-close-btn {
-  width:32px; height:32px; border-radius:50%;
-  background:var(--gray-100); border:none;
-  font-size:1rem; cursor:pointer; color:var(--gray-500);
-  display:flex; align-items:center; justify-content:center;
-  transition:all 0.15s;
-}
-.wb-close-btn:hover { background:var(--gray-200); color:var(--gray-700); }
-.wb-body { flex:1; position:relative; overflow:hidden; background:#fafafa; }
-#wb-canvas { cursor:crosshair; display:block; touch-action:none; }
-.wb-locked-banner {
-  position:absolute; inset:0;
-  background:rgba(249,115,22,0.07);
-  display:none; align-items:center; justify-content:center;
-  pointer-events:none; z-index:10;
-}
-.wb-locked-banner.show { display:flex; }
-.wb-locked-banner span {
-  background:var(--orange-500); color:white;
-  padding:0.5rem 1.25rem; border-radius:99px;
-  font-size:0.8rem; font-weight:700;
-  pointer-events:none;
-}
-.wb-footer-bar {
-  height:38px; background:var(--gray-50);
-  border-top:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 1rem; flex-shrink:0;
-}
-.wb-footer-info { font-size:0.7rem; color:var(--gray-400); }
-/* Students see view-only overlay on locked board */
-#wb-view-only {
-  position:absolute; inset:0;
-  z-index:20; cursor:not-allowed;
-  display:none;
-}
-#wb-view-only.show { display:block; }
 </style>
 </head>
 <body>
 <div class="app-shell">
 
   <!-- Sidebar -->
-  <nav class="sidebar">
+  
+  <!-- MOBILE OVERLAY -->
+  <div class="mob-overlay" id="mob-overlay" onclick="closeSidebar()"></div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;"/></div>
       <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
     </div>
     <div class="sidebar-user">
       <div class="user-av" id="s-av">S</div>
-      <div>
-        <div class="user-name" id="s-name">Student</div>
-        <div class="user-role" id="s-role-lbl">Student</div>
-      </div>
+      <div><div class="user-name" id="s-name">Student</div><div class="user-role" id="s-role">Student</div></div>
     </div>
     <div class="sidebar-nav">
-      <div class="nav-label">Main</div>
-      <a class="nav-item" href="dashboard.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Dashboard
-      </a>
-      <a class="nav-item active" href="classroom.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-        Live Classroom
-      </a>
-      <a class="nav-item" href="library.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-        Library
-      </a>
+      <div class="nav-label">Menu</div>
+      <a class="nav-item " href="dashboard.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+      <a class="nav-item " href="modules.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Modules</a>
+      <a class="nav-item active" href="classroom.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>Live Classroom<span class="nav-badge" id="live-badge" style="display:none">Live</span></a>
+      <a class="nav-item " href="library.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Library</a>
+      <button class="tools-toggle" id="tools-btn" onclick="toggleTools()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>My Tools<svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="tools-sub" id="tools-sub">
+        <a class="tools-sub-item" href="fred-grapher.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Fred Grapher</a>
+        <a class="tools-sub-item" href="fred-reading-tool.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Fred Reader</a>
+      </div>
     </div>
-    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()">Sign Out</button></div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
   </nav>
 
   <div class="main-content">
@@ -398,7 +308,7 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
     <div class="cls-bar">
       <div class="cls-bar-left">
         <div class="cls-logo">
-          <div class="cls-logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+          <div class="cls-logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;"/></div>
           <div class="cls-logo-name">FredInstitute</div>
         </div>
         <div class="cls-room-info">
@@ -420,10 +330,12 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
           Leave Session
         </button>
 
-        <!-- Whiteboard button (teacher: show/hide; student: view if allowed) -->
-        <button class="cls-btn cls-btn-ghost" id="wb-open-btn" style="display:none" onclick="openWhiteboard()">
-          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <!-- Whiteboard controls (teacher only) -->
+        <button class="cls-btn cls-btn-ghost" id="wb-show-btn" style="display:none" onclick="showWhiteboard()">
           Whiteboard
+        </button>
+        <button class="cls-btn cls-btn-ghost" id="wb-lock-btn" style="display:none" onclick="lockWhiteboard()">
+          Lock Board
         </button>
       </div>
     </div>
@@ -532,59 +444,6 @@ body { overflow:hidden; background:var(--gray-50); color:var(--gray-900); }
   </div>
 </div>
 
-<div id="wb-overlay">
-  <div class="wb-modal">
-    <div class="wb-header">
-      <div class="wb-title">
-        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Class Whiteboard
-        <span id="wb-room-label" style="font-size:0.7rem;color:var(--gray-400);font-weight:500;"></span>
-      </div>
-      <div class="wb-tools" id="wb-tools">
-        <!-- Tool buttons -->
-        <button class="wb-tool-btn active" id="wbt-pen" title="Pen" onclick="setWbTool('pen',this)">✏️</button>
-        <button class="wb-tool-btn" id="wbt-marker" title="Marker" onclick="setWbTool('marker',this)">🖊️</button>
-        <button class="wb-tool-btn" id="wbt-line" title="Line" onclick="setWbTool('line',this)">╱</button>
-        <button class="wb-tool-btn" id="wbt-rect" title="Rectangle" onclick="setWbTool('rect',this)">▭</button>
-        <button class="wb-tool-btn" id="wbt-circle" title="Circle" onclick="setWbTool('circle',this)">○</button>
-        <button class="wb-tool-btn" id="wbt-eraser" title="Eraser" onclick="setWbTool('eraser',this)">🧹</button>
-        <div class="wb-sep"></div>
-        <!-- Colors -->
-        <div class="wb-color-swatch active" style="background:#1f2937" data-color="#1f2937" onclick="setWbColor('#1f2937',this)" title="Black"></div>
-        <div class="wb-color-swatch" style="background:#f97316" data-color="#f97316" onclick="setWbColor('#f97316',this)" title="Orange"></div>
-        <div class="wb-color-swatch" style="background:#dc2626" data-color="#dc2626" onclick="setWbColor('#dc2626',this)" title="Red"></div>
-        <div class="wb-color-swatch" style="background:#2563eb" data-color="#2563eb" onclick="setWbColor('#2563eb',this)" title="Blue"></div>
-        <div class="wb-color-swatch" style="background:#16a34a" data-color="#16a34a" onclick="setWbColor('#16a34a',this)" title="Green"></div>
-        <div class="wb-color-swatch" style="background:#7c3aed" data-color="#7c3aed" onclick="setWbColor('#7c3aed',this)" title="Purple"></div>
-        <div class="wb-sep"></div>
-        <!-- Sizes -->
-        <button class="wb-size-btn active" data-size="2" onclick="setWbSize(2,this)">S</button>
-        <button class="wb-size-btn" data-size="5" onclick="setWbSize(5,this)">M</button>
-        <button class="wb-size-btn" data-size="10" onclick="setWbSize(10,this)">L</button>
-        <button class="wb-size-btn" data-size="20" onclick="setWbSize(20,this)">XL</button>
-        <div class="wb-sep"></div>
-        <button class="wb-tool-btn" title="Undo" onclick="wbUndo()">↩</button>
-        <button class="wb-tool-btn" title="Redo" onclick="wbRedo()">↪</button>
-        <button class="wb-tool-btn" title="Clear All" onclick="wbClear()">🗑</button>
-      </div>
-      <div class="wb-actions">
-        <!-- Teacher-only lock toggle -->
-        <button class="cls-btn cls-btn-ghost" id="wb-lock-btn" style="display:none" onclick="toggleWbLock()">🔓 Open</button>
-        <button class="wb-close-btn" onclick="closeWhiteboard()" title="Close">✕</button>
-      </div>
-    </div>
-    <div class="wb-body" id="wb-body">
-      <canvas id="wb-canvas"></canvas>
-      <div class="wb-locked-banner" id="wb-locked-banner"><span>🔒 Board locked by teacher — view only</span></div>
-      <div id="wb-view-only"></div>
-    </div>
-    <div class="wb-footer-bar">
-      <span class="wb-footer-info" id="wb-footer-info">Ready · Drag images/files here to paste onto board</span>
-      <span class="wb-footer-info" id="wb-footer-status"></span>
-    </div>
-  </div>
-</div>
-
 <div id="toast"></div>
 
 <!-- Jitsi Meet API (loaded dynamically based on host) -->
@@ -664,520 +523,40 @@ function isWhiteboardShown(status) {
 }
 
 function updateWhiteboardButtons() {
-  const btn = document.getElementById('wb-open-btn');
-  if (!currentRoom) { btn.style.display = 'none'; return; }
-  btn.style.display = 'inline-flex';
-}
-
-/* ══════════════════════════════════════════════════════════
-   REAL-TIME COLLABORATIVE WHITEBOARD
-   Architecture: stroke-event log in localStorage +
-   BroadcastChannel for <50ms same-browser delivery +
-   StorageEvent for cross-tab + polling fallback
-   Teacher "open" command force-opens board on all clients.
-══════════════════════════════════════════════════════════ */
-const WB = {
-  tool:'pen', color:'#1f2937', size:2,
-  drawing:false, locked:false,
-  currentStroke:null,   // stroke being drawn right now (local only)
-  redoStack:[],         // array of stroke-id arrays for redo
-  undoStack:[],         // array of stroke-id arrays for undo
-  canvasW:0, canvasH:0,
-  _bc: null,            // BroadcastChannel
-  _pollId: null,
-  _lastSeq: -1,         // last processed event sequence number
-};
-
-/* ── Storage keys ── */
-function wbEventsKey()  { return 'fi_wbevt_'  + currentRoom; }
-function wbLockKey()    { return 'fi_wblocked_'+ currentRoom; }
-function wbCmdKey()     { return 'fi_wbcmd_'  + currentRoom; }  // for force-open signal
-
-/* ── BroadcastChannel setup ── */
-function initWbChannel() {
-  if (WB._bc) { try { WB._bc.close(); } catch(e){} WB._bc = null; }
-  if (!currentRoom || typeof BroadcastChannel === 'undefined') return;
-  WB._bc = new BroadcastChannel('fi_wb_' + currentRoom);
-  WB._bc.onmessage = (e) => {
-    const d = e.data;
-    if (!d) return;
-    if (d.type === 'stroke')    { applyRemoteStroke(d.stroke); }
-    if (d.type === 'clear')     { wbClearCanvas(); flushEvents(); }
-    if (d.type === 'lock')      { applyLockState(d.locked); }
-    if (d.type === 'open')      { forceOpenWhiteboard(); }
-    if (d.type === 'undo_redo') { replayAllStrokes(); }
-  };
-}
-
-function wbBroadcast(msg) {
-  if (WB._bc) try { WB._bc.postMessage(msg); } catch(e){}
-}
-
-/* ── Event log (persisted strokes for late-joiners) ── */
-function getEvents()    { try { return JSON.parse(localStorage.getItem(wbEventsKey()) || '[]'); } catch(e){ return []; } }
-function saveEvents(ev) { try { localStorage.setItem(wbEventsKey(), JSON.stringify(ev)); } catch(e){} }
-function appendEvent(stroke) {
-  const ev = getEvents();
-  stroke.seq = (ev.length > 0 ? ev[ev.length-1].seq + 1 : 0);
-  ev.push(stroke);
-  if (ev.length > 2000) ev.splice(0, ev.length - 2000); // keep last 2000 strokes
-  saveEvents(ev);
-  WB._lastSeq = stroke.seq;
-}
-function flushEvents() {
-  localStorage.removeItem(wbEventsKey());
-  WB._lastSeq = -1;
-}
-
-/* ── Canvas helpers ── */
-function getCanvas() { return document.getElementById('wb-canvas'); }
-function getCtx()    { return getCanvas().getContext('2d'); }
-
-function wbPos(e) {
-  const canvas = getCanvas();
-  const r = canvas.getBoundingClientRect();
-  const src = e.touches ? e.touches[0] : e;
-  // Normalize coordinates to 0-1 range so they work across different screen sizes
-  return {
-    x: (src.clientX - r.left) / canvas.width,
-    y: (src.clientY - r.top)  / canvas.height,
-  };
-}
-
-function px(norm, canvas) {
-  // Convert normalized 0-1 coord back to canvas pixels
-  return { x: norm.x * canvas.width, y: norm.y * canvas.height };
-}
-
-/* ── Draw a single stroke onto a canvas context ── */
-function drawStroke(ctx, stroke, canvas) {
-  if (!stroke || !stroke.points) return;
-
-  // Image stroke type
-  if (stroke.tool === 'image') {
-    const img = new Image();
-    img.onload = () => {
-      const x = stroke.nx * canvas.width;
-      const y = stroke.ny * canvas.height;
-      const w = stroke.nw * canvas.width;
-      const h = w * (img.height / img.width);
-      ctx.drawImage(img, x, y, w, h);
-    };
-    img.src = stroke.dataUrl;
+  if (!IS_TEACHER || !currentRoom) {
+    document.getElementById('wb-show-btn').style.display = 'none';
+    document.getElementById('wb-lock-btn').style.display = 'none';
     return;
   }
+  // If Jitsi hasn't emitted an event yet, default to "show".
+  const shown = isWhiteboardShown(whiteboardStatus);
+  document.getElementById('wb-show-btn').style.display = shown ? 'none' : 'inline-flex';
+  document.getElementById('wb-lock-btn').style.display = shown ? 'inline-flex' : 'none';
+}
 
-  if (stroke.points.length < 1) return;
-  ctx.save();
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  if (stroke.tool === 'eraser') {
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.strokeStyle = 'rgba(0,0,0,1)';
-    ctx.lineWidth = stroke.size * 4;
-    ctx.globalAlpha = 1;
-  } else if (stroke.tool === 'marker') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.size * 3;
-    ctx.globalAlpha = 0.35;
-  } else if (stroke.tool === 'pen') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.size;
-    ctx.globalAlpha = 1;
-  } else if (stroke.tool === 'line') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.size;
-    ctx.globalAlpha = 1;
-    const p0 = px(stroke.points[0], canvas);
-    const p1 = px(stroke.points[stroke.points.length-1], canvas);
-    ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
-    ctx.restore(); return;
-  } else if (stroke.tool === 'rect') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.size;
-    ctx.globalAlpha = 1;
-    const p0 = px(stroke.points[0], canvas);
-    const p1 = px(stroke.points[stroke.points.length-1], canvas);
-    ctx.beginPath(); ctx.rect(p0.x, p0.y, p1.x-p0.x, p1.y-p0.y); ctx.stroke();
-    ctx.restore(); return;
-  } else if (stroke.tool === 'circle') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = stroke.color;
-    ctx.lineWidth = stroke.size;
-    ctx.globalAlpha = 1;
-    const p0 = px(stroke.points[0], canvas);
-    const p1 = px(stroke.points[stroke.points.length-1], canvas);
-    const rx = Math.abs(p1.x-p0.x)/2, ry = Math.abs(p1.y-p0.y)/2;
-    const cx = p0.x+(p1.x-p0.x)/2, cy = p0.y+(p1.y-p0.y)/2;
-    ctx.beginPath(); ctx.ellipse(cx, cy, rx||1, ry||1, 0, 0, Math.PI*2); ctx.stroke();
-    ctx.restore(); return;
+function showWhiteboard() {
+  if (!jitsi) return;
+  if (isWhiteboardShown(whiteboardStatus)) return;
+  try { jitsi.executeCommand('toggleWhiteboard'); }
+  catch (e) { toast('Whiteboard needs moderator rights. Set a valid VPAAS JWT in localStorage: fi_vpaas_jwt (then reload).'); }
+}
+
+function lockWhiteboard() {
+  if (!jitsi) return;
+  if (!isWhiteboardShown(whiteboardStatus)) return;
+  try { jitsi.executeCommand('toggleWhiteboard'); }
+  catch (e) { toast('Whiteboard needs moderator rights. Set a valid VPAAS JWT in localStorage: fi_vpaas_jwt (then reload).'); }
+}
+
+function grantWhiteboard(pid) {
+  if (!jitsi) return;
+  if (!pid) return;
+  try {
+    jitsi.executeCommand('grantModerator', pid);
+    toast('Whiteboard access granted to that student');
+  } catch (e) {
+    toast('Could not grant whiteboard moderator. Teacher may need moderator rights/JWT (fi_vpaas_jwt).');
   }
-  // Pen / marker / eraser: path through all points
-  const pts = stroke.points.map(p => px(p, canvas));
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x, pts[0].y);
-  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
-  ctx.stroke();
-  ctx.restore();
-}
-
-/* ── Replay all persisted strokes onto canvas ── */
-function replayAllStrokes() {
-  const canvas = getCanvas();
-  const ctx = getCtx();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // Draw white background
-  ctx.save(); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.restore();
-  const events = getEvents();
-  events.forEach(s => { if (!s.deleted) drawStroke(ctx, s, canvas); });
-  WB._lastSeq = events.length > 0 ? events[events.length-1].seq : -1;
-}
-
-/* ── Apply a single remote stroke (fast path) ── */
-function applyRemoteStroke(stroke) {
-  if (!stroke || stroke.seq <= WB._lastSeq) return; // already have it
-  const canvas = getCanvas();
-  const ctx = getCtx();
-  drawStroke(ctx, stroke, canvas);
-  WB._lastSeq = stroke.seq;
-}
-
-/* ── Poll for missed strokes (cross-device fallback) ── */
-function pollMissedStrokes() {
-  if (!currentRoom) return;
-  const events = getEvents();
-  if (!events.length) return;
-  const lastSeq = events[events.length-1].seq;
-  if (lastSeq <= WB._lastSeq) return;
-  // We missed some — replay everything to be safe
-  replayAllStrokes();
-}
-
-/* ── Force-open: teacher broadcasts, all clients open board ── */
-function forceOpenWhiteboard() {
-  if (document.getElementById('wb-overlay').classList.contains('open')) return;
-  openWhiteboardLocal();
-  toast('📋 Teacher opened the whiteboard');
-}
-
-/* ── Teacher opens board — broadcasts to all ── */
-function openWhiteboard() {
-  if (!currentRoom) { toast('Join a room first'); return; }
-  openWhiteboardLocal();
-  // Signal all other clients to open too
-  localStorage.setItem(wbCmdKey(), JSON.stringify({ cmd:'open', ts: Date.now() }));
-  wbBroadcast({ type:'open' });
-}
-
-function openWhiteboardLocal() {
-  const overlay = document.getElementById('wb-overlay');
-  if (overlay.classList.contains('open')) return;
-  overlay.classList.add('open');
-  document.getElementById('wb-room-label').textContent = '— ' + currentRoom;
-  document.getElementById('wb-lock-btn').style.display = IS_TEACHER ? 'inline-flex' : 'none';
-  // Size canvas
-  const body = document.getElementById('wb-body');
-  const canvas = getCanvas();
-  canvas.width  = body.clientWidth  || 900;
-  canvas.height = body.clientHeight || 600;
-  WB.canvasW = canvas.width; WB.canvasH = canvas.height;
-  // Replay all stored strokes
-  replayAllStrokes();
-  syncWbLockState();
-  initWbChannel();
-  // Fallback poll every 800ms for cross-device
-  if (!WB._pollId) WB._pollId = setInterval(pollMissedStrokes, 800);
-}
-
-function closeWhiteboard() {
-  document.getElementById('wb-overlay').classList.remove('open');
-  if (WB._pollId) { clearInterval(WB._pollId); WB._pollId = null; }
-  if (WB._bc) { try { WB._bc.close(); } catch(e){} WB._bc = null; }
-}
-
-/* ── Lock / unlock ── */
-function toggleWbLock() {
-  if (!IS_TEACHER) return;
-  const newLocked = !WB.locked;
-  localStorage.setItem(wbLockKey(), newLocked ? '1' : '0');
-  applyLockState(newLocked);
-  wbBroadcast({ type:'lock', locked: newLocked });
-}
-
-function applyLockState(locked) {
-  WB.locked = locked;
-  const lockBtn = document.getElementById('wb-lock-btn');
-  const banner  = document.getElementById('wb-locked-banner');
-  const viewOnly= document.getElementById('wb-view-only');
-  const tools   = document.getElementById('wb-tools');
-  if (locked) {
-    if (lockBtn) lockBtn.innerHTML = '🔒 Locked';
-    banner.classList.add('show');
-    if (!IS_TEACHER) {
-      viewOnly.classList.add('show');
-      tools.style.opacity = '0.35';
-      tools.style.pointerEvents = 'none';
-    }
-  } else {
-    if (lockBtn) lockBtn.innerHTML = '🔓 Open';
-    banner.classList.remove('show');
-    viewOnly.classList.remove('show');
-    tools.style.opacity = '';
-    tools.style.pointerEvents = '';
-  }
-}
-
-function syncWbLockState() {
-  applyLockState(localStorage.getItem(wbLockKey()) === '1');
-}
-
-/* ── Tool / colour / size setters ── */
-function setWbTool(t, btn) {
-  WB.tool = t;
-  document.querySelectorAll('.wb-tool-btn[id^="wbt-"]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  getCanvas().style.cursor = t === 'eraser' ? 'cell' : 'crosshair';
-}
-function setWbColor(c, el) {
-  WB.color = c;
-  document.querySelectorAll('.wb-color-swatch').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-}
-function setWbSize(s, btn) {
-  WB.size = s;
-  document.querySelectorAll('.wb-size-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-/* ── Undo ── */
-function wbUndo() {
-  const events = getEvents();
-  if (!events.length) return;
-  // Mark last non-deleted stroke as deleted
-  for (let i = events.length-1; i >= 0; i--) {
-    if (!events[i].deleted) {
-      events[i].deleted = true;
-      saveEvents(events);
-      replayAllStrokes();
-      wbBroadcast({ type:'undo_redo' });
-      return;
-    }
-  }
-}
-
-/* ── Redo ── */
-function wbRedo() {
-  const events = getEvents();
-  // Restore last deleted stroke
-  for (let i = events.length-1; i >= 0; i--) {
-    if (events[i].deleted) {
-      events[i].deleted = false;
-      saveEvents(events);
-      replayAllStrokes();
-      wbBroadcast({ type:'undo_redo' });
-      return;
-    }
-  }
-}
-
-/* ── Clear all ── */
-function wbClearCanvas() {
-  const canvas = getCanvas();
-  const ctx = getCtx();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.save(); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.restore();
-}
-
-function wbClear() {
-  if (!confirm('Clear the entire whiteboard for everyone?')) return;
-  flushEvents();
-  wbClearCanvas();
-  wbBroadcast({ type:'clear' });
-  localStorage.setItem(wbCmdKey(), JSON.stringify({ cmd:'clear', ts: Date.now() }));
-}
-
-/* ── Can the current user draw? ── */
-function canDraw() {
-  if (WB.locked && !IS_TEACHER) return false;
-  return true;
-}
-
-/* ── Drawing event handlers ── */
-document.addEventListener('DOMContentLoaded', () => {
-  const canvas = getCanvas();
-
-  function startDraw(e) {
-    if (!canDraw()) return;
-    e.preventDefault();
-    WB.drawing = true;
-    const p = wbPos(e);
-    WB.currentStroke = {
-      id: ME.id + '_' + Date.now(),
-      tool: WB.tool, color: WB.color, size: WB.size,
-      points: [p],
-    };
-    // For freehand: begin path locally for immediate feedback
-    if (WB.tool === 'pen' || WB.tool === 'marker' || WB.tool === 'eraser') {
-      const ctx = getCtx();
-      ctx.save();
-      applyCtxStyle(ctx, WB.tool, WB.color, WB.size);
-      ctx.beginPath();
-      const pp = px(p, canvas);
-      ctx.moveTo(pp.x, pp.y);
-      ctx._wbOpen = true;
-    }
-  }
-
-  function applyCtxStyle(ctx, tool, color, size) {
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    if (tool === 'eraser') {
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.strokeStyle = 'rgba(0,0,0,1)';
-      ctx.lineWidth = size * 4;
-      ctx.globalAlpha = 1;
-    } else if (tool === 'marker') {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = color;
-      ctx.lineWidth = size * 3;
-      ctx.globalAlpha = 0.35;
-    } else {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = color;
-      ctx.lineWidth = size;
-      ctx.globalAlpha = 1;
-    }
-  }
-
-  function moveDraw(e) {
-    if (!WB.drawing || !WB.currentStroke) return;
-    e.preventDefault();
-    const p = wbPos(e);
-    WB.currentStroke.points.push(p);
-
-    const ctx = getCtx();
-    const pp  = px(p, canvas);
-
-    if (WB.tool === 'pen' || WB.tool === 'marker' || WB.tool === 'eraser') {
-      // Incremental draw — just extend the current path, no full repaint
-      applyCtxStyle(ctx, WB.tool, WB.color, WB.size);
-      ctx.lineTo(pp.x, pp.y);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(pp.x, pp.y);
-    } else {
-      // Shape tools: repaint full canvas + shape preview every frame
-      replayAllStrokes();
-      const p0  = px(WB.currentStroke.points[0], canvas);
-      ctx.save();
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.strokeStyle = WB.color;
-      ctx.lineWidth   = WB.size;
-      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-      ctx.globalAlpha = 1;
-      ctx.beginPath();
-      if (WB.tool === 'line') {
-        ctx.moveTo(p0.x, p0.y); ctx.lineTo(pp.x, pp.y);
-      } else if (WB.tool === 'rect') {
-        ctx.rect(p0.x, p0.y, pp.x-p0.x, pp.y-p0.y);
-      } else if (WB.tool === 'circle') {
-        const rx = Math.abs(pp.x-p0.x)/2, ry = Math.abs(pp.y-p0.y)/2;
-        const cx = p0.x+(pp.x-p0.x)/2, cy = p0.y+(pp.y-p0.y)/2;
-        ctx.ellipse(cx, cy, rx||1, ry||1, 0, 0, Math.PI*2);
-      }
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  function endDraw(e) {
-    if (!WB.drawing || !WB.currentStroke) return;
-    WB.drawing = false;
-    const stroke = WB.currentStroke;
-    WB.currentStroke = null;
-    if (stroke.points.length < 1) return;
-    // Reset ctx state
-    const ctx = getCtx();
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = 'source-over';
-    // Persist stroke to event log
-    appendEvent(stroke);
-    // Broadcast to all peers instantly
-    wbBroadcast({ type:'stroke', stroke });
-    // Update status
-    const s = document.getElementById('wb-footer-status');
-    if (s) s.textContent = 'Synced · ' + new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  }
-
-  canvas.addEventListener('mousedown',  startDraw);
-  canvas.addEventListener('mousemove',  moveDraw);
-  canvas.addEventListener('mouseup',    endDraw);
-  canvas.addEventListener('mouseleave', endDraw);
-  canvas.addEventListener('touchstart', startDraw, { passive:false });
-  canvas.addEventListener('touchmove',  moveDraw,  { passive:false });
-  canvas.addEventListener('touchend',   endDraw);
-
-  // Resize: re-render all strokes at new size
-  const resizeObserver = new ResizeObserver(() => {
-    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
-    const body = document.getElementById('wb-body');
-    canvas.width  = body.clientWidth;
-    canvas.height = body.clientHeight;
-    WB.canvasW = canvas.width; WB.canvasH = canvas.height;
-    replayAllStrokes();
-  });
-  resizeObserver.observe(document.getElementById('wb-body'));
-
-  // Paste image (Ctrl+V) → stored as image stroke
-  document.addEventListener('paste', (e) => {
-    if (!document.getElementById('wb-overlay').classList.contains('open')) return;
-    if (!canDraw()) return;
-    const items = e.clipboardData && e.clipboardData.items;
-    if (!items) return;
-    for (const item of items) {
-      if (item.type.startsWith('image/')) {
-        const blob = item.getAsFile();
-        const reader = new FileReader();
-        reader.onload = ev => pasteImageData(ev.target.result, 0.1, 0.1);
-        reader.readAsDataURL(blob);
-        break;
-      }
-    }
-  });
-
-  // Drag & drop image onto whiteboard
-  document.getElementById('wb-body').addEventListener('dragover', e => e.preventDefault());
-  document.getElementById('wb-body').addEventListener('drop', e => {
-    e.preventDefault();
-    if (!canDraw()) { toast('Board is locked'); return; }
-    const files = e.dataTransfer.files;
-    if (files && files.length && files[0].type.startsWith('image/')) {
-      const r = canvas.getBoundingClientRect();
-      const nx = (e.clientX - r.left) / canvas.width;
-      const ny = (e.clientY - r.top)  / canvas.height;
-      const reader = new FileReader();
-      reader.onload = ev => pasteImageData(ev.target.result, nx, ny);
-      reader.readAsDataURL(files[0]);
-    }
-  });
-});
-
-function pasteImageData(dataUrl, nx, ny) {
-  // Store image as a special stroke type with embedded data URL
-  const stroke = {
-    id: ME.id + '_' + Date.now(),
-    tool: 'image',
-    dataUrl,
-    nx, ny,       // normalised top-left position
-    nw: 0.4,      // normalised width (40% of canvas)
-    points: [{ x: nx, y: ny }], // needed so drawStroke guards pass
-  };
-  appendEvent(stroke);
-  replayAllStrokes();
-  wbBroadcast({ type:'stroke', stroke });
 }
 
 function escJS(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
@@ -1246,7 +625,7 @@ async function joinRoom() {
   document.getElementById('jitsi-wrap').style.display = 'block';
   document.getElementById('leave-btn').style.display  = 'flex';
   document.getElementById('live-badge').style.display = 'inline-flex';
-  updateWhiteboardButtons();
+  if (IS_TEACHER) updateWhiteboardButtons();
   document.getElementById('bar-title').textContent = 'Live: ' + currentRoom;
   document.getElementById('bar-sub').textContent   = 'FredInstitute · ' + jRoom;
   document.getElementById('cpf-room').textContent  = currentRoom;
@@ -1393,11 +772,6 @@ function resetToPreJoin() {
 
   whiteboardStatus = 'hidden';
   updateWhiteboardButtons();
-
-  // Close BroadcastChannel
-  if (chatChannel) { try { chatChannel.close(); } catch(e){} chatChannel = null; }
-  // Close whiteboard if open
-  closeWhiteboard();
 }
 
 /* ── SHARE ROOM ────────────────────────────────────── */
@@ -1421,17 +795,6 @@ function setPTab(name, btn) {
 /* ── CHAT ───────────────────────────────────────────── */
 function chatKey() { return 'fi_chat_' + currentRoom; }
 
-// BroadcastChannel for real-time same-device/tab chat sync
-let chatChannel = null;
-
-function initChatChannel() {
-  if (chatChannel) { try { chatChannel.close(); } catch(e){} }
-  if (currentRoom && typeof BroadcastChannel !== 'undefined') {
-    chatChannel = new BroadcastChannel('fi_chat_' + currentRoom);
-    chatChannel.onmessage = () => renderChat();
-  }
-}
-
 function sendMsg() {
   if (!currentRoom) return;
   const tf = document.getElementById('chat-tf');
@@ -1443,16 +806,9 @@ function sendMsg() {
   localStorage.setItem(chatKey(), JSON.stringify(msgs));
   tf.value = '';
   renderChat();
-  // Notify other tabs/windows in same room
-  if (chatChannel) try { chatChannel.postMessage({ type: 'new_msg' }); } catch(e) {}
 }
 
-function loadChat() {
-  if (currentRoom) {
-    initChatChannel();
-    renderChat();
-  }
-}
+function loadChat() { if (currentRoom) renderChat(); }
 
 function renderChat() {
   if (!currentRoom) return;
@@ -1572,24 +928,8 @@ function loadFiles() {
     </div>`).join('');
 }
 
-function wbAllowKey() { return 'fi_wballow_' + currentRoom; }
-
-function getWbAllowedSet() {
-  const raw = localStorage.getItem(wbAllowKey());
-  return new Set(raw ? JSON.parse(raw) : []);
-}
-
-function toggleWbStudent(pid, name) {
-  if (!IS_TEACHER) return;
-  const allowed = getWbAllowedSet();
-  if (allowed.has(pid)) { allowed.delete(pid); } else { allowed.add(pid); }
-  localStorage.setItem(wbAllowKey(), JSON.stringify([...allowed]));
-  toast(allowed.has(pid) ? `${name} can now draw on board` : `${name} restricted from board`);
-  refreshPeople();
-}
-
+/* ── PEOPLE ──────────────────────────────────────────── */
 function refreshPeople() {
-  const allowed = getWbAllowedSet();
   const people = [{ name: ME.name, role: ME.role, me: true, pid: null }];
   if (jitsi) {
     try {
@@ -1608,57 +948,26 @@ function refreshPeople() {
         <div class="p-name">${esc(p.name)}${p.me ? ' (you)' : ''}</div>
         <div class="p-role">${p.role}</div>
       </div>
-      ${IS_TEACHER && !p.me && p.pid ? `<button class="wb-allow-btn" onclick="toggleWbStudent('${escJS(p.pid)}','${escJS(p.name)}')">${allowed.has(p.pid) ? '🔒 Restrict WB' : '✏️ Allow WB'}</button>` : ''}
+      ${IS_TEACHER && !p.me && p.pid ? `<button class="wb-allow-btn" onclick="grantWhiteboard('${escJS(p.pid)}')">Allow WB</button>` : ''}
     </div>`).join('');
 }
 
 /* ── POLLING ─────────────────────────────────────────── */
 function startPolling() {
-  polls.push(setInterval(() => { if (currentRoom) renderChat(); }, 1500));
+  polls.push(setInterval(() => { if (currentRoom) renderChat(); },     2500));
   polls.push(setInterval(() => { if (currentRoom) { loadSharedNotes(); loadFiles(); } }, 5000));
   polls.push(setInterval(() => { if (currentRoom && jitsi) refreshPeople(); }, 8000));
-  // WB lock state poll (cross-device fallback)
-  polls.push(setInterval(() => {
-    if (currentRoom && document.getElementById('wb-overlay').classList.contains('open')) syncWbLockState();
-  }, 2000));
-  // Check for force-open command from teacher
-  polls.push(setInterval(() => {
-    if (!currentRoom) return;
-    try {
-      const cmd = JSON.parse(localStorage.getItem(wbCmdKey()) || '{}');
-      if (cmd.cmd === 'open' && cmd.ts && (Date.now() - cmd.ts) < 10000) {
-        forceOpenWhiteboard();
-      }
-    } catch(e) {}
-  }, 1000));
 }
-
-/* ── GLOBAL STORAGE EVENT (cross-tab real-time) ───── */
-window.addEventListener('storage', (e) => {
-  if (!currentRoom) return;
-  if (e.key === chatKey()) {
-    renderChat();
-    if (chatChannel) try { chatChannel.postMessage({ type:'new_msg' }); } catch(err) {}
-  }
-  if (e.key === wbEventsKey()) {
-    if (document.getElementById('wb-overlay').classList.contains('open')) pollMissedStrokes();
-  }
-  if (e.key === wbCmdKey()) {
-    try {
-      const cmd = JSON.parse(e.newValue || '{}');
-      if (cmd.cmd === 'open')  forceOpenWhiteboard();
-      if (cmd.cmd === 'clear') { flushEvents(); wbClearCanvas(); }
-    } catch(err) {}
-  }
-  if (e.key === wbLockKey()) {
-    if (document.getElementById('wb-overlay').classList.contains('open')) syncWbLockState();
-  }
-});
 
 /* ── UTILS ───────────────────────────────────────────── */
 function fmtSz(b) { if (!b) return '?'; if (b < 1024) return b+'B'; if (b < 1048576) return Math.round(b/1024)+'KB'; return (b/1048576).toFixed(1)+'MB'; }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function toast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000); }
+
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('mob-overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mob-overlay').classList.remove('open');}
+function toggleTools(){document.getElementById('tools-btn').classList.toggle('open');document.getElementById('tools-sub').classList.toggle('open');}
+function signOut(){sessionStorage.removeItem('fi_session');location.href='index.html';}
 function signOut() { sessionStorage.removeItem('fi_session'); location.href = 'index.html'; }
 </script>
 </body>

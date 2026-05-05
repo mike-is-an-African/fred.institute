@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FredInstitute — Module Catalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.mod-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+@media(max-width:1000px){ .mod-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:600px) { .mod-grid{grid-template-columns:1fr;} }
+.mod-card {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--radius-xl);
+  overflow:hidden; cursor:pointer;
+  transition:all .2s; box-shadow:var(--shadow-sm);
+  display:flex; flex-direction:column;
+}
+.mod-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); border-color:var(--orange-300); }
+.mod-card-img {
+  height:180px; overflow:hidden; position:relative;
+  background:var(--gray-100);
+}
+.mod-card-img img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; }
+.mod-card:hover .mod-card-img img { transform:scale(1.05); }
+.mod-card-body { padding:1.25rem; flex:1; display:flex; flex-direction:column; }
+.mod-subject { font-size:.65rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--orange-600); margin-bottom:.35rem; }
+.mod-title { font-size:1.05rem; font-weight:800; color:var(--gray-900); margin-bottom:.375rem; line-height:1.3; }
+.mod-desc { font-size:.8rem; color:var(--gray-500); line-height:1.55; flex:1; }
+.mod-footer { display:flex; align-items:center; justify-content:space-between; margin-top:1rem; padding-top:.875rem; border-top:1px solid var(--border); }
+.mod-lessons { font-size:.75rem; font-weight:600; color:var(--gray-500); }
+.mod-badge { font-size:.68rem; font-weight:700; padding:.2rem .6rem; border-radius:99px; background:var(--orange-50); color:var(--orange-700); border:1px solid var(--orange-200); }
+.mod-badge.coming { background:var(--gray-100); color:var(--gray-500); border-color:var(--gray-200); }
+.mod-prog-bar { height:4px; background:var(--gray-100); border-radius:99px; margin-top:.625rem; overflow:hidden; }
+.mod-prog-fill { height:100%; background:var(--grad-orange); border-radius:99px; transition:width .8s ease; }
+.filter-bar { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.75rem; }
+.filter-btn { padding:.45rem .9rem; border-radius:99px; font-size:.78rem; font-weight:600; border:1.5px solid var(--border); background:var(--white); color:var(--gray-600); cursor:pointer; transition:all .15s; }
+.filter-btn:hover, .filter-btn.active { background:var(--orange-500); color:white; border-color:var(--orange-500); }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="mob-overlay" id="mob-overlay" onclick="closeSidebar()"></div>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;"/></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av" id="s-av">S</div>
+      <div><div class="user-name" id="s-name">Student</div><div class="user-role">Student</div></div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-label">Menu</div>
+      <a class="nav-item" href="dashboard.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+      <a class="nav-item active" href="modules.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Modules</a>
+      <a class="nav-item" href="classroom.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>Live Classroom<span class="nav-badge" id="live-badge" style="display:none">Live</span></a>
+      <a class="nav-item" href="library.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Library</a>
+      <button class="tools-toggle" id="tools-btn" onclick="toggleTools()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>My Tools<svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="tools-sub" id="tools-sub">
+        <a class="tools-sub-item" href="fred-grapher.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Fred Grapher</a>
+        <a class="tools-sub-item" href="fred-reading-tool.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Fred Reader</a>
+      </div>
+    </div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
+  </nav>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:.75rem;">
+        <button class="mob-ham" onclick="openSidebar()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">Module Catalog</div>
+      </div>
+      <div class="topbar-actions">
+        <span id="pts-pill" style="font-size:.78rem;font-weight:700;color:var(--orange-700);background:var(--orange-50);border:1px solid var(--orange-200);padding:.3rem .875rem;border-radius:99px;">⭐ 0 pts</span>
+      </div>
+    </div>
+
+    <div class="page-body">
+      <div class="page-head">
+        <h1>Module Catalog</h1>
+        <p>Explore your learning modules — from beginner to exam ready.</p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterMods(this,'all')">All Modules</button>
+        <button class="filter-btn" onclick="filterMods(this,'mathematics')">Mathematics</button>
+        <button class="filter-btn" onclick="filterMods(this,'sciences')">Sciences</button>
+        <button class="filter-btn" onclick="filterMods(this,'english')">English</button>
+        <button class="filter-btn" onclick="filterMods(this,'commerce')">Commerce</button>
+        <button class="filter-btn" onclick="filterMods(this,'technology')">Technology</button>
+      </div>
+
+      <div class="mod-grid" id="mod-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script>
+const _S=sessionStorage.getItem('fi_session');
+if(!_S)location.href='index.html';
+const ME=JSON.parse(_S||'{}');
+document.getElementById('s-av').textContent=(ME.name||'S')[0].toUpperCase();
+document.getElementById('s-name').textContent=ME.name||'Student';
+
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('mob-overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mob-overlay').classList.remove('open');}
+function toggleTools(){document.getElementById('tools-btn').classList.toggle('open');document.getElementById('tools-sub').classList.toggle('open');}
+function signOut(){sessionStorage.removeItem('fi_session');location.href='index.html';}
+
+const pts=parseInt(localStorage.getItem('fi_pts')||'0');
+document.getElementById('pts-pill').textContent='⭐ '+pts+' pts';
+
+const MODULES=[
+  {id:'math101',subject:'mathematics',title:'Mathematics 101',desc:'From whole numbers to data and statistics — a complete foundation in maths for IGCSE and beyond. Covers arithmetic, algebra, geometry and data.',lessons:31,img:'assets/MATH_CARD.jpg',href:'modules/math101/01-whole-numbers.html',available:true,level:'Foundation'},
+  {id:'math201',subject:'mathematics',title:'Mathematics 201',desc:'Advanced algebra, trigonometry, matrices, and calculus. Build on your foundation and reach exam-ready level.',lessons:28,img:'assets/MATH.jpg',href:'#',available:false,level:'Advanced'},
+  {id:'eng101',subject:'english',title:'English Language 101',desc:'Grammar, comprehension, essay writing, and language analysis. Build confidence in written and spoken English.',lessons:16,img:'assets/ENGLISH.jpg',href:'modules/english101/01-nouns.html',available:true,level:'Foundation'},
+  {id:'sci101',subject:'sciences',title:'Sciences 101',desc:'Biology, Chemistry, and Physics fundamentals. Explore the natural world with clear explanations and real-world examples.',lessons:30,img:'assets/SCIENCE.jpg',href:'#',available:false,level:'Foundation'},
+  {id:'com101',subject:'commerce',title:'Commerce 101',desc:'Economics, business studies, and financial literacy for the modern learner. Real-world context, practical skills.',lessons:22,img:'assets/COMMERCE.jpg',href:'#',available:false,level:'Foundation'},
+  {id:'tec101',subject:'technology',title:'Technology & ICT',desc:'Digital skills, computer fundamentals, spreadsheets, presentations, and introduction to programming concepts.',lessons:20,img:'assets/TECH.jpg',href:'#',available:false,level:'Foundation'},
+  {id:'biz101',subject:'commerce',title:'Business Studies',desc:'Entrepreneurship, marketing, management and finance for the next generation of business leaders.',lessons:18,img:'assets/BUSINESS.jpg',href:'#',available:false,level:'Intermediate'},
+  {id:'eng201',subject:'english',title:'English Literature 201',desc:'Prose, poetry, drama and critical analysis. Explore the greatest works in English literature with guided study.',lessons:20,img:'assets/COMMERCE2.jpg',href:'#',available:false,level:'Advanced'},
+];
+
+const prog=JSON.parse(localStorage.getItem('fi_progress')||'{}');
+const done=Object.keys(prog).length;
+
+function renderMods(filter){
+  const grid=document.getElementById('mod-grid');
+  const list=filter==='all'?MODULES:MODULES.filter(m=>m.subject===filter);
+  grid.innerHTML=list.map(m=>{
+    const pct=m.id==='math101'?Math.round(done/31*100):0;
+    return `<div class="mod-card" data-subject="${m.subject}" onclick="${m.available?`location.href='${m.href}'`:`toast('${m.title} coming soon!')`}">
+      <div class="mod-card-img"><img src="${m.img}" alt="${m.title}" onerror="this.src='assets/MATH.jpg'"/></div>
+      <div class="mod-card-body">
+        <div class="mod-subject">${m.subject.toUpperCase()}</div>
+        <div class="mod-title">${m.title}</div>
+        <div class="mod-desc">${m.desc}</div>
+        <div class="mod-prog-bar"><div class="mod-prog-fill" style="width:${pct}%"></div></div>
+        <div class="mod-footer">
+          <span class="mod-lessons">${m.lessons} lessons</span>
+          <span class="mod-badge${m.available?'':' coming'}">${m.available?m.level:'Coming Soon'}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+renderMods('all');
+
+function filterMods(btn,filter){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderMods(filter);
+}
+
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+</script>
+</body>
+</html>

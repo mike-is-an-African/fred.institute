@@ -169,18 +169,7 @@ body{
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .form-wrap{animation:fadeUp 0.45s ease both;}
-@media(max-width:860px){
-  .brand{display:none;}
-  .form-wrap{width:100%;padding:2rem 1.25rem;min-height:100vh;justify-content:flex-start;padding-top:2.5rem;}
-  .fw-head h1{font-size:1.35rem;}
-  .form-row{flex-direction:column;gap:0;}
-  .sub-checks{gap:0.5rem;}
-}
-@media(max-width:400px){
-  .form-wrap{padding:1.5rem 1rem;}
-  .role-tabs{gap:0.25rem;}
-  .role-tab{font-size:0.72rem;padding:0.45rem;}
-}
+@media(max-width:860px){.brand{display:none;}.form-wrap{width:100%;padding:2rem 1.5rem;}}
 </style>
 </head>
 <body>
@@ -191,7 +180,7 @@ body{
   <div class="brand-orb2"></div>
   <div class="brand-top">
     <div class="brand-icon">
-      <img src="assets/fred-logo.png" alt="FredInstitute logo" />
+      <img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;"/>
     </div>
     <div class="brand-name">FredInstitute</div>
     <div class="brand-tagline">Knowledge Without Borders</div>
@@ -210,7 +199,7 @@ body{
 <!-- FORM -->
 <div class="form-wrap">
   <div class="fw-logo">
-    <div class="fw-logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
+    <div class="fw-logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;"/></div>
     <div class="fw-logo-text">FredInstitute</div>
   </div>
 
@@ -245,18 +234,13 @@ body{
     </div>
     <div class="form-row">
       <div class="fg">
-        <label class="fl">Age / Year Group</label>
+        <label class="fl">Year of Study</label>
         <select class="fi" id="r-year">
-          <option value="6">Age 6 / Year 1</option>
-          <option value="7">Age 7 / Year 2</option>
-          <option value="8">Age 8 / Year 3</option>
-          <option value="9">Age 9 / Year 4</option>
-          <option value="10">Age 10 / Year 5</option>
-          <option value="11">Age 11 / Year 6</option>
-          <option value="12">Age 12 / Year 7</option>
-          <option value="13">Age 13 / Year 8</option>
-          <option value="14">Age 14 / Year 9</option>
-          <option value="15">Age 15 / Year 10</option>
+          <option value="1">Year 1</option>
+          <option value="2">Year 2</option>
+          <option value="3">Year 3</option>
+          <option value="4">Year 4</option>
+          <option value="5">Year 5</option>
         </select>
       </div>
     </div>
@@ -266,8 +250,6 @@ body{
         <label class="sub-check"><input type="checkbox" id="sub-math" checked /> Mathematics</label>
         <label class="sub-check"><input type="checkbox" id="sub-english" checked /> English</label>
         <label class="sub-check"><input type="checkbox" id="sub-sciences" checked /> Sciences</label>
-        <label class="sub-check"><input type="checkbox" id="sub-socialstudies" checked /> Social Studies</label>
-        <label class="sub-check"><input type="checkbox" id="sub-commerce" checked /> Commerce</label>
       </div>
     </div>
     <div class="fg"><label class="fl">Email address</label><input class="fi" type="email" id="r-email" placeholder="you@example.com" autocomplete="email" /></div>
@@ -282,21 +264,12 @@ body{
 <script>
 /* ─── Data bootstrap ─────────────────────────────── */
 function boot() {
-  // Always ensure both teacher accounts exist and are up-to-date
-  const TEACHERS = [
-    { id:1, name:'Teacher', first:'Teacher', last:'', email:'teacher@fredinstitute.ac', password:'teacher123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
-    { id:2, name:'Admin', first:'Admin', last:'', email:'admin@fred.institute', password:'admin123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
-  ];
-  let users = JSON.parse(localStorage.getItem('fi_users') || '[]');
-  // Strip legacy demo students (old sample accounts)
-  users = users.filter(u => u.email !== 'student@fredinstitute.ac');
-  // Ensure teacher accounts always present and correct
-  TEACHERS.forEach(t => {
-    const idx = users.findIndex(u => u.email === t.email);
-    if (idx >= 0) { users[idx] = { ...users[idx], ...t }; }
-    else { users.unshift(t); }
-  });
-  localStorage.setItem('fi_users', JSON.stringify(users));
+  if (!localStorage.getItem('fi_users')) {
+    localStorage.setItem('fi_users', JSON.stringify([
+      { id:1, name:'Sarah Moyo', first:'Sarah', last:'Moyo', email:'student@fredinstitute.ac', password:'student123', role:'student', phone:'', createdAt:new Date().toISOString(), yearOfStudy:1, subjects:['mathematics'] },
+      { id:2, name:'Dr. James Chikwanda', first:'James', last:'Chikwanda', email:'teacher@fredinstitute.ac', password:'teacher123', role:'teacher', phone:'', createdAt:new Date().toISOString(), yearOfStudy:0, subjects:[] }
+    ]));
+  }
   ['fi_notes','fi_library','fi_ann','fi_chat_history'].forEach(k => {
     if (!localStorage.getItem(k)) localStorage.setItem(k, '[]');
   });
@@ -335,7 +308,15 @@ function doLogin() {
   const u = users.find(x => x.email === email && x.password === pass);
   if (!u) return err('Incorrect email or password. Please try again.');
   if (role === 'teacher' && u.role === 'student') return err('This account does not have teacher access.');
-  sessionStorage.setItem('fi_session', JSON.stringify(u));
+  
+// Reset ALL student data on fresh login - every account starts at zero
+localStorage.removeItem('fi_pts');
+localStorage.removeItem('fi_progress');
+localStorage.removeItem('fi_streak');
+localStorage.removeItem('fi_last_visit');
+localStorage.removeItem('fi_att_');
+
+      sessionStorage.setItem('fi_session', JSON.stringify(u));
   window.location.href = u.role === 'teacher' ? 'admin.html' : 'dashboard.html';
 }
 
@@ -350,9 +331,7 @@ function doRegister() {
   if (document.getElementById('sub-math').checked) subjects.push('mathematics');
   if (document.getElementById('sub-english').checked) subjects.push('english');
   if (document.getElementById('sub-sciences').checked) subjects.push('sciences');
-  if (document.getElementById('sub-socialstudies').checked) subjects.push('social studies');
-  if (document.getElementById('sub-commerce').checked) subjects.push('commerce');
-  if (!subjects.length) subjects.push('mathematics','english','sciences','social studies','commerce');
+  if (!subjects.length) subjects.push('mathematics','english','sciences');
   const users = JSON.parse(localStorage.getItem('fi_users') || '[]');
   if (users.find(u => u.email === email)) return err('An account with that email already exists.');
   const u = { id: Date.now(), name: first+' '+last, first, last, email, phone: val('r-phone'), password: pass, role: 'student', createdAt: new Date().toISOString(), yearOfStudy, subjects };
@@ -383,6 +362,9 @@ if (sess) {
 }
 
 boot();
+</script>
+<script>// Fresh start
+localStorage.removeItem("fi_pts");localStorage.removeItem("fi_progress");localStorage.removeItem("fi_streak");localStorage.removeItem("fi_last_visit");
 </script>
 </body>
 </html>

@@ -73,43 +73,39 @@
 <div class="app-shell">
 
   <!-- SIDEBAR -->
-  <nav class="sidebar">
+  
+  <!-- MOBILE OVERLAY -->
+  <div class="mob-overlay" id="mob-overlay" onclick="closeSidebar()"></div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute logo" /></div>
-      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Teacher Portal</div></div>
+      <div class="logo-icon"><img src="assets/fred-logo.png" alt="FredInstitute" style="width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;"/></div>
+      <div><div class="logo-text">FredInstitute</div><div class="logo-sub">Portal</div></div>
     </div>
     <div class="sidebar-user">
-      <div class="user-av" id="s-av">T</div>
-      <div>
-        <div class="user-name" id="s-name">Teacher</div>
-        <div class="user-role">Teacher</div>
-      </div>
+      <div class="user-av" id="s-av">S</div>
+      <div><div class="user-name" id="s-name">Student</div><div class="user-role" id="s-role">Student</div></div>
     </div>
     <div class="sidebar-nav">
-      <div class="nav-label">Admin</div>
-      <a class="nav-item active" href="admin.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-        Students
-      </a>
-      <a class="nav-item" href="classroom.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>
-        Live Classroom
-      </a>
-      <a class="nav-item" href="library.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-        Library
-      </a>
-      <a class="nav-item" href="dashboard.html">
-        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-        Dashboard
-      </a>
+      <div class="nav-label">Menu</div>
+      <a class="nav-item " href="dashboard.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Dashboard</a>
+      <a class="nav-item " href="modules.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Modules</a>
+      <a class="nav-item " href="classroom.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14"/><rect x="1" y="6" width="14" height="12" rx="2"/></svg>Live Classroom<span class="nav-badge" id="live-badge" style="display:none">Live</span></a>
+      <a class="nav-item " href="library.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>Library</a>
+      <button class="tools-toggle" id="tools-btn" onclick="toggleTools()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>My Tools<svg class="arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" width="12" height="12"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="tools-sub" id="tools-sub">
+        <a class="tools-sub-item" href="fred-grapher.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Fred Grapher</a>
+        <a class="tools-sub-item" href="fred-reading-tool.html"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>Fred Reader</a>
+      </div>
     </div>
-    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()">Sign Out</button></div>
+    <div class="sidebar-footer"><button class="btn-signout" onclick="signOut()"><svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</button></div>
   </nav>
 
   <div class="main-content">
     <div class="topbar">
-      <div class="topbar-title">Teacher Portal</div>
+      <div style="display:flex;align-items:center;gap:.75rem;"><button class="mob-ham" onclick="openSidebar()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+        <div class="topbar-title">Teacher Portal</div>
+      </div>
       <div class="topbar-actions">
         <a href="classroom.html" class="btn btn-primary">▶ Start a Live Class</a>
         <button class="btn btn-secondary" onclick="toggleAddForm()">+ Add Student</button>
@@ -165,28 +161,30 @@
                 <option value="teacher">Teacher / Admin</option>
               </select>
             </div>
-            <div><label class="form-label">Year Group</label>
+            <div><label class="form-label">Year of Study</label>
               <select class="form-input" id="af-year">
-                <option value="6">Age 6 / Year 1</option>
-                <option value="7">Age 7 / Year 2</option>
-                <option value="8">Age 8 / Year 3</option>
-                <option value="9">Age 9 / Year 4</option>
-                <option value="10">Age 10 / Year 5</option>
-                <option value="11">Age 11 / Year 6</option>
-                <option value="12">Age 12 / Year 7</option>
-                <option value="13">Age 13 / Year 8</option>
-                <option value="14">Age 14 / Year 9</option>
-                <option value="15">Age 15 / Year 10</option>
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+                <option value="5">Year 5</option>
               </select>
             </div>
             <div style="grid-column: span 2;">
               <label class="form-label">Subjects</label>
               <div style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-math" checked /> Mathematics</label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-english" checked /> English</label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-sciences" checked /> Sciences</label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-social" checked /> Social Studies</label>
-                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;"><input type="checkbox" id="af-sub-commerce" checked /> Commerce</label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-math" checked />
+                  Mathematics
+                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-english" checked />
+                  English
+                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.82rem;font-weight:600;color:var(--gray-800);user-select:none;">
+                  <input type="checkbox" id="af-sub-sciences" checked />
+                  Sciences
+                </label>
               </div>
             </div>
           </div>
@@ -278,22 +276,6 @@ document.getElementById('s-av').textContent = (ME.name || 'T')[0].toUpperCase();
 document.getElementById('s-name').textContent = ME.name || 'Teacher';
 document.getElementById('t-name').textContent = ME.first || ME.name?.split(' ')[0] || 'Teacher';
 
-/* ── Boot: ensure teacher accounts, clean demo data ── */
-(function adminBoot() {
-  const TEACHERS = [
-    { id:1, name:'Teacher', first:'Teacher', last:'', email:'teacher@fredinstitute.ac', password:'teacher123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
-    { id:2, name:'Admin', first:'Admin', last:'', email:'admin@fred.institute', password:'admin123', role:'teacher', phone:'', createdAt:'2024-01-01T00:00:00.000Z', yearOfStudy:0, subjects:[] },
-  ];
-  let users = JSON.parse(localStorage.getItem('fi_users') || '[]');
-  users = users.filter(u => u.email !== 'student@fredinstitute.ac');
-  TEACHERS.forEach(t => {
-    const idx = users.findIndex(u => u.email === t.email);
-    if (idx >= 0) { users[idx] = { ...users[idx], ...t }; }
-    else { users.unshift(t); }
-  });
-  localStorage.setItem('fi_users', JSON.stringify(users));
-})()
-
 /* ── Tabs ── */
 function switchTab(name, btn) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
@@ -322,9 +304,7 @@ function addStudent() {
   if (document.getElementById('af-sub-math').checked) subjects.push('mathematics');
   if (document.getElementById('af-sub-english').checked) subjects.push('english');
   if (document.getElementById('af-sub-sciences').checked) subjects.push('sciences');
-  if (document.getElementById('af-sub-social').checked) subjects.push('social studies');
-  if (document.getElementById('af-sub-commerce').checked) subjects.push('commerce');
-  if (!subjects.length) subjects.push('mathematics','english','sciences','social studies','commerce');
+  if (!subjects.length) subjects.push('mathematics','english','sciences');
 
   users.push({ id:Date.now(), name:first+' '+last, first, last, email, phone, password:pass, role, createdAt:new Date().toISOString(), yearOfStudy, subjects });
   localStorage.setItem('fi_users', JSON.stringify(users));
@@ -376,11 +356,9 @@ function delUser(id) {
 
 /* ── Classrooms ── */
 const FIXED_ROOMS = [
-  { id:'fred-mathematics-101',    name:'Mathematics 101',       desc:'Algebra, Calculus & Problem Solving' },
-  { id:'fred-english-101',        name:'English 101',           desc:'Reading, Writing & Comprehension' },
-  { id:'fred-sciences-101',       name:'Sciences 101',          desc:'Physics, Chemistry & Biology' },
-  { id:'fred-socialstudies-101',  name:'Social Studies 101',    desc:'History, Geography & Civics' },
-  { id:'fred-commerce-101',       name:'Commerce 101',          desc:'Business, Economics & Accounting' },
+  { id:'fred-mathematics-101',   name:'Mathematics 101',         desc:'Algebra, Calculus & Problem Solving' },
+  { id:'fred-english-201',       name:'English Literature 201',  desc:'Essays, Comprehension & Analysis' },
+  { id:'fred-sciences-301',      name:'Introduction to Sciences',desc:'Physics, Chemistry & Biology' },
 ];
 function renderRooms() {
   const custom = JSON.parse(localStorage.getItem('fi_rooms') || '[]');
